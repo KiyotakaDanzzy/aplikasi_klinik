@@ -110,7 +110,7 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Poli</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/poli/poli') ?>">Poli</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Tindakan</a>
@@ -174,7 +174,7 @@
                     <a class="nav-link" href="#">Poli Umum</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Poli Gigi</a>
+                    <a class="nav-link" href="<?php echo base_url('poli/pol_gigi') ?>">Poli Gigi</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Poli Anak</a>

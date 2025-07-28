@@ -1,32 +1,33 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Poli extends CI_Controller {
+class Diagnosa extends CI_Controller {
 
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('master_data/diagnosa/Diagnosa_model');
         $this->load->model('master_data/poli/Poli_model');
         $this->load->helper('url');
     }
 
     public function index()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Master Diagnosa';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Poli', $data);
+        $this->load->view('master_data/Diagnosa', $data);
         $this->load->view('templates/footer');
     }
 
     public function result_data()
     {
         $cari = $this->input->post('cari');
-        $data_poli = $this->Poli_model->get_data_poli($cari);
+        $data_diagnosa = $this->Diagnosa_model->get_data_diagnosa($cari);
         
         $response = [];
-        if ($data_poli) {
+        if ($data_diagnosa) {
             $response['result'] = true;
-            $response['data'] = $data_poli;
+            $response['data'] = $data_diagnosa;
         } else {
             $response['result'] = false;
         }
@@ -37,19 +38,25 @@ class Poli extends CI_Controller {
 
     public function view_tambah()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Master Diagnosa';
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Tambah', $data);
+        $this->load->view('master_data/diagnosa/Tambah', $data);
         $this->load->view('templates/footer');
     }
 
     public function tambah_aksi()
     {
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
+
         $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
+            'nama_diagnosa' => $this->input->post('nama_diagnosa'),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : null
         ];
-        $simpan = $this->Poli_model->insert_poli($data);
+        
+        $simpan = $this->Diagnosa_model->insert_diagnosa($data);
         
         $response = [];
         if ($simpan) {
@@ -66,21 +73,27 @@ class Poli extends CI_Controller {
 
     public function view_edit($id)
     {
-        $data['title'] = 'Master Poli';
-        $data['row'] = $this->Poli_model->get_poli_by_id($id);
+        $data['title'] = 'Master Diagnosa';
+        $data['row'] = $this->Diagnosa_model->get_diagnosa_by_id($id);
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Edit', $data);
+        $this->load->view('master_data/diagnosa/edit', $data);
         $this->load->view('templates/footer');
     }
 
     public function edit_aksi()
     {
         $id = $this->input->post('id');
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
+
         $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
+            'nama_diagnosa' => $this->input->post('nama_diagnosa'),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : null
         ];
-        $update = $this->Poli_model->update_poli($id, $data);
+
+        $update = $this->Diagnosa_model->update_diagnosa($id, $data);
 
         $response = [];
         if ($update) {
@@ -98,7 +111,7 @@ class Poli extends CI_Controller {
     public function hapus()
     {
         $id = $this->input->post('id');
-        $delete = $this->Poli_model->delete_poli($id);
+        $delete = $this->Diagnosa_model->delete_diagnosa($id);
 
         $response = [];
         if ($delete) {

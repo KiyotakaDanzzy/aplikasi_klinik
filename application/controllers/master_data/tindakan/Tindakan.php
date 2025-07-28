@@ -1,32 +1,34 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Poli extends CI_Controller {
+class Tindakan extends CI_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('master_data/tindakan/Tindakan_model');
         $this->load->model('master_data/poli/Poli_model');
         $this->load->helper('url');
     }
 
     public function index()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Master Tindakan';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Poli', $data);
+        $this->load->view('master_data/Tindakan', $data);
         $this->load->view('templates/footer');
     }
 
     public function result_data()
     {
         $cari = $this->input->post('cari');
-        $data_poli = $this->Poli_model->get_data_poli($cari);
-        
+        $data_tindakan = $this->Tindakan_model->get_data_tindakan($cari);
+
         $response = [];
-        if ($data_poli) {
+        if ($data_tindakan) {
             $response['result'] = true;
-            $response['data'] = $data_poli;
+            $response['data'] = $data_tindakan;
         } else {
             $response['result'] = false;
         }
@@ -37,20 +39,27 @@ class Poli extends CI_Controller {
 
     public function view_tambah()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Master Tindakan';
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Tambah', $data);
+        $this->load->view('master_data/tindakan/Tambah', $data);
         $this->load->view('templates/footer');
     }
 
     public function tambah_aksi()
     {
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
+
         $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
+            'nama' => $this->input->post('nama'),
+            'harga' => preg_replace('/[^0-9]/', '', $this->input->post('harga')),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : ''
         ];
-        $simpan = $this->Poli_model->insert_poli($data);
-        
+
+        $simpan = $this->Tindakan_model->insert_tindakan($data);
+
         $response = [];
         if ($simpan) {
             $response['status'] = true;
@@ -66,21 +75,28 @@ class Poli extends CI_Controller {
 
     public function view_edit($id)
     {
-        $data['title'] = 'Master Poli';
-        $data['row'] = $this->Poli_model->get_poli_by_id($id);
+        $data['title'] = 'Master Tindakan';
+        $data['row'] = $this->Tindakan_model->get_tindakan_by_id($id);
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Edit', $data);
+        $this->load->view('master_data/tindakan/Edit', $data);
         $this->load->view('templates/footer');
     }
 
     public function edit_aksi()
     {
         $id = $this->input->post('id');
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
+
         $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
+            'nama' => $this->input->post('nama'),
+            'harga' => preg_replace('/[^0-9]/', '', $this->input->post('harga')),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : ''
         ];
-        $update = $this->Poli_model->update_poli($id, $data);
+
+        $update = $this->Tindakan_model->update_tindakan($id, $data);
 
         $response = [];
         if ($update) {
@@ -98,7 +114,7 @@ class Poli extends CI_Controller {
     public function hapus()
     {
         $id = $this->input->post('id');
-        $delete = $this->Poli_model->delete_poli($id);
+        $delete = $this->Tindakan_model->delete_tindakan($id);
 
         $response = [];
         if ($delete) {

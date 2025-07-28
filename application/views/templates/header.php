@@ -113,10 +113,10 @@
                     <a class="nav-link" href="<?php echo base_url('master_data/poli/poli') ?>">Poli</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Tindakan</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/tindakan/tindakan') ?>">Tindakan</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Diagnosa</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/diagnosa/diagnosa') ?>">Diagnosa</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->
@@ -132,7 +132,7 @@
                     <a class="nav-link" href="#">Pegawai</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Dokter</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/dokter/dokter') ?>">Dokter</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->

@@ -21,6 +21,35 @@
             }
         });
     }
+
+    function hapusJadwalDokter(id_dokter, nama_dokter) {
+        Swal.fire({
+            title: "Anda Yakin?",
+            text: "Menghapus seluruh jadwal milik " + nama_dokter,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Ya, Hapus Semua!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/hapus_by_dokter/"); ?>' + id_dokter,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status) {
+                            Swal.fire('Terhapus!', response.message, 'success');
+                            filterJadwal();
+                        } else {
+                            Swal.fire('Gagal!', response.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    }
 </script>
 
 <div class="container-fluid">
@@ -39,9 +68,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
+                <div class="card-header d-flex flex-wrap gap-2 align-items-center pt-3 pb-3">
                     <h4 class="card-title">Filter Jadwal</h4>
-                    <a href="<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/manage'); ?>" class="btn btn-primary"><i class="fas fa-edit me-2"></i>Kelola Jadwal Dokter</a>
+                    <a href="<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/view_tambah'); ?>" class="btn btn-primary ms-auto">
+                        <i class="fas fa-edit me-2"></i>Buat/Kelola Jadwal
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row">

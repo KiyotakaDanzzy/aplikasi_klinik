@@ -8,7 +8,7 @@
                             <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter'); ?>">Jadwal Dokter</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter/manage'); ?>">Kelola Jadwal</a>
+                            <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter'); ?>">Kelola Jadwal</a>
                         </li>
                         <li class="breadcrumb-item active">Detail</li>
                     </ol>
@@ -51,7 +51,7 @@
                         </table>
                     </div>
                     <div class="mt-4">
-                        <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter/manage'); ?>">
+                        <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter'); ?>">
                             <button type="button" class="btn btn-warning">
                                 <i class="fas fa-reply me-2"></i>Kembali</button>
                             </a>

@@ -19,20 +19,15 @@ class Jadwal_dokter extends CI_Controller
         foreach ($raw_schedule as $item) {
             $poli = $item->nama_poli;
             $dokter_id = $item->id_pegawai;
-            $dokter_nama = $item->nama_pegawai;
-            $hari = $item->hari;
-            $jam = $item->jam_mulai . ' - ' . $item->jam_selesai;
 
-            if (!isset($processed[$poli])) {
-                $processed[$poli] = [];
-            }
             if (!isset($processed[$poli][$dokter_id])) {
-                $processed[$poli][$dokter_id]['nama_dokter'] = $dokter_nama;
+                $processed[$poli][$dokter_id]['nama_dokter'] = $item->nama_pegawai;
+                $processed[$poli][$dokter_id]['id_kpg_dokter'] = $item->id_kpg_dokter;
                 foreach ($days_of_week as $day) {
                     $processed[$poli][$dokter_id]['jadwal'][$day] = '-';
                 }
             }
-            $processed[$poli][$dokter_id]['jadwal'][$hari] = $jam;
+            $processed[$poli][$dokter_id]['jadwal'][$item->hari] = $item->jam_mulai . ' - ' . $item->jam_selesai;
         }
         return $processed;
     }
@@ -52,25 +47,47 @@ class Jadwal_dokter extends CI_Controller
     {
         $id_poli = $this->input->post('id_poli');
         $jam = $this->input->post('jam');
-        $jadwal_raw = $this->Jadwal_dokter_model->get_all_schedules_join($id_poli, $jam);
+        $jadwal_raw = $this->Jadwal_dokter_model->get_all_schedules_join($id_poli);
+        if ($jam && !empty($jadwal_raw)) {
+            $jadwal_cocok = [];
+            $dokter_yang_cocok = [];
+            foreach ($jadwal_raw as $jadwal) {
+                $jam_mulai = $jadwal->jam_mulai;
+                $jam_selesai = $jadwal->jam_selesai;
+                $is_match = false;
+                if ($jam_mulai <= $jam_selesai) {
+                    if ($jam >= $jam_mulai && $jam <= $jam_selesai) {
+                        $is_match = true;
+                    }
+                } else {
+                    if ($jam >= $jam_mulai || $jam <= $jam_selesai) {
+                        $is_match = true;
+                    }
+                }
+                if ($is_match) {
+                    $dokter_yang_cocok[$jadwal->id_pegawai] = true;
+                }
+            }
+            if (!empty($dokter_yang_cocok)) {
+                foreach ($jadwal_raw as $jadwal) {
+                    if (isset($dokter_yang_cocok[$jadwal->id_pegawai])) {
+                        $jadwal_cocok[] = $jadwal;
+                    }
+                }
+            }
+
+            $jadwal_raw = $jadwal_cocok;
+        }
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $this->load->view('resepsionis/jadwal_dokter/Partial_jadwal', $data);
-    }
-
-    public function manage()
-    {
-        $data['title'] = 'Kelola Jadwal Dokter';
-        $data['data_dokter'] = $this->Dokter_model->get_data_dokter();
-        $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/jadwal_dokter/Manage_jadwal', $data);
-        $this->load->view('templates/footer');
     }
 
     public function detail($id_dokter)
     {
         $data['title'] = 'Detail Jadwal Dokter';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
-        $data['jadwal'] = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($data['dokter']['id']);
+        $data['jadwal'] = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
+
         $this->load->view('templates/header', $data);
         $this->load->view('resepsionis/jadwal_dokter/Detail_jadwal', $data);
         $this->load->view('templates/footer');
@@ -80,6 +97,7 @@ class Jadwal_dokter extends CI_Controller
     {
         $data['title'] = 'Buat Jadwal Dokter';
         $data['data_dokter'] = $this->Dokter_model->get_data_dokter();
+
         $this->load->view('templates/header', $data);
         $this->load->view('resepsionis/jadwal_dokter/Tambah', $data);
         $this->load->view('templates/footer');
@@ -91,9 +109,11 @@ class Jadwal_dokter extends CI_Controller
         $hari = $this->input->post('hari');
         $jam_mulai = $this->input->post('jam_mulai');
         $jam_selesai = $this->input->post('jam_selesai');
-        $simpan = $this->Jadwal_dokter_model->insert_jadwal_batch($id_dokter, $hari, $jam_mulai, $jam_selesai);
+
+        $simpan = $this->Jadwal_dokter_model->update_jadwal_batch($id_dokter, $hari, $jam_mulai, $jam_selesai);
+
         header('Content-Type: application/json');
-        echo json_encode(['status' => $simpan]);
+        echo json_encode(['status' => $simpan, 'message' => $simpan ? 'Jadwal berhasil disimpan' : 'Gagal menyimpan jadwal']);
     }
 
     public function view_edit($id_dokter)
@@ -101,11 +121,13 @@ class Jadwal_dokter extends CI_Controller
         $data['title'] = 'Edit Jadwal Dokter';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
         $jadwal_existing_raw = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
+
         $jadwal_existing = [];
-        foreach($jadwal_existing_raw as $j) {
+        foreach ($jadwal_existing_raw as $j) {
             $jadwal_existing[$j['hari']] = $j;
         }
         $data['jadwal'] = $jadwal_existing;
+
         $this->load->view('templates/header', $data);
         $this->load->view('resepsionis/jadwal_dokter/Edit', $data);
         $this->load->view('templates/footer');
@@ -118,14 +140,16 @@ class Jadwal_dokter extends CI_Controller
         $jam_mulai = $this->input->post('jam_mulai');
         $jam_selesai = $this->input->post('jam_selesai');
         $update = $this->Jadwal_dokter_model->update_jadwal_batch($id_dokter, $hari, $jam_mulai, $jam_selesai);
+
         header('Content-Type: application/json');
-        echo json_encode(['status' => $update]);
+        echo json_encode(['status' => $update, 'message' => $update ? 'Jadwal berhasil diperbarui' : 'Gagal memperbarui jadwal']);
     }
 
     public function hapus_by_dokter($id_dokter)
     {
         $delete = $this->Jadwal_dokter_model->delete_by_dokter_id($id_dokter);
+
         header('Content-Type: application/json');
-        echo json_encode(['status' => $delete]);
+        echo json_encode(['status' => $delete, 'message' => $delete ? 'Seluruh jadwal dokter berhasil dihapus' : 'Gagal menghapus jadwal']);
     }
 }

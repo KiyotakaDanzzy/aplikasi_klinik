@@ -3,58 +3,88 @@
         $('.hari-checkbox').change(function() {
             var day = $(this).val();
             var isChecked = $(this).is(':checked');
-            $('#jam_mulai_' + day).prop('disabled', !isChecked);
-            $('#jam_selesai_' + day).prop('disabled', !isChecked);
+            var jamMulaiInput = $('#jam_mulai_' + day);
+            var jamSelesaiInput = $('#jam_selesai_' + day);
+
+            jamMulaiInput.prop('disabled', !isChecked);
+            jamSelesaiInput.prop('disabled', !isChecked);
+
+            if (!isChecked) {
+                jamMulaiInput.val('');
+                jamSelesaiInput.val('');
+            }
         });
     });
 
     function validateForm(formSelector) {
-    let isValid = true;
-    $(formSelector + ' [required]').removeClass('is-invalid');
-    $(formSelector + ' [required]').each(function() {
-      if (!$(this).val() || $(this).val().trim() === '') {
-        isValid = false;
-        $(this).addClass('is-invalid');
-      }
-    });
+        let isValid = true;
+        let errorMessage = 'Harap isi semua kolom yang wajib diisi.';
 
-    if (!isValid) {
-      Swal.fire({
-        title: 'Gagal!',
-        text: 'Harap isi semua kolom yang wajib diisi.',
-        icon: 'error',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Oke'
-      });
+        $(formSelector + ' .is-invalid').removeClass('is-invalid');
+
+        if ($(formSelector + ' #id_dokter').val() === '') {
+            $(formSelector + ' #id_dokter').addClass('is-invalid');
+            isValid = false;
+        }
+
+        if ($(formSelector + ' input[name="hari[]"]:checked').length === 0) {
+            errorMessage = 'Harap pilih minimal satu hari praktik.';
+            isValid = false;
+        } else {
+            $(formSelector + ' input[name="hari[]"]:checked').each(function() {
+                let day = $(this).val();
+                let jamMulai = $('#jam_mulai_' + day);
+                let jamSelesai = $('#jam_selesai_' + day);
+
+                if (jamMulai.val() === '') {
+                    jamMulai.addClass('is-invalid');
+                    isValid = false;
+                }
+                if (jamSelesai.val() === '') {
+                    jamSelesai.addClass('is-invalid');
+                    isValid = false;
+                }
+            });
+        }
+
+        if (!isValid) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Oke'
+            });
+        }
+
+        return isValid;
     }
 
-    return isValid;
-  }
-
     function tambah(e) {
-        e.preventDefault()
+        e.preventDefault();
+
         if (!validateForm('#form_tambah')) {
             return;
         }
+
         $.ajax({
-            url: '<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter/tambah_aksi') ?>',
+            url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/tambah_aksi"); ?>',
             method: 'POST',
             data: $('#form_tambah').serialize(),
             dataType: 'json',
             success: function(res) {
                 if (res.status == true) {
                     Swal.fire({
-                            title: 'Berhasil!',
-                            text: res.message,
-                            icon: "success",
-                            confirmButtonColor: "#35baf5",
-                            confirmButtonText: "Oke"
-                        })
-                        .then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '<?php echo base_url() ?>resepsionis/jadwal_dokter/jadwal_dokter'
-                            }
-                        })
+                        title: 'Berhasil!',
+                        text: res.message,
+                        icon: "success",
+                        confirmButtonColor: "#35baf5",
+                        confirmButtonText: "Oke"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter"); ?>';
+                        }
+                    });
                 } else {
                     Swal.fire({
                         title: 'Gagal!',
@@ -62,12 +92,13 @@
                         icon: "error",
                         confirmButtonColor: "#35baf5",
                         confirmButtonText: "Oke"
-                    })
+                    });
                 }
             }
         });
     }
 </script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -100,7 +131,9 @@
                                 <div class="col-sm-10">
                                     <select class="form-control" name="id_dokter" id="id_dokter" required>
                                         <option value="">Pilih Dokter</option>
-                                        <?php foreach ($data_dokter as $dokter) {echo "<option value='{$dokter->id}'>{$dokter->nama_pegawai} ({$dokter->nama_poli})</option>";} ?>
+                                        <?php foreach ($data_dokter as $dokter) {
+                                            echo "<option value='{$dokter->id}'>{$dokter->nama_pegawai} ({$dokter->nama_poli})</option>";
+                                        } ?>
                                     </select>
                                 </div>
                             </div>
@@ -112,7 +145,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input hari-checkbox" type="checkbox" name="hari[]" value="<?php echo $day; ?>" id="check_<?php echo $day; ?>" required>
                                             <label class="form-check-label" for="check_<?php echo $day; ?>"><?php echo $day; ?>
-                                        </label>
+                                            </label>
                                         </div>
                                     </label>
                                     <div class="col-sm-3">
@@ -133,10 +166,10 @@
                                 <div class="col-sm-10 ms-auto">
                                     <button type="button" onclick="tambah(event);" class="btn btn-success">
                                         <i class="fas fa-save me-2"></i>Simpan Jadwal</button>
-                                        <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
-                                            <button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button>
-                                        </a>
-                                    </div>
+                                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
+                                        <button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button>
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>

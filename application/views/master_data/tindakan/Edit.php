@@ -1,6 +1,32 @@
 <script type="text/javascript">
+  function validateForm(formSelector) {
+    let isValid = true;
+    $(formSelector + ' [required]').removeClass('is-invalid');
+    $(formSelector + ' [required]').each(function() {
+      if (!$(this).val() || $(this).val().trim() === '') {
+        isValid = false;
+        $(this).addClass('is-invalid');
+      }
+    });
+
+    if (!isValid) {
+      Swal.fire({
+        title: 'Gagal!',
+        text: 'Harap isi semua kolom yang wajib diisi.',
+        icon: 'error',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Oke'
+      });
+    }
+
+    return isValid;
+  }
+
   function edit(e) {
     e.preventDefault()
+    if (!validateForm('#form_edit')) {
+        return;
+    }
     $.ajax({
       url: '<?php echo base_url('master_data/tindakan/tindakan/edit_aksi') ?>',
       method: 'POST',
@@ -52,25 +78,25 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header pt-3 pb-3">
-          <h4 class="card-title">Edit <?php echo $title; ?></h4>
+          <h4 class="card-title"><?php echo $title; ?></h4>
         </div>
         <div class="card-body">
           <div class="general-label">
             <form id="form_edit">
               <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
               <div class="mb-3 row"><label for="nama" class="col-sm-2 col-form-label">Nama Tindakan</label>
-                <div class="col-sm-10"><input type="text" class="form-control" name="nama" id="nama" value="<?php echo $row['nama']; ?>"></div>
+                <div class="col-sm-10"><input type="text" class="form-control" name="nama" id="nama" value="<?php echo $row['nama']; ?>" required></div>
               </div>
               <div class="mb-3 row"><label for="harga" class="col-sm-2 col-form-label">Harga</label>
                 <div class="col-sm-10">
                   <div class="input-group">
-                    <span class="input-group-addon">Rp</span>
+                    <div class="input-group-text">Rp</div>
                     <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" required>
                   </div>
                 </div>
               </div>
               <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
-                <div class="col-sm-10"><select class="form-control" name="id_poli" id="id_poli">
+                <div class="col-sm-10"><select class="form-control" name="id_poli" id="id_poli" required>
                     <option value="">Pilih Poli</option><?php foreach ($data_poli as $poli) {
                                                           $selected = ($poli->id == $row['id_poli']) ? 'selected' : '';
                                                           echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";

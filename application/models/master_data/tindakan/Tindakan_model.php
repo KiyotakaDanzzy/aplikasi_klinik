@@ -5,7 +5,7 @@ class Tindakan_model extends CI_Model {
 
     public function get_data_tindakan($cari = null)
     {
-        $sql = "SELECT a.* FROM mst_tindakan a WHERE 1=1";
+        $sql = "SELECT a.*, FORMAT(a.harga, 0) AS harga FROM mst_tindakan a WHERE 1=1";
         $params = [];
 
         if ($cari) {

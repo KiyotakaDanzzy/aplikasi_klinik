@@ -1,6 +1,32 @@
 <script type="text/javascript">
+  function validateForm(formSelector) {
+    let isValid = true;
+    $(formSelector + ' [required]').removeClass('is-invalid');
+    $(formSelector + ' [required]').each(function() {
+      if (!$(this).val() || $(this).val().trim() === '') {
+        isValid = false;
+        $(this).addClass('is-invalid');
+      }
+    });
+
+    if (!isValid) {
+      Swal.fire({
+        title: 'Gagal!',
+        text: 'Harap isi semua kolom yang wajib diisi',
+        icon: 'error',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Oke'
+      });
+    }
+
+    return isValid;
+  }
+
   function tambah(e) {
     e.preventDefault()
+    if (!validateForm('#form_tambah')) {
+        return;
+    }
     $.ajax({
       url: '<?php echo base_url('master_data/tindakan/tindakan/tambah_aksi') ?>',
       method: 'POST',
@@ -52,7 +78,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header pt-3 pb-3">
-          <h4 class="card-title">Tambah <?php echo $title; ?></h4>
+          <h4 class="card-title"><?php echo $title; ?></h4>
         </div>
         <div class="card-body">
           <div class="general-label">
@@ -60,7 +86,7 @@
               <div class="mb-3 row">
                 <label for="nama" class="col-sm-2 col-form-label">Nama Tindakan</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Tindakan">
+                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Tindakan" required>
                 </div>
               </div>
               <div class="mb-3 row">
@@ -75,7 +101,7 @@
               <div class="mb-3 row">
                 <label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
                 <div class="col-sm-10">
-                  <select class="form-control" name="id_poli" id="id_poli">
+                  <select class="form-control" name="id_poli" id="id_poli" required>
                     <option value="">Pilih Poli</option>
                     <?php foreach ($data_poli as $poli) {
                       echo "<option value='{$poli->id}'>{$poli->nama}</option>";

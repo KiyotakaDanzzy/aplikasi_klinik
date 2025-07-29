@@ -185,8 +185,8 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0 table-hover" id="table-data">
-                            <thead class="thead-light">
-                                <tr>
+                            <thead>
+                                <tr class="table-success">
                                     <th>#</th>
                                     <th>Kode</th>
                                     <th>Nama Poli</th>

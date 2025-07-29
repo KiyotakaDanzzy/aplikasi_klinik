@@ -61,10 +61,10 @@ class Diagnosa extends CI_Controller {
         $response = [];
         if ($simpan) {
             $response['status'] = true;
-            $response['message'] = 'Data berhasil disimpan.';
+            $response['message'] = 'Data berhasil disimpan';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan data.';
+            $response['message'] = 'Gagal menyimpan data';
         }
 
         header('Content-Type: application/json');
@@ -98,10 +98,10 @@ class Diagnosa extends CI_Controller {
         $response = [];
         if ($update) {
             $response['status'] = true;
-            $response['message'] = 'Data berhasil diperbarui.';
+            $response['message'] = 'Data berhasil diperbarui';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal memperbarui data.';
+            $response['message'] = 'Gagal memperbarui data';
         }
 
         header('Content-Type: application/json');
@@ -116,10 +116,10 @@ class Diagnosa extends CI_Controller {
         $response = [];
         if ($delete) {
             $response['status'] = true;
-            $response['message'] = 'Data berhasil dihapus.';
+            $response['message'] = 'Data berhasil dihapus';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menghapus data.';
+            $response['message'] = 'Gagal menghapus data';
         }
 
         header('Content-Type: application/json');

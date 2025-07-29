@@ -1,16 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Dokter_model extends CI_Model {
+class Jabatan_model extends CI_Model {
 
-    public function get_data_dokter($cari = null)
+    public function get_data_jabatan($cari = null)
     {
-        $sql = "SELECT a.* FROM kpg_dokter a WHERE 1=1";
+        $sql = "SELECT a.* FROM kpg_jabatan a WHERE 1=1";
         $params = [];
 
         if ($cari) {
-            $sql .= " AND (a.nama_pegawai LIKE ? OR a.nama_poli LIKE ?)";
-            $params[] = "%$cari%";
+            $sql .= " AND a.nama LIKE ?";
             $params[] = "%$cari%";
         }
         
@@ -19,30 +18,30 @@ class Dokter_model extends CI_Model {
         return $query->result();
     }
     
-    public function get_dokter_by_id($id)
+    public function get_jabatan_by_id($id)
     {
-        $sql = "SELECT a.* FROM kpg_dokter a WHERE a.id = ?";
+        $sql = "SELECT a.* FROM kpg_jabatan a WHERE a.id = ?";
         $query = $this->db->query($sql, array($id));
         return $query->row_array();
     }
 
-    public function insert_dokter($data)
+    public function insert_jabatan($data)
     {
-        $this->db->insert('kpg_dokter', $data);
+        $this->db->insert('kpg_jabatan', $data);
         return $this->db->affected_rows() > 0;
     }
 
-    public function update_dokter($id, $data)
+    public function update_jabatan($id, $data)
     {
         $this->db->where('id', $id);
-        $this->db->update('kpg_dokter', $data);
+        $this->db->update('kpg_jabatan', $data);
         return $this->db->affected_rows() > 0;
     }
 
-    public function delete_dokter($id)
+    public function delete_jabatan($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('kpg_dokter');
+        $this->db->delete('kpg_jabatan');
         return $this->db->affected_rows() > 0;
     }
 }

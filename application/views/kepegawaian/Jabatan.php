@@ -8,7 +8,7 @@
       let cari = $('#cari').val();
       let count_header = $(`#table-data thead tr th`).length
       $.ajax({
-          url : '<?php echo base_url(); ?>kepegawaian/dokter/dokter/result_data',
+          url : '<?php echo base_url(); ?>kepegawaian/jabatan/jabatan/result_data',
           data : {cari}, type : "POST", dataType :  "json",
           beforeSend : () => {
               let loading = `<tr id="tr-loading"><td colspan="${count_header}" class="text-center"><img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading"></td></tr>`;
@@ -22,11 +22,10 @@
                       table += `
                           <tr>
                               <td>${i}</td>
-                              <td>${item.nama_pegawai}</td>
-                              <td>${item.nama_poli}</td>
+                              <td>${item.nama}</td>
                               <td>
                                   <div class="text-center">
-                                      <a href="<?php echo base_url(); ?>kepegawaian/dokter/dokter/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
+                                      <a href="<?php echo base_url(); ?>kepegawaian/jabatan/jabatan/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
                                       <button type="button" class="btn btn-shadow btn-sm btn-danger" title="Hapus" onclick="hapus(${item.id})"><i class="fas fa-trash-alt"></i></button>
                                   </div>
                               </td>
@@ -69,7 +68,7 @@
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
-              url : '<?php echo base_url(); ?>kepegawaian/dokter/dokter/hapus', method : 'POST', data : {id}, dataType : 'json',
+              url : '<?php echo base_url(); ?>kepegawaian/jabatan/jabatan/hapus', method : 'POST', data : {id}, dataType : 'json',
               success: function (res){
                   if (res.status == true) {
                       Swal.fire({ title: 'Berhasil!', text: res.message, icon: "success", confirmButtonColor: "#35baf5", confirmButtonText: "Oke" })
@@ -90,13 +89,13 @@
       <div class="card">
         <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
             <h4 class="card-title">Data <?php echo $title; ?></h4>
-            <a href="<?php echo base_url(); ?>kepegawaian/dokter/dokter/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+            <a href="<?php echo base_url(); ?>kepegawaian/jabatan/jabatan/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
         </div>
         <div class="card-body">
-          <div class="row mb-3"><div class="col-sm-3"><div class="input-group"><div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Dokter/Poli"></div></div></div>
+          <div class="row mb-3"><div class="col-sm-3"><div class="input-group"><div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Jabatan"></div></div></div>
           <div class="table-responsive">
               <table class="table mb-0 table-hover" id="table-data">
-                  <thead class="thead-light"><tr><th>#</th><th>Nama Dokter</th><th>Poli</th><th class="text-center">Aksi</th></tr></thead>
+                  <thead class="thead-light"><tr><th>#</th><th>Nama Jabatan</th><th class="text-center">Aksi</th></tr></thead>
                   <tbody></tbody>
               </table>
           </div>

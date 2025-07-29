@@ -126,10 +126,10 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Jabatan</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/jabatan/jabatan') ?>">Jabatan</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pegawai</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/pegawai/pegawai') ?>">Pegawai</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo base_url('kepegawaian/dokter/dokter') ?>">Dokter</a>

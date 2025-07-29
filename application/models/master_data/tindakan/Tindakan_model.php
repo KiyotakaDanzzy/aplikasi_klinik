@@ -14,7 +14,7 @@ class Tindakan_model extends CI_Model {
             $params[] = "%$cari%";
         }
         
-        $sql .= " ORDER BY a.id ASC";
+        $sql .= " ORDER BY a.id DESC";
         $query = $this->db->query($sql, $params);
         return $query->result();
     }

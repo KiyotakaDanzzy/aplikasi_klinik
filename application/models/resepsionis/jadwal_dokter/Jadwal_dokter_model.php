@@ -99,4 +99,10 @@ class Jadwal_dokter_model extends CI_Model
         $this->db->delete('rsp_jadwal_dokter');
         return $this->db->affected_rows() > 0;
     }
+
+    public function insert_single_jadwal($data)
+    {
+        $this->db->insert('rsp_jadwal_dokter', $data);
+        return $this->db->affected_rows() > 0;
+    }
 }

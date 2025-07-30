@@ -12,7 +12,7 @@
         if (!isValid) {
             Swal.fire({
                 title: 'Gagal!',
-                text: 'Jam mulai dan selesai tidak boleh kosong.',
+                text: 'Jam mulai dan selesai tidak boleh kosong',
                 icon: 'error'
             });
         }

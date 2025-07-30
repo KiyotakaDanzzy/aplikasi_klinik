@@ -129,15 +129,14 @@ class Jadwal_dokter extends CI_Controller
 
     public function view_edit($id_dokter)
     {
-        $data['title'] = 'Edit Jadwal Dokter';
+        $data['title'] = 'Edit Jadwal Harian';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
-        $jadwal_existing_raw = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
+        $jadwal_sekarang = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
 
-        $jadwal_existing = [];
-        foreach ($jadwal_existing_raw as $j) {
-            $jadwal_existing[$j['hari']] = $j;
-        }
-        $data['jadwal'] = $jadwal_existing;
+        $semua_hari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+        $hari_terjadwal = array_column($jadwal_sekarang, 'hari');
+        $hari_tersedia = array_diff($semua_hari, $hari_terjadwal);
+        $data['hari_tersedia'] = $hari_tersedia;
 
         $this->load->view('templates/header', $data);
         $this->load->view('resepsionis/jadwal_dokter/Edit', $data);
@@ -197,6 +196,29 @@ class Jadwal_dokter extends CI_Controller
             'status' => $delete,
             'message' => $delete ? 'Jadwal harian berhasil dihapus.' : 'Gagal menghapus jadwal harian.'
         ];
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+
+    public function tambah_entry_aksi()
+    {
+        $id_dokter = $this->input->post('id_dokter');
+        $dokter = $this->Dokter_model->get_dokter_by_id($id_dokter);
+
+        $data = [
+            'id_pegawai' => $dokter['id_pegawai'],
+            'nama_pegawai' => $dokter['nama_pegawai'],
+            'hari' => $this->input->post('hari'),
+            'jam_mulai' => $this->input->post('jam_mulai'),
+            'jam_selesai' => $this->input->post('jam_selesai')
+        ];
+
+        $simpan = $this->Jadwal_dokter_model->insert_single_jadwal($data);
+        $response = [
+            'status' => $simpan,
+            'message' => $simpan ? 'Jadwal berhasil ditambahkan' : 'Gagal menambahkan jadwal'
+        ];
+
         header('Content-Type: application/json');
         echo json_encode($response);
     }

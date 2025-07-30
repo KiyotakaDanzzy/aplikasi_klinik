@@ -91,11 +91,10 @@
               <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
                 <div class="col-sm-10">
                   <select class="form-control" name="id_poli" id="id_poli" required>
-                    <option value="">Pilih Poli</option><?php foreach ($data_poli as $poli) {
-                                                          $selected = ($poli->id == $row['id_poli']) ? 'selected' : '';
-                                                          echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";
-                                                        } ?>
-                  </select></div>
+                    <option value="">Pilih Poli</option>
+                    <?php foreach ($data_poli as $poli) {$selected = ($poli->id == $row['id_poli']) ? 'selected' : '';echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";                                                       } ?>
+                  </select>
+                </div>
               </div>
               <div class="row">
                 <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>

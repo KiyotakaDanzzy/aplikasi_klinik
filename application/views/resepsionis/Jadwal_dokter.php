@@ -71,7 +71,7 @@
                 <div class="card-header d-flex flex-wrap gap-2 align-items-center pt-3 pb-3">
                     <h4 class="card-title">Filter Jadwal</h4>
                     <a href="<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/view_tambah'); ?>" class="btn btn-primary ms-auto">
-                        <i class="fas fa-edit me-2"></i>Buat/Kelola Jadwal
+                        <i class="fas fa-edit me-2"></i>Buat Jadwal
                     </a>
                 </div>
                 <div class="card-body">

@@ -9,27 +9,48 @@
     });
 
     function validateForm(formSelector) {
-    let isValid = true;
-    $(formSelector + ' [required]').removeClass('is-invalid');
-    $(formSelector + ' [required]').each(function() {
-      if (!$(this).val() || $(this).val().trim() === '') {
-        isValid = false;
-        $(this).addClass('is-invalid');
-      }
-    });
+        let isValid = true;
+        let errorMessage = 'Harap isi semua kolom yang wajib diisi.';
 
-    if (!isValid) {
-      Swal.fire({
-        title: 'Gagal!',
-        text: 'Harap isi semua kolom yang wajib diisi.',
-        icon: 'error',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Oke'
-      });
+        $(formSelector + ' .is-invalid').removeClass('is-invalid');
+
+        if ($(formSelector + ' #id_dokter').val() === '') {
+            $(formSelector + ' #id_dokter').addClass('is-invalid');
+            isValid = false;
+        }
+
+        if ($(formSelector + ' input[name="hari[]"]:checked').length === 0) {
+            errorMessage = 'Harap pilih minimal satu hari praktik.';
+            isValid = false;
+        } else {
+            $(formSelector + ' input[name="hari[]"]:checked').each(function() {
+                let day = $(this).val();
+                let jamMulai = $('#jam_mulai_' + day);
+                let jamSelesai = $('#jam_selesai_' + day);
+
+                if (jamMulai.val() === '') {
+                    jamMulai.addClass('is-invalid');
+                    isValid = false;
+                }
+                if (jamSelesai.val() === '') {
+                    jamSelesai.addClass('is-invalid');
+                    isValid = false;
+                }
+            });
+        }
+
+        if (!isValid) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: errorMessage,
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Oke'
+            });
+        }
+
+        return isValid;
     }
-
-    return isValid;
-  }
 
     function edit(e) {
         e.preventDefault()
@@ -125,13 +146,13 @@
                             <?php } ?>
                             <div class="row mt-4">
                                 <div class="col-sm-10 ms-auto">
-                                    <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan Perubahan</button>
-                                        <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
-                                            <button type="button" class="btn btn-warning">
-                                                <i class="fas fa-reply me-2"></i>Kembali
-                                            </button>
-                                            </a>
-                                        </div>
+                                    <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
+                                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
+                                        <button type="button" class="btn btn-warning">
+                                            <i class="fas fa-reply me-2"></i>Kembali
+                                        </button>
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>

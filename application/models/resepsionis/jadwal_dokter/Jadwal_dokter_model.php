@@ -4,7 +4,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Jadwal_dokter_model extends CI_Model
 {
 
-    public function get_all_schedules_join($id_poli = null) // Hapus parameter $jam
+    public function get_all_schedules_join($id_poli = null)
     {
         $sql = "SELECT a.hari, a.jam_mulai, a.jam_selesai,
                    b.id as id_kpg_dokter, b.id_pegawai, b.nama_pegawai, b.nama_poli

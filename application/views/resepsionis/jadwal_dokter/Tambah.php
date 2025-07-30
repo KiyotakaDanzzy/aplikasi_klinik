@@ -150,13 +150,13 @@
                                     </label>
                                     <div class="col-sm-3">
                                         <div class="input-group">
-                                            <span class="input-group-text">Mulai</span>
+                                            <span class="input-group-text">Jam Mulai</span>
                                             <input type="time" class="form-control" name="jam_mulai[<?php echo $day; ?>]" id="jam_mulai_<?php echo $day; ?>" disabled required>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group">
-                                            <span class="input-group-text">Selesai</span>
+                                            <span class="input-group-text">Jam Selesai</span>
                                             <input type="time" class="form-control" name="jam_selesai[<?php echo $day; ?>]" id="jam_selesai_<?php echo $day; ?>" disabled required>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                             <div class="row mt-4">
                                 <div class="col-sm-10 ms-auto">
                                     <button type="button" onclick="tambah(event);" class="btn btn-success">
-                                        <i class="fas fa-save me-2"></i>Simpan Jadwal</button>
+                                        <i class="fas fa-save me-2"></i>Simpan</button>
                                     <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
                                         <button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button>
                                     </a>

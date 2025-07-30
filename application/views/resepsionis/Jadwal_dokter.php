@@ -1,14 +1,12 @@
 <script type="text/javascript">
     function filterJadwal() {
         let id_poli = $('#filter_poli').val();
-        let jam = $('#filter_jam').val();
 
         $.ajax({
             url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/filter_jadwal"); ?>',
             type: 'POST',
             data: {
                 id_poli: id_poli,
-                jam: jam
             },
             beforeSend: function() {
                 $('#schedule-container').html('<div class="text-center p-5"><div class="spinner-border text-primary" role="status"></div><p>Memuat jadwal...</p></div>');
@@ -17,7 +15,7 @@
                 $('#schedule-container').html(response);
             },
             error: function() {
-                $('#schedule-container').html('<p class="text-danger text-center">Gagal memuat jadwal. Silakan coba lagi</p>');
+                $('#schedule-container').html('<p class="text-danger text-center">Gagal memuat jadwal</p>');
             }
         });
     }
@@ -66,17 +64,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-header d-flex flex-wrap gap-2 align-items-center pt-3 pb-3">
+                <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Filter Jadwal</h4>
-                    <a href="<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/view_tambah'); ?>" class="btn btn-primary ms-auto">
-                        <i class="fas fa-edit me-2"></i>Buat Jadwal
-                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-2">
                             <label for="filter_poli" class="form-label">Filter Berdasarkan Poli</label>
                             <select id="filter_poli" class="form-control" onchange="filterJadwal()">
                                 <option value="">Semua Poli</option>
@@ -85,12 +80,8 @@
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="col-md-5">
-                            <label for="filter_jam" class="form-label">Filter Berdasarkan Jam</label>
-                            <input type="time" id="filter_jam" class="form-control" onchange="filterJadwal()">
-                        </div>
                         <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-secondary w-100" onclick="$('#filter_poli').val(''); $('#filter_jam').val(''); filterJadwal();">Reset Filter</button>
+                            <button type="button" class="btn btn-warning w-100" onclick="$('#filter_poli').val(''); filterJadwal();"><i class="fas fa-search"></i>  Reset Filter</button>
                         </div>
                     </div>
                 </div>

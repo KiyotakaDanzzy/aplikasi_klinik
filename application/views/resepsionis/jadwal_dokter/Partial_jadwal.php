@@ -17,7 +17,6 @@
                                 <th>Jumat</th>
                                 <th>Sabtu</th>
                                 <th>Minggu</th>
-                                <th style="width: 15%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,19 +30,6 @@
                                     <td class="text-center"><?php echo $doctor_data['jadwal']['Jumat']; ?></td>
                                     <td class="text-center"><?php echo $doctor_data['jadwal']['Sabtu']; ?></td>
                                     <td class="text-center"><?php echo $doctor_data['jadwal']['Minggu']; ?></td>
-                                    <td class="text-center">
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-shadow btn-sm btn-warning" title="Detail" onclick="window.location.href='<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/detail/' . $doctor_data['id_kpg_dokter']); ?>'">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-shadow btn-sm btn-info" title="Edit" onclick="window.location.href='<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/view_edit/' . $doctor_data['id_kpg_dokter']); ?>'">
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-shadow btn-sm btn-danger" title="Hapus" onclick="hapusJadwalDokter('<?php echo $doctor_data['id_kpg_dokter']; ?>', '<?php echo $doctor_data['nama_dokter']; ?>')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
                                 </tr>
                             <?php } ?>
                         </tbody>

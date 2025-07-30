@@ -147,11 +147,10 @@
                             <div class="row mt-4">
                                 <div class="col-sm-10 ms-auto">
                                     <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
-                                        <button type="button" class="btn btn-warning">
-                                            <i class="fas fa-reply me-2"></i>Kembali
-                                        </button>
+                                    <a href="javascript:history.back()" class="btn btn-warning">
+                                        <i class="fas fa-reply me-2"></i>Kembali
                                     </a>
+
                                 </div>
                             </div>
                         </form>

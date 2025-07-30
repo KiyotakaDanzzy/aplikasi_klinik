@@ -1,14 +1,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
-        get_data()
+        get_data();
         $("#jumlah_tampil").change(function() {
             get_data();
-        })
-    })
+        });
+    });
 
     function get_data() {
         let cari = $('#cari').val();
-        let count_header = $(`#table-data thead tr th`).length
+        let count_header = $(`#table-data thead tr th`).length;
         $.ajax({
             url: '<?php echo base_url(); ?>kepegawaian/dokter/dokter/result_data',
             data: {
@@ -25,20 +25,20 @@
                 if (res.result) {
                     let i = 1;
                     for (const item of res.data) {
+                        let detailUrl = '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/detail/"); ?>' + item.id;
                         table += `
                           <tr>
                               <td>${i}</td>
                               <td>${item.nama_pegawai}</td>
                               <td>${item.nama_poli}</td>
-                              <td>
-                                  <div class="text-center">
-                                      <a href="<?php echo base_url(); ?>kepegawaian/dokter/dokter/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
-                                      <button type="button" class="btn btn-shadow btn-sm btn-danger" title="Hapus" onclick="hapus(${item.id})"><i class="fas fa-trash-alt"></i></button>
-                                  </div>
+                              <td class="text-center">
+                                  <a href="${detailUrl}" class="btn btn-sm btn-warning" title="Lihat Jadwal">
+                                      <i class="fas fa-calendar-alt"></i>
+                                  </a>
                               </td>
                           </tr>
                       `;
-                        i++
+                        i++;
                     }
                 } else {
                     table += `<tr><td colspan="${count_header}" class="text-center">Data Kosong</td></tr>`;
@@ -74,54 +74,6 @@
             }
         });
     }
-
-    function hapus(id) {
-        Swal.fire({
-            title: "Apakah Anda Yakin?",
-            text: "Menghapus Data Saat Ini",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Iya, Dihapus",
-            cancelButtonText: "Batal"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?php echo base_url(); ?>kepegawaian/dokter/dokter/hapus',
-                    method: 'POST',
-                    data: {
-                        id
-                    },
-                    dataType: 'json',
-                    success: function(res) {
-                        if (res.status == true) {
-                            Swal.fire({
-                                    title: 'Berhasil!',
-                                    text: res.message,
-                                    icon: "success",
-                                    confirmButtonColor: "#35baf5",
-                                    confirmButtonText: "Oke"
-                                })
-                                .then((result) => {
-                                    if (result.isConfirmed) {
-                                        get_data();
-                                    }
-                                })
-                        } else {
-                            Swal.fire({
-                                title: 'Gagal!',
-                                text: res.message,
-                                icon: "error",
-                                confirmButtonColor: "#35baf5",
-                                confirmButtonText: "Oke"
-                            });
-                        }
-                    }
-                })
-            }
-        })
-    }
 </script>
 <div class="container-fluid">
     <div class="row">
@@ -141,8 +93,8 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
-                    <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>kepegawaian/dokter/dokter/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <h4 class="card-title">Data Dokter dan Penugasannya</h4>
+                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/Jadwal_dokter/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus "></i> Tambah Jadwal</button></a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
@@ -154,15 +106,15 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0 table-hover" id="table-data">
-                            <thead>
-                                <tr class="table-info">
+                            <thead class="thead-light">
+                                <tr>
                                     <th>#</th>
                                     <th>Nama Dokter</th>
                                     <th>Poli</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody></tbody>
                             </tbody>
                         </table>
                     </div>

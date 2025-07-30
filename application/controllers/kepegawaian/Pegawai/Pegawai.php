@@ -8,6 +8,7 @@ class Pegawai extends CI_Controller
         parent::__construct();
         $this->load->model('kepegawaian/pegawai/Pegawai_model');
         $this->load->model('kepegawaian/jabatan/Jabatan_model');
+        $this->load->model('master_data/poli/Poli_model');
     }
 
     public function index()
@@ -22,7 +23,6 @@ class Pegawai extends CI_Controller
     {
         $cari = $this->input->post('cari');
         $data_pegawai = $this->Pegawai_model->get_data_pegawai($cari);
-
         $response = [];
         if ($data_pegawai) {
             $response['result'] = true;
@@ -30,7 +30,6 @@ class Pegawai extends CI_Controller
         } else {
             $response['result'] = false;
         }
-
         header('Content-Type: application/json');
         echo json_encode($response);
     }
@@ -39,6 +38,7 @@ class Pegawai extends CI_Controller
     {
         $data['title'] = 'Tambah Pegawai';
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
         $this->load->view('kepegawaian/pegawai/Tambah', $data);
         $this->load->view('templates/footer');
@@ -46,30 +46,9 @@ class Pegawai extends CI_Controller
 
     public function tambah_aksi()
     {
-        $id_jabatan = $this->input->post('id_jabatan');
-        $jabatan = $this->Jabatan_model->get_jabatan_by_id($id_jabatan);
-
-        $data = [
-            'nama' => $this->input->post('nama'),
-            'no_telp' => $this->input->post('no_telp'),
-            'alamat' => $this->input->post('alamat'),
-            'id_jabatan' => $id_jabatan,
-            'nama_jabatan' => $jabatan ? $jabatan['nama'] : ''
-        ];
-
-        $simpan = $this->Pegawai_model->insert_pegawai($data);
-
-        $response = [];
-        if ($simpan) {
-            $response['status'] = true;
-            $response['message'] = 'Data berhasil disimpan';
-        } else {
-            $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan data';
-        }
-
+        $simpan = $this->Pegawai_model->insert_pegawai_dan_dokter();
         header('Content-Type: application/json');
-        echo json_encode($response);
+        echo json_encode($simpan);
     }
 
     public function view_edit($id)
@@ -77,6 +56,8 @@ class Pegawai extends CI_Controller
         $data['title'] = 'Edit Pegawai';
         $data['row'] = $this->Pegawai_model->get_pegawai_by_id($id);
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
+        $data['dokter_info'] = $this->Pegawai_model->get_dokter_info_by_pegawai_id($id);
         $this->load->view('templates/header', $data);
         $this->load->view('kepegawaian/pegawai/Edit', $data);
         $this->load->view('templates/footer');
@@ -84,47 +65,23 @@ class Pegawai extends CI_Controller
 
     public function edit_aksi()
     {
-        $id = $this->input->post('id');
-        $id_jabatan = $this->input->post('id_jabatan');
-        $jabatan = $this->Jabatan_model->get_jabatan_by_id($id_jabatan);
-
-        $data = [
-            'nama' => $this->input->post('nama'),
-            'no_telp' => $this->input->post('no_telp'),
-            'alamat' => $this->input->post('alamat'),
-            'id_jabatan' => $id_jabatan,
-            'nama_jabatan' => $jabatan ? $jabatan['nama'] : ''
-        ];
-
-        $update = $this->Pegawai_model->update_pegawai($id, $data);
-
-        $response = [];
-        if ($update) {
-            $response['status'] = true;
-            $response['message'] = 'Data berhasil diperbarui';
-        } else {
-            $response['status'] = false;
-            $response['message'] = 'Gagal memperbarui data';
-        }
-
+        $update = $this->Pegawai_model->update_pegawai_dan_dokter();
         header('Content-Type: application/json');
-        echo json_encode($response);
+        echo json_encode($update);
     }
 
     public function hapus()
     {
         $id = $this->input->post('id');
         $delete = $this->Pegawai_model->delete_pegawai($id);
-
         $response = [];
         if ($delete) {
             $response['status'] = true;
-            $response['message'] = 'Data berhasil dihapus';
+            $response['message'] = 'Data berhasil dihapus.';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menghapus data';
+            $response['message'] = 'Gagal menghapus data.';
         }
-
         header('Content-Type: application/json');
         echo json_encode($response);
     }

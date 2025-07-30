@@ -94,7 +94,7 @@
                 <div class="col-sm-10">
                   <div class="input-group">
                     <div class="input-group-text">Rp</div>
-                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" required>
+                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" placeholder="Biaya Tindakan" required>
                   </div>
                 </div>
               </div>

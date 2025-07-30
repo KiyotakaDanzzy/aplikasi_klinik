@@ -78,4 +78,25 @@ class Jadwal_dokter_model extends CI_Model
         $this->db->delete('rsp_jadwal_dokter');
         return $this->db->affected_rows() >= 0;
     }
+
+    public function get_jadwal_entry_by_id($id_jadwal)
+    {
+        $sql = "SELECT a.* FROM rsp_jadwal_dokter a WHERE a.id = ?";
+        $query = $this->db->query($sql, array($id_jadwal));
+        return $query->row_array();
+    }
+
+    public function update_jadwal_entry($id_jadwal, $data)
+    {
+        $this->db->where('id', $id_jadwal);
+        $this->db->update('rsp_jadwal_dokter', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    public function delete_jadwal_entry($id_jadwal)
+    {
+        $this->db->where('id', $id_jadwal);
+        $this->db->delete('rsp_jadwal_dokter');
+        return $this->db->affected_rows() > 0;
+    }
 }

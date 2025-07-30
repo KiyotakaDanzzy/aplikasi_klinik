@@ -135,7 +135,7 @@
                     <a class="nav-link" href="<?php echo base_url('kepegawaian/dokter/dokter') ?>">Dokter</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter') ?>">Jadwal Dokter</a>
+                    <a class="nav-link" href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter/index_jadwal') ?>">Jadwal Dokter</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->

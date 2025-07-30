@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dokter_model extends CI_Model {
+class Dokter_model extends CI_Model
+{
 
     public function get_data_dokter($cari = null)
     {
@@ -13,12 +14,12 @@ class Dokter_model extends CI_Model {
             $params[] = "%$cari%";
             $params[] = "%$cari%";
         }
-        
+
         $sql .= " ORDER BY a.id DESC";
         $query = $this->db->query($sql, $params);
         return $query->result();
     }
-    
+
     public function get_dokter_by_id($id)
     {
         $sql = "SELECT a.* FROM kpg_dokter a WHERE a.id = ?";
@@ -44,5 +45,12 @@ class Dokter_model extends CI_Model {
         $this->db->where('id', $id);
         $this->db->delete('kpg_dokter');
         return $this->db->affected_rows() > 0;
+    }
+
+    public function get_dokter_by_pegawai_id($id_pegawai)
+    {
+        $sql = "SELECT a.* FROM kpg_dokter a WHERE a.id_pegawai = ?";
+        $query = $this->db->query($sql, array($id_pegawai));
+        return $query->row_array();
     }
 }

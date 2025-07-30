@@ -39,6 +39,17 @@ class Jadwal_dokter extends CI_Controller
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
+        $this->load->view('kepegawaian/Dokter', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function index_jadwal()
+    {
+        $data['title'] = 'Jadwal Praktik Dokter';
+        $jadwal_raw = $this->Jadwal_dokter_model->get_all_schedules_join();
+        $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
+        $this->load->view('templates/header', $data);
         $this->load->view('resepsionis/Jadwal_dokter', $data);
         $this->load->view('templates/footer');
     }
@@ -151,5 +162,42 @@ class Jadwal_dokter extends CI_Controller
 
         header('Content-Type: application/json');
         echo json_encode(['status' => $delete, 'message' => $delete ? 'Seluruh jadwal dokter berhasil dihapus' : 'Gagal menghapus jadwal']);
+    }
+
+    public function view_edit_entry($id_jadwal)
+    {
+        $data['title'] = 'Edit Jadwal Harian';
+        $data['jadwal_entry'] = $this->Jadwal_dokter_model->get_jadwal_entry_by_id($id_jadwal);
+        $data['dokter'] = $this->Dokter_model->get_dokter_by_pegawai_id($data['jadwal_entry']['id_pegawai']);
+        $this->load->view('templates/header', $data);
+        $this->load->view('resepsionis/jadwal_dokter/Entry_edit', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function edit_entry_aksi()
+    {
+        $id_jadwal = $this->input->post('id_jadwal');
+        $data = [
+            'jam_mulai' => $this->input->post('jam_mulai'),
+            'jam_selesai' => $this->input->post('jam_selesai')
+        ];
+        $update = $this->Jadwal_dokter_model->update_jadwal_entry($id_jadwal, $data);
+        $response = [
+            'status' => $update,
+            'message' => $update ? 'Jadwal harian berhasil diperbarui.' : 'Gagal memperbarui jadwal harian.'
+        ];
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
+
+    public function hapus_entry($id_jadwal)
+    {
+        $delete = $this->Jadwal_dokter_model->delete_jadwal_entry($id_jadwal);
+        $response = [
+            'status' => $delete,
+            'message' => $delete ? 'Jadwal harian berhasil dihapus.' : 'Gagal menghapus jadwal harian.'
+        ];
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
 }

@@ -10,7 +10,7 @@
         let cari = $('#cari').val();
         let count_header = $(`#table-data thead tr th`).length
         $.ajax({
-            url: '<?php echo base_url(); ?>master_data/tindakan/result_data',
+            url: '<?php echo base_url(); ?>master_data/diagnosa/result_data',
             data: {
                 cari
             },
@@ -28,12 +28,11 @@
                         table += `
                           <tr>
                               <td>${i}</td>
-                              <td>${item.nama}</td>
-                              <td>Rp.${item.harga}</td>
+                              <td>${item.nama_diagnosa}</td>
                               <td>${item.nama_poli}</td>
                               <td>
                                   <div class="text-center">
-                                      <a href="<?php echo base_url(); ?>master_data/tindakan/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
+                                      <a href="<?php echo base_url(); ?>master_data/diagnosa/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
                                       <button type="button" class="btn btn-shadow btn-sm btn-danger" title="Hapus" onclick="hapus(${item.id})"><i class="fas fa-trash-alt"></i></button>
                                   </div>
                               </td>
@@ -89,7 +88,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?php echo base_url(); ?>master_data/tindakan/hapus',
+                    url: '<?php echo base_url(); ?>master_data/diagnosa/hapus',
                     method: 'POST',
                     data: {
                         id
@@ -142,13 +141,13 @@
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>master_data/tindakan/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <a href="<?php echo base_url(); ?>master_data/diagnosa/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Tindakan/Poli">
+                                <div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Pasien/NIK">
                             </div>
                         </div>
                     </div>
@@ -157,9 +156,22 @@
                             <thead>
                                 <tr class="table-success">
                                     <th>#</th>
-                                    <th>Nama Tindakan</th>
-                                    <th>Harga</th>
-                                    <th>Nama Poli</th>
+                                    <th>Nomor RM</th>
+                                    <th>Nama Pasien</th>
+                                    <th>NIK</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>Umur</th>
+                                    <th>Alamat</th>
+                                    <th>Pekerjaan</th>
+                                    <th>Nomor Telepon</th>
+                                    <th>Status Perkawinan</th>
+                                    <th>Nama Wali</th>
+                                    <th>Golongan Darah</th>
+                                    <th>Alergi</th>
+                                    <th>Status Operasi</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>

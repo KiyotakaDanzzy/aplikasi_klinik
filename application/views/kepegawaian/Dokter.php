@@ -10,7 +10,7 @@
         let cari = $('#cari').val();
         let count_header = $(`#table-data thead tr th`).length;
         $.ajax({
-            url: '<?php echo base_url(); ?>kepegawaian/dokter/dokter/result_data',
+            url: '<?php echo base_url(); ?>kepegawaian/dokter/result_data',
             data: {
                 cari
             },
@@ -25,7 +25,7 @@
                 if (res.result) {
                     let i = 1;
                     for (const item of res.data) {
-                        let detailUrl = '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/detail/"); ?>' + item.id;
+                        let detailUrl = '<?php echo base_url("kepegawaian/jadwal_dokter/detail/"); ?>' + item.id;
                         table += `
                           <tr>
                               <td>${i}</td>
@@ -82,7 +82,6 @@
                 <div class="float-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><?php echo $title; ?></li>
-                        <li class="breadcrumb-item active">Data</li>
                     </ol>
                 </div>
                 <h4 class="page-title"><?php echo $title; ?></h4>
@@ -93,8 +92,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
-                    <h4 class="card-title">Data Dokter dan Penugasannya</h4>
-                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/Jadwal_dokter/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus "></i> Tambah Jadwal</button></a>
+                    <h4 class="card-title">Data Dokter</h4>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">

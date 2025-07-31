@@ -1,31 +1,33 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Jabatan extends CI_Controller
-{
+class Diagnosa extends CI_Controller {
+
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('kepegawaian/jabatan/Jabatan_model');
+        $this->load->model('master_data/Diagnosa_model');
+        $this->load->model('master_data/Poli_model');
+        $this->load->helper('url');
     }
 
     public function index()
     {
-        $data['title'] = 'Master Jabatan';
+        $data['title'] = 'Diagnosa';
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Jabatan', $data);
+        $this->load->view('master_data/Diagnosa', $data);
         $this->load->view('templates/footer');
     }
 
     public function result_data()
     {
         $cari = $this->input->post('cari');
-        $data_jabatan = $this->Jabatan_model->get_data_jabatan($cari);
-
+        $data_diagnosa = $this->Diagnosa_model->get_data_diagnosa($cari);
+        
         $response = [];
-        if ($data_jabatan) {
+        if ($data_diagnosa) {
             $response['result'] = true;
-            $response['data'] = $data_jabatan;
+            $response['data'] = $data_diagnosa;
         } else {
             $response['result'] = false;
         }
@@ -36,17 +38,26 @@ class Jabatan extends CI_Controller
 
     public function view_tambah()
     {
-        $data['title'] = 'Tambah Jabatan';
+        $data['title'] = 'Diagnosa';
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/jabatan/Tambah', $data);
+        $this->load->view('master_data/diagnosa/tambah', $data);
         $this->load->view('templates/footer');
     }
 
     public function tambah_aksi()
     {
-        $data = ['nama' => $this->input->post('nama')];
-        $simpan = $this->Jabatan_model->insert_jabatan($data);
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
 
+        $data = [
+            'nama_diagnosa' => $this->input->post('nama_diagnosa'),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : null
+        ];
+        
+        $simpan = $this->Diagnosa_model->insert_diagnosa($data);
+        
         $response = [];
         if ($simpan) {
             $response['status'] = true;
@@ -62,18 +73,27 @@ class Jabatan extends CI_Controller
 
     public function view_edit($id)
     {
-        $data['title'] = 'Edit Jabatan';
-        $data['row'] = $this->Jabatan_model->get_jabatan_by_id($id);
+        $data['title'] = 'Diagnosa';
+        $data['row'] = $this->Diagnosa_model->get_diagnosa_by_id($id);
+        $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/jabatan/Edit', $data);
+        $this->load->view('master_data/diagnosa/edit', $data);
         $this->load->view('templates/footer');
     }
 
     public function edit_aksi()
     {
         $id = $this->input->post('id');
-        $data = ['nama' => $this->input->post('nama')];
-        $update = $this->Jabatan_model->update_jabatan($id, $data);
+        $id_poli = $this->input->post('id_poli');
+        $poli = $this->Poli_model->get_poli_by_id($id_poli);
+
+        $data = [
+            'nama_diagnosa' => $this->input->post('nama_diagnosa'),
+            'id_poli' => $id_poli,
+            'nama_poli' => $poli ? $poli['nama'] : null
+        ];
+
+        $update = $this->Diagnosa_model->update_diagnosa($id, $data);
 
         $response = [];
         if ($update) {
@@ -91,7 +111,7 @@ class Jabatan extends CI_Controller
     public function hapus()
     {
         $id = $this->input->post('id');
-        $delete = $this->Jabatan_model->delete_jabatan($id);
+        $delete = $this->Diagnosa_model->delete_diagnosa($id);
 
         $response = [];
         if ($delete) {

@@ -1,32 +1,31 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Poli extends CI_Controller {
-
+class Jabatan extends CI_Controller
+{
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('master_data/poli/Poli_model');
-        $this->load->helper('url');
+        $this->load->model('kepegawaian/Jabatan_model');
     }
 
     public function index()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Jabatan';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Poli', $data);
+        $this->load->view('kepegawaian/Jabatan', $data);
         $this->load->view('templates/footer');
     }
 
     public function result_data()
     {
         $cari = $this->input->post('cari');
-        $data_poli = $this->Poli_model->get_data_poli($cari);
-        
+        $data_jabatan = $this->Jabatan_model->get_data_jabatan($cari);
+
         $response = [];
-        if ($data_poli) {
+        if ($data_jabatan) {
             $response['result'] = true;
-            $response['data'] = $data_poli;
+            $response['data'] = $data_jabatan;
         } else {
             $response['result'] = false;
         }
@@ -37,27 +36,24 @@ class Poli extends CI_Controller {
 
     public function view_tambah()
     {
-        $data['title'] = 'Master Poli';
+        $data['title'] = 'Jabatan';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Tambah', $data);
+        $this->load->view('kepegawaian/jabatan/Tambah', $data);
         $this->load->view('templates/footer');
     }
 
     public function tambah_aksi()
     {
-        $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
-        ];
-        $simpan = $this->Poli_model->insert_poli($data);
-        
+        $data = ['nama' => $this->input->post('nama')];
+        $simpan = $this->Jabatan_model->insert_jabatan($data);
+
         $response = [];
         if ($simpan) {
             $response['status'] = true;
             $response['message'] = 'Data berhasil disimpan';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan dat.';
+            $response['message'] = 'Gagal menyimpan data';
         }
 
         header('Content-Type: application/json');
@@ -66,21 +62,18 @@ class Poli extends CI_Controller {
 
     public function view_edit($id)
     {
-        $data['title'] = 'Master Poli';
-        $data['row'] = $this->Poli_model->get_poli_by_id($id);
+        $data['title'] = 'Jabatan';
+        $data['row'] = $this->Jabatan_model->get_jabatan_by_id($id);
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Edit', $data);
+        $this->load->view('kepegawaian/jabatan/Edit', $data);
         $this->load->view('templates/footer');
     }
 
     public function edit_aksi()
     {
         $id = $this->input->post('id');
-        $data = [
-            'kode' => $this->input->post('kode'),
-            'nama' => $this->input->post('nama')
-        ];
-        $update = $this->Poli_model->update_poli($id, $data);
+        $data = ['nama' => $this->input->post('nama')];
+        $update = $this->Jabatan_model->update_jabatan($id, $data);
 
         $response = [];
         if ($update) {
@@ -98,7 +91,7 @@ class Poli extends CI_Controller {
     public function hapus()
     {
         $id = $this->input->post('id');
-        $delete = $this->Poli_model->delete_poli($id);
+        $delete = $this->Jabatan_model->delete_jabatan($id);
 
         $response = [];
         if ($delete) {

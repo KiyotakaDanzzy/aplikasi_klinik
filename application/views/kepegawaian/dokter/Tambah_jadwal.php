@@ -68,7 +68,7 @@
         }
 
         $.ajax({
-            url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/tambah_aksi"); ?>',
+            url: '<?php echo base_url("kepegawaian/jadwal_dokter/tambah_aksi"); ?>',
             method: 'POST',
             data: $('#form_tambah').serialize(),
             dataType: 'json',
@@ -82,7 +82,7 @@
                         confirmButtonText: "Oke"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter"); ?>';
+                            window.location.href = '<?php echo base_url("kepegawaian/jadwal_dokter"); ?>';
                         }
                     });
                 } else {
@@ -106,7 +106,7 @@
                 <div class="float-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter'); ?>">Jadwal Dokter</a>
+                            <a href="<?php echo base_url('kepegawaian/jadwal_dokter'); ?>">Dokter</a>
                         </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
@@ -151,13 +151,13 @@
                                     <div class="col-sm-3">
                                         <div class="input-group">
                                             <span class="input-group-text">Jam Mulai</span>
-                                            <input type="time" class="form-control" name="jam_mulai[<?php echo $day; ?>]" id="jam_mulai_<?php echo $day; ?>" disabled required>
+                                            <input type="time" step="1" class="form-control" name="jam_mulai[<?php echo $day; ?>]" id="jam_mulai_<?php echo $day; ?>" disabled required>
                                         </div>
                                     </div>
                                     <div class="col-sm-3">
                                         <div class="input-group">
                                             <span class="input-group-text">Jam Selesai</span>
-                                            <input type="time" class="form-control" name="jam_selesai[<?php echo $day; ?>]" id="jam_selesai_<?php echo $day; ?>" disabled required>
+                                            <input type="time" step="1" class="form-control" name="jam_selesai[<?php echo $day; ?>]" id="jam_selesai_<?php echo $day; ?>" disabled required>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +166,7 @@
                                 <div class="col-sm-10 ms-auto">
                                     <button type="button" onclick="tambah(event);" class="btn btn-success">
                                         <i class="fas fa-save me-2"></i>Simpan</button>
-                                    <a href="<?php echo base_url(); ?>resepsionis/jadwal_dokter/jadwal_dokter">
+                                    <a href="<?php echo base_url(); ?>kepegawaian/jadwal_dokter">
                                         <button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button>
                                     </a>
                                 </div>

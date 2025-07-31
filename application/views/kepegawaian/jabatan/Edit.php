@@ -29,7 +29,7 @@
     }
 
     $.ajax({
-      url: '<?php echo base_url('kepegawaian/jabatan/jabatan/edit_aksi') ?>',
+      url: '<?php echo base_url('kepegawaian/jabatan/edit_aksi') ?>',
       method: 'POST',
       data: $('#form_edit').serialize(),
       dataType: 'json',
@@ -44,7 +44,7 @@
             })
             .then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '<?php echo base_url() ?>kepegawaian/jabatan/jabatan'
+                window.location.href = '<?php echo base_url() ?>kepegawaian/jabatan'
               }
             })
         } else {
@@ -66,8 +66,7 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><?php echo $title; ?></li>
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>kepegawaian/jabatan/jabatan">Data</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>kepegawaian/jabatan">Jabatan</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -79,7 +78,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header pt-3 pb-3">
-          <h4 class="card-title"><?php echo $title; ?></h4>
+          <h4 class="card-title">Edit <?php echo $title; ?></h4>
         </div>
         <div class="card-body">
           <div class="general-label">
@@ -89,7 +88,7 @@
                 <div class="col-sm-10"><input type="text" class="form-control" name="nama" id="nama" value="<?php echo $row['nama']; ?>" required></div>
               </div>
               <div class="row">
-                <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>kepegawaian/jabatan/jabatan"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>
+                <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>kepegawaian/jabatan"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>
               </div>
             </form>
           </div>

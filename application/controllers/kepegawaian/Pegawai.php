@@ -6,14 +6,14 @@ class Pegawai extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('kepegawaian/pegawai/Pegawai_model');
-        $this->load->model('kepegawaian/jabatan/Jabatan_model');
-        $this->load->model('master_data/poli/Poli_model');
+        $this->load->model('kepegawaian/Pegawai_model');
+        $this->load->model('kepegawaian/Jabatan_model');
+        $this->load->model('master_data/Poli_model');
     }
 
     public function index()
     {
-        $data['title'] = 'Master Pegawai';
+        $data['title'] = 'Pegawai';
         $this->load->view('templates/header', $data);
         $this->load->view('kepegawaian/Pegawai', $data);
         $this->load->view('templates/footer');
@@ -36,7 +36,7 @@ class Pegawai extends CI_Controller
 
     public function view_tambah()
     {
-        $data['title'] = 'Tambah Pegawai';
+        $data['title'] = 'Pegawai';
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
@@ -53,7 +53,7 @@ class Pegawai extends CI_Controller
 
     public function view_edit($id)
     {
-        $data['title'] = 'Edit Pegawai';
+        $data['title'] = 'Pegawai';
         $data['row'] = $this->Pegawai_model->get_pegawai_by_id($id);
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
         $data['data_poli'] = $this->Poli_model->get_data_poli();

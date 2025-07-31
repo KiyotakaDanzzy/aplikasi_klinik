@@ -10,7 +10,7 @@
         let cari = $('#cari').val();
         let count_header = $(`#table-data thead tr th`).length
         $.ajax({
-            url: '<?php echo base_url(); ?>kepegawaian/pegawai/pegawai/result_data',
+            url: '<?php echo base_url(); ?>kepegawaian/pegawai/result_data',
             data: {
                 cari
             },
@@ -34,7 +34,7 @@
                               <td>${item.alamat}</td>
                               <td>
                                   <div class="text-center">
-                                      <a href="<?php echo base_url(); ?>kepegawaian/pegawai/pegawai/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
+                                      <a href="<?php echo base_url(); ?>kepegawaian/pegawai/view_edit/${item.id}"><button type="button" class="btn btn-shadow btn-sm btn-info"><i class="fas fa-pencil-alt"></i></button></a>
                                       <button type="button" class="btn btn-shadow btn-sm btn-danger" title="Hapus" onclick="hapus(${item.id})"><i class="fas fa-trash-alt"></i></button>
                                   </div>
                               </td>
@@ -90,7 +90,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?php echo base_url(); ?>kepegawaian/pegawai/pegawai/hapus',
+                    url: '<?php echo base_url(); ?>kepegawaian/pegawai/hapus',
                     method: 'POST',
                     data: {
                         id
@@ -132,7 +132,6 @@
                 <div class="float-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><?php echo $title; ?></li>
-                        <li class="breadcrumb-item active">Data</li>
                     </ol>
                 </div>
                 <h4 class="page-title"><?php echo $title; ?></h4>
@@ -144,7 +143,7 @@
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>kepegawaian/pegawai/pegawai/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <a href="<?php echo base_url(); ?>kepegawaian/pegawai/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">

@@ -65,8 +65,7 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><?php echo $title; ?></li>
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa">Data</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa">Diagnosa</a></li>
             <li class="breadcrumb-item active">Tambah</li>
           </ol>
         </div>
@@ -78,7 +77,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header pt-3 pb-3">
-          <h4 class="card-title"><?php echo $title; ?></h4>
+          <h4 class="card-title">Tambah <?php echo $title; ?></h4>
         </div>
         <div class="card-body">
           <div class="general-label">
@@ -104,7 +103,7 @@
                 <div class="col-sm-10 ms-auto">
                   <button type="button" onclick="tambah(event);" class="btn btn-success">
                     <i class="fas fa-save me-2"></i>Simpan</button>
-                  <a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa">
+                  <a href="<?php echo base_url(); ?>master_data/diagnosa">
                     <button type="button" class="btn btn-warning">
                       <i class="fas fa-reply me-2"></i>Kembali</button>
                   </a>

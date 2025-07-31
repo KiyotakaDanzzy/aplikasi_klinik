@@ -18,7 +18,7 @@
       return;
     }
     $.ajax({
-      url: '<?php echo base_url('kepegawaian/pegawai/pegawai/tambah_aksi') ?>',
+      url: '<?php echo base_url('kepegawaian/pegawai/tambah_aksi') ?>',
       method: 'POST',
       data: $('#form_tambah').serialize(),
       dataType: 'json',
@@ -31,7 +31,7 @@
             })
             .then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '<?php echo base_url() ?>kepegawaian/pegawai/pegawai'
+                window.location.href = '<?php echo base_url() ?>kepegawaian/pegawai'
               }
             });
         } else {
@@ -70,7 +70,7 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>kepegawaian/pegawai/pegawai">Data</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>kepegawaian/pegawai">Pegawai</a></li>
             <li class="breadcrumb-item active">Tambah</li>
           </ol>
         </div>
@@ -113,7 +113,7 @@
             </div>
             <div class="row">
               <div class="col-sm-10 ms-auto"><button type="button" onclick="tambah(event);" class="btn btn-success">
-                <i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>kepegawaian/pegawai/pegawai" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a></div>
+                <i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>kepegawaian/pegawai" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a></div>
             </div>
           </form>
         </div>

@@ -6,15 +6,7 @@ class Dokter extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('kepegawaian/Dokter/Dokter_model');
-    }
-
-    public function index()
-    {
-        $data['title'] = 'Laporan Data Dokter';
-        $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Dokter', $data);
-        $this->load->view('templates/footer');
+        $this->load->model('kepegawaian/Dokter_model');
     }
 
     public function result_data()

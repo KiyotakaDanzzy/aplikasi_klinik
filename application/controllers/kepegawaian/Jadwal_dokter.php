@@ -6,9 +6,9 @@ class Jadwal_dokter extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('resepsionis/jadwal_dokter/Jadwal_dokter_model');
-        $this->load->model('kepegawaian/dokter/Dokter_model');
-        $this->load->model('master_data/poli/Poli_model');
+        $this->load->model('kepegawaian/Jadwal_dokter_model');
+        $this->load->model('kepegawaian/Dokter_model');
+        $this->load->model('master_data/Poli_model');
     }
 
     private function process_schedule_data($raw_schedule)
@@ -34,7 +34,7 @@ class Jadwal_dokter extends CI_Controller
 
     public function index()
     {
-        $data['title'] = 'Jadwal Praktik Dokter';
+        $data['title'] = 'Dokter';
         $jadwal_raw = $this->Jadwal_dokter_model->get_all_schedules_join();
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
@@ -45,12 +45,12 @@ class Jadwal_dokter extends CI_Controller
 
     public function index_jadwal()
     {
-        $data['title'] = 'Jadwal Praktik Dokter';
+        $data['title'] = 'Jadwal Dokter';
         $jadwal_raw = $this->Jadwal_dokter_model->get_all_schedules_join();
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/Jadwal_dokter', $data);
+        $this->load->view('kepegawaian/Jadwal_dokter', $data);
         $this->load->view('templates/footer');
     }
 
@@ -90,27 +90,27 @@ class Jadwal_dokter extends CI_Controller
             $jadwal_raw = $jadwal_cocok;
         }
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
-        $this->load->view('resepsionis/jadwal_dokter/Partial_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/Partial_jadwal', $data);
     }
 
     public function detail($id_dokter)
     {
-        $data['title'] = 'Detail Jadwal Dokter';
+        $data['title'] = 'Jadwal Dokter';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
         $data['jadwal'] = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/jadwal_dokter/Detail_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/Detail_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
     public function view_tambah()
     {
-        $data['title'] = 'Buat Jadwal Dokter';
+        $data['title'] = 'Jadwal Dokter';
         $data['data_dokter'] = $this->Dokter_model->get_data_dokter();
 
         $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/jadwal_dokter/Tambah', $data);
+        $this->load->view('kepegawaian/dokter/Tambah_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
@@ -129,7 +129,7 @@ class Jadwal_dokter extends CI_Controller
 
     public function view_edit($id_dokter)
     {
-        $data['title'] = 'Edit Jadwal Harian';
+        $data['title'] = 'Jadwal Dokter';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
         $jadwal_sekarang = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
 
@@ -139,7 +139,7 @@ class Jadwal_dokter extends CI_Controller
         $data['hari_tersedia'] = $hari_tersedia;
 
         $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/jadwal_dokter/Edit', $data);
+        $this->load->view('kepegawaian/dokter/Edit_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
@@ -165,11 +165,11 @@ class Jadwal_dokter extends CI_Controller
 
     public function view_edit_entry($id_jadwal)
     {
-        $data['title'] = 'Edit Jadwal Harian';
+        $data['title'] = 'Jadwal Dokter';
         $data['jadwal_entry'] = $this->Jadwal_dokter_model->get_jadwal_entry_by_id($id_jadwal);
         $data['dokter'] = $this->Dokter_model->get_dokter_by_pegawai_id($data['jadwal_entry']['id_pegawai']);
         $this->load->view('templates/header', $data);
-        $this->load->view('resepsionis/jadwal_dokter/Entry_edit', $data);
+        $this->load->view('kepegawaian/dokter/Entry_edit', $data);
         $this->load->view('templates/footer');
     }
 

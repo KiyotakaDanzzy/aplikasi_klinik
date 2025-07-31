@@ -28,7 +28,7 @@
         return;
     }
     $.ajax({
-      url: '<?php echo base_url('master_data/diagnosa/edit_aksi') ?>',
+      url: '<?php echo base_url('master_data/pasien/edit_aksi') ?>',
       method: 'POST',
       data: $('#form_edit').serialize(),
       dataType: 'json',
@@ -43,7 +43,7 @@
             })
             .then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '<?php echo base_url() ?>master_data/diagnosa'
+                window.location.href = '<?php echo base_url() ?>master_data/pasien'
               }
             })
         } else {
@@ -65,7 +65,7 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/diagnosa">Diagnosa</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a></li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>

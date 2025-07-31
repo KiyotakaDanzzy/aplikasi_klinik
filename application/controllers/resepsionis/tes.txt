@@ -18,3 +18,49 @@ public function get_jadwal_entry_by_id($id_jadwal)
         $this->db->delete('rsp_jadwal_dokter');
         return $this->db->affected_rows() > 0;
     }
+
+
+
+
+
+
+    //alamat yang dihapus
+                <li class="breadcrumb-item"><?php echo $title; ?></li>
+
+
+///pagination
+
+$(document).ready(function () {
+    let $rows = $('#data-jadwal tr');
+
+    function paging($selector){
+        let jumlah_tampil = $('#jumlah_tampil').val();
+
+        if(typeof $selector == 'undefined') {
+            $selector = $rows;
+        }
+
+        window.tp = new Pagination('#pagination', {
+            itemsCount: $selector.length,
+            pageSize: parseInt(jumlah_tampil),
+            onPageSizeChange: function (ps) {
+                console.log('Jumlah tampil berubah ke ' + ps);
+            },
+            onPageChange: function (paging) {
+                var start = paging.pageSize * (paging.currentPage - 1),
+                    end = start + paging.pageSize;
+
+                $selector.hide();
+                for (var i = start; i < end; i++) {
+                    $selector.eq(i).show();
+                }
+            }
+        });
+    }
+
+    paging();
+
+    $('#jumlah_tampil').on('change', function () {
+        paging();
+    });
+});

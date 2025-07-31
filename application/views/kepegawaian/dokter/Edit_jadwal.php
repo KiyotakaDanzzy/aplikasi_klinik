@@ -26,7 +26,7 @@
         }
 
         $.ajax({
-            url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/tambah_entry_aksi"); ?>',
+            url: '<?php echo base_url("kepegawaian/jadwal_dokter/tambah_entry_aksi"); ?>',
             type: 'POST',
             data: $('#form_tambah_hari').serialize(),
             dataType: 'json',
@@ -38,7 +38,7 @@
                             icon: 'success'
                         })
                         .then(() => {
-                            window.location.href = '<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/detail/' . $dokter['id']); ?>';
+                            window.location.href = '<?php echo base_url('kepegawaian/jadwal_dokter/detail/' . $dokter['id']); ?>';
                         });
                 } else {
                     Swal.fire('Gagal!', res.message, 'error');
@@ -60,7 +60,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/hapus_entry/"); ?>' + id_jadwal,
+                    url: '<?php echo base_url("kepegawaian/jadwal_dokter/hapus_entry/"); ?>' + id_jadwal,
                     type: 'POST',
                     dataType: 'json',
                     success: function(res) {
@@ -84,9 +84,12 @@
                 <div class="float-end">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
-                            <a href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter'); ?>">Jadwal Dokter</a>
+                            <a href="<?php echo base_url('kepegawaian/jadwal_dokter'); ?>">Dokter</a>
                         </li>
-                        <li class="breadcrumb-item active">Edit</li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url('kepegawaian/jadwal_dokter/detail/' . $dokter['id']); ?>">Jadwal Dokter</a>
+                        </li>
+                        <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
                 <h4 class="page-title"><?php echo $title; ?></h4>
@@ -97,41 +100,43 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header pt-3 pb-3">
-                    <h4 class="card-title">Edit Jadwal: <?php echo $dokter['nama_pegawai']; ?></h4>
+                    <h4 class="card-title">Tambah Jadwal: <?php echo $dokter['nama_pegawai']; ?></h4>
                 </div>
                 <div class="card-body">
-                    <hr class="mt-4 mb-4">
-                    <h5 class="card-title">Tambah Jadwal Hari Baru</h5>
                     <form id="form_tambah_hari">
                         <input type="hidden" name="id_dokter" value="<?php echo $dokter['id']; ?>">
-
-                        <div class="mb-3">
-                            <label for="hari" class="form-label">Hari</label>
-                            <select name="hari" id="hari" class="form-control" required>
-                                <option value="">Pilih Hari</option>
-                                <?php foreach ($hari_tersedia as $hari) { ?>
-                                    <option value="<?php echo $hari; ?>"><?php echo $hari; ?></option>
-                                <?php } ?>
-                            </select>
+                        <div class="mb-3 row">
+                            <label for="hari" class="col-sm-2 col-form-label">Hari</label>
+                            <div class="col-sm-10">
+                                <select name="hari" id="hari" class="form-control" required>
+                                    <option value="">Pilih Hari</option>
+                                    <?php foreach ($hari_tersedia as $hari) { ?>
+                                        <option value="<?php echo $hari; ?>"><?php echo $hari; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="jam_mulai" class="form-label">Jam Mulai</label>
-                            <input type="time" name="jam_mulai" id="jam_mulai" class="form-control" required>
+                        <div class="mb-3 row">
+                            <label for="jam_mulai" class="col-sm-2 col-form-label">Jam Mulai</label>
+                            <div class="col-sm-10">
+                                <input type="time" step="1" name="jam_mulai" id="jam_mulai" class="form-control" required>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="jam_selesai" class="form-label">Jam Selesai</label>
-                            <input type="time" name="jam_selesai" id="jam_selesai" class="form-control" required>
+                        <div class="mb-3 row">
+                            <label for="jam_selesai" class="col-sm-2 col-form-label">Jam Selesai</label>
+                            <div class="col-sm-10">
+                                <input type="time" step="1" name="jam_selesai" id="jam_selesai" class="form-control" required>
+                            </div>
                         </div>
-
-                        <div class="mt-4">
-                            <button type="button" class="btn btn-success" onclick="tambahHari(event)">
-                                <i class="fas fa-plus"></i> Tambah
-                            </button>
-                            <a href="<?php echo base_url('resepsionis/jadwal_dokter/Jadwal_dokter/detail/' . $dokter['id']); ?>" class="btn btn-warning">
-                                <i class="fas fa-reply me-2"></i>Kembali
-                            </a>
+                        <div class="row">
+                            <div class="col-sm-10 ms-auto">
+                                <button type="button" class="btn btn-success" onclick="tambahHari(event)">
+                                    <i class="fas fa-save me-2"></i>Simpan
+                                </button>
+                                <a href="<?php echo base_url('kepegawaian/jadwal_dokter/detail/' . $dokter['id']); ?>" class="btn btn-warning">
+                                    <i class="fas fa-reply me-2"></i>Kembali
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>

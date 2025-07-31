@@ -110,13 +110,13 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('master_data/poli/poli') ?>">Poli</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/poli') ?>">Poli</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('master_data/tindakan/tindakan') ?>">Tindakan</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/tindakan') ?>">Tindakan</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('master_data/diagnosa/diagnosa') ?>">Diagnosa</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/diagnosa') ?>">Diagnosa</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->
@@ -126,16 +126,16 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('kepegawaian/jabatan/jabatan') ?>">Jabatan</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/jabatan') ?>">Jabatan</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('kepegawaian/pegawai/pegawai') ?>">Pegawai</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/pegawai') ?>">Pegawai</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('kepegawaian/dokter/dokter') ?>">Dokter</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/jadwal_dokter') ?>">Dokter</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url('resepsionis/jadwal_dokter/jadwal_dokter/index_jadwal') ?>">Jadwal Dokter</a>
+                    <a class="nav-link" href="<?php echo base_url('kepegawaian/jadwal_dokter/index_jadwal') ?>">Jadwal Dokter</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->
@@ -145,7 +145,7 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pasien</a>
+                    <a class="nav-link" href="<?php echo base_url('master_data/pasien') ?>">Pasien</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Booking</a>

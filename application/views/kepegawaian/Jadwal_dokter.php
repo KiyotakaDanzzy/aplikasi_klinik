@@ -3,7 +3,7 @@
         let id_poli = $('#filter_poli').val();
 
         $.ajax({
-            url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/filter_jadwal"); ?>',
+            url: '<?php echo base_url("kepegawaian/jadwal_dokter/filter_jadwal"); ?>',
             type: 'POST',
             data: {
                 id_poli: id_poli,
@@ -33,7 +33,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '<?php echo base_url("resepsionis/jadwal_dokter/Jadwal_dokter/hapus_by_dokter/"); ?>' + id_dokter,
+                    url: '<?php echo base_url("kepegawaian/jadwal_dokter/hapus_by_dokter/"); ?>' + id_dokter,
                     type: 'POST',
                     dataType: 'json',
                     success: function(response) {
@@ -89,6 +89,6 @@
         </div>
     </div>
     <div id="schedule-container">
-        <?php $this->load->view('resepsionis/jadwal_dokter/Partial_jadwal', ['schedule_data' => $schedule_data]); ?>
+        <?php $this->load->view('kepegawaian/dokter/Partial_jadwal', ['schedule_data' => $schedule_data]); ?>
     </div>
 </div>

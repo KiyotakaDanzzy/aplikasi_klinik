@@ -6,6 +6,7 @@ class Jadwal_dokter extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        date_default_timezone_set('Asia/Jakarta');
         $this->load->model('kepegawaian/Jadwal_dokter_model');
         $this->load->model('kepegawaian/Dokter_model');
         $this->load->model('master_data/Poli_model');
@@ -39,7 +40,7 @@ class Jadwal_dokter extends CI_Controller
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Dokter', $data);
+        $this->load->view('kepegawaian/dokter', $data);
         $this->load->view('templates/footer');
     }
 
@@ -50,7 +51,7 @@ class Jadwal_dokter extends CI_Controller
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Jadwal_dokter', $data);
+        $this->load->view('kepegawaian/jadwal_dokter', $data);
         $this->load->view('templates/footer');
     }
 
@@ -90,7 +91,7 @@ class Jadwal_dokter extends CI_Controller
             $jadwal_raw = $jadwal_cocok;
         }
         $data['schedule_data'] = $this->process_schedule_data($jadwal_raw);
-        $this->load->view('kepegawaian/dokter/Partial_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/partial_jadwal', $data);
     }
 
     public function detail($id_dokter)
@@ -100,7 +101,7 @@ class Jadwal_dokter extends CI_Controller
         $data['jadwal'] = $this->Jadwal_dokter_model->get_jadwal_by_dokter_id($id_dokter);
 
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/Detail_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/detail_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
@@ -110,7 +111,7 @@ class Jadwal_dokter extends CI_Controller
         $data['data_dokter'] = $this->Dokter_model->get_data_dokter();
 
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/Tambah_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/tambah_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
@@ -139,7 +140,7 @@ class Jadwal_dokter extends CI_Controller
         $data['hari_tersedia'] = $hari_tersedia;
 
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/Edit_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/edit_jadwal', $data);
         $this->load->view('templates/footer');
     }
 
@@ -169,7 +170,7 @@ class Jadwal_dokter extends CI_Controller
         $data['jadwal_entry'] = $this->Jadwal_dokter_model->get_jadwal_entry_by_id($id_jadwal);
         $data['dokter'] = $this->Dokter_model->get_dokter_by_pegawai_id($data['jadwal_entry']['id_pegawai']);
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/Entry_edit', $data);
+        $this->load->view('kepegawaian/dokter/entry_edit', $data);
         $this->load->view('templates/footer');
     }
 

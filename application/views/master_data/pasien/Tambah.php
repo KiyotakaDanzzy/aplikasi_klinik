@@ -1,4 +1,25 @@
 <script type="text/javascript">
+    function hitungUmur() {
+        var tanggal_lahir_str = $('#tanggal_lahir').val();
+
+        if (tanggal_lahir_str) {
+            var parts = tanggal_lahir_str.split('-');
+            var formattedDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+            var birthDate = new Date(formattedDate);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (!isNaN(age)) {
+                $('#umur').val(age);
+            } else {
+                $('#umur').val('');
+            }
+        }
+    }
+
     function validateForm(formSelector) {
         let isValid = true;
         $(formSelector + ' [required]').removeClass('is-invalid');
@@ -22,38 +43,42 @@
         return isValid;
     }
 
+    $(document).ready(function() {
+        const tanggalInput = document.getElementById('tanggal_lahir');
+        const datepicker = new Datepicker(tanggalInput, {
+            format: 'dd-mm-yyyy',
+            autohide: true
+        });
+        $('#tanggal_lahir').on('changeDate', hitungUmur);
+    });
+
     function tambah(e) {
-        e.preventDefault()
+        e.preventDefault();
         if (!validateForm('#form_tambah')) {
             return;
         }
+
         $.ajax({
-            url: '<?php echo base_url('master_data/pasien/pasien/tambah_aksi') ?>',
+            url: '<?php echo base_url('master_data/pasien/tambah_aksi') ?>',
             method: 'POST',
             data: $('#form_tambah').serialize(),
             dataType: 'json',
             success: function(res) {
-                if (res.status == true) {
+                if (res.status) {
                     Swal.fire({
                             title: 'Berhasil!',
                             text: res.message,
-                            icon: "success",
-                            confirmButtonColor: "#35baf5",
-                            confirmButtonText: "Oke"
+                            icon: 'success'
                         })
-                        .then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '<?php echo base_url() ?>master_data/pasien/pasien'
-                            }
-                        })
+                        .then(() => {
+                            window.location.href = '<?php echo base_url('master_data/pasien'); ?>';
+                        });
                 } else {
                     Swal.fire({
                         title: 'Gagal!',
-                        text: res.message,
-                        icon: "error",
-                        confirmButtonColor: "#35baf5",
-                        confirmButtonText: "Oke"
-                    })
+                        html: res.message,
+                        icon: 'error'
+                    });
                 }
             }
         });
@@ -65,7 +90,7 @@
             <div class="page-title-box">
                 <div class="float-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/pasien/pasien">Pasien</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a></li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -76,140 +101,111 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header pt-3 pb-3">
-                    <h4 class="card-title">Tambah <?php echo $title; ?></h4>
+                <div class="card-header">
+                    <h4 class="card-title">Tambah Data Pasien</h4>
                 </div>
                 <div class="card-body">
-                    <div class="general-label">
-                        <form id="form_tambah">
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                    <form id="form_tambah">
+                        <div class="mb-3 row">
+                            <label for="nama_pasien" class="col-sm-2 col-form-label">Nama Lengkap</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" placeholder="Nama Lengkap Pasien" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nama_pasien" class="col-sm-2 col-form-label">Nama Pasien</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nama_pasien" id="nama_pasien" placeholder="Masukkan Nama Pasien" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="nik" class="col-sm-2 col-form-label">NIK</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nik" name="nik" placeholder="Nomor Induk Kependudukan" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nik" class="col-sm-2 col-form-label">NIK</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="nik" id="nik" placeholder="Masukkan NIK" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                                    <option value="">Pilih...</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="jenis_kelamin" id="jenis_kelamin" required>
-                                        <option value="">Pilih Jadwal Kelamin</option>
-                                        <option value='Laki-Laki'>Laki-Laki</option>
-                                        <option value='Perempuan'>Perempuan</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir Pasien" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="tgl_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
-                                <div class="col-sm-10">
-                                    <input type="date" class="form-control" name="tgl_lahir" id="tgl_lahir" placeholder="Tanggal Lahir Pasien" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="umur" name="umur" placeholder="Umur" readonly>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="umur" class="col-sm-2 col-form-label">Umur Pasien</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="umur" id="umur" placeholder="Umur Pasien" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="alamat" name="alamat" placeholder="Alamat Pasien" required></textarea>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" name="alamat" id="alamat" required></textarea>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan Pasien" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="pekerjaan" id="pekerjaan" placeholder="Pekerjaan" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="no_telp" class="col-sm-2 col-form-label">No. Telepon</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Nomor Telepon" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="jenis_kelamin" class="col-sm-2 col-form-label">Status Perkawian</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="jenis_kelamin" id="status_prkwn" required>
-                                        <option value='belumkawin'>Belum Kawin</option>
-                                        <option value='kawin'>Kawin</option>
-                                        <option value='ceraihidup'>Cerai Hidup</option>
-                                        <option value='ceraimati'>Cerai Mati</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="status_perkawinan" class="col-sm-2 col-form-label">Status Perkawinan</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="status_perkawinan" name="status_perkawinan">
+                                    <option value="Belum Kawin">Belum Kawin</option>
+                                    <option value="Kawin">Kawin</option>
+                                    <option value="Cerai Hidup">Cerai Hidup</option>
+                                    <option value="Cerai Mati">Cerai Mati</option>
+                                </select>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="nama_wali" class="col-sm-2 col-form-label">Nama Wali</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="nama_wali" name="nama_wali" placeholder="Nama Wali Pasien" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="golongan_darah" class="col-sm-2 col-form-label">Golongan Darah</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="golongan_darah" name="golongan_darah" required>
+                                    <option value="-">-</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="alergi" class="col-sm-2 col-form-label">Riwayat Alergi</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="alergi" name="alergi" placeholder="Riwayat Alergi" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="status_operasi" class="col-sm-2 col-form-label">Riwayat Operasi</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="status_operasi" name="status_operasi" placeholder="Riwayat Operasi" required>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 ms-auto">
+                                <button type="button" class="btn btn-success" onclick="tambah(event)"><i class="fas fa-save me-2"></i>Simpan</button>
+                                <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="nomor_rm" class="col-sm-2 col-form-label">Nomor Rekam Medis</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="nomor_rm" id="nomor_rm" placeholder="Masukkan Nomor Rekaman" required>
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" name="id_poli" id="id_poli" required>
-                                        <option value="">Pilih Poli</option>
-                                        <?php foreach ($data_poli as $poli) {
-                                            echo "<option value='{$poli->id}'>{$poli->nama}</option>";
-                                        } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-10 ms-auto">
-                                    <button type="button" onclick="tambah(event);" class="btn btn-success">
-                                        <i class="fas fa-save me-2"></i>Simpan</button>
-                                    <a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa">
-                                        <button type="button" class="btn btn-warning">
-                                            <i class="fas fa-reply me-2"></i>Kembali</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

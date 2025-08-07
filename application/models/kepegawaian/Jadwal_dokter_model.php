@@ -36,7 +36,7 @@ class Jadwal_dokter_model extends CI_Model
 
     public function update_jadwal_batch($id_dokter, $hari, $jam_mulai, $jam_selesai)
     {
-        $this->load->model('kepegawaian/dokter/Dokter_model');
+        $this->load->model('kepegawaian/Dokter_model');
         $dokter = $this->Dokter_model->get_dokter_by_id($id_dokter);
         if (!$dokter) return false;
 
@@ -70,7 +70,7 @@ class Jadwal_dokter_model extends CI_Model
 
     public function delete_by_dokter_id($id_dokter)
     {
-        $this->load->model('kepegawaian/dokter/Dokter_model');
+        $this->load->model('kepegawaian/Dokter_model');
         $dokter = $this->Dokter_model->get_dokter_by_id($id_dokter);
         if (!$dokter) return false;
 

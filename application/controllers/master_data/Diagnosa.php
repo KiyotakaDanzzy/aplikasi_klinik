@@ -15,7 +15,7 @@ class Diagnosa extends CI_Controller {
     {
         $data['title'] = 'Diagnosa';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Diagnosa', $data);
+        $this->load->view('master_data/diagnosa', $data);
         $this->load->view('templates/footer');
     }
 

@@ -85,7 +85,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-10 ms-auto">
-                                <button type="button" onclick="edit_entry(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan Perubahan</button>
+                                <button type="button" onclick="edit_entry(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
                                 <a href="<?php echo base_url('kepegawaian/jadwal_dokter/detail/' . $dokter['id']); ?>" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
                             </div>
                         </div>

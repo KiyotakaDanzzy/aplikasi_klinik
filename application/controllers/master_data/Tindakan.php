@@ -16,7 +16,7 @@ class Tindakan extends CI_Controller
     {
         $data['title'] = 'Tindakan';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Tindakan', $data);
+        $this->load->view('master_data/tindakan', $data);
         $this->load->view('templates/footer');
     }
 
@@ -42,7 +42,7 @@ class Tindakan extends CI_Controller
         $data['title'] = 'Tindakan';
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/tindakan/Tambah', $data);
+        $this->load->view('master_data/tindakan/tambah', $data);
         $this->load->view('templates/footer');
     }
 
@@ -79,7 +79,7 @@ class Tindakan extends CI_Controller
         $data['row'] = $this->Tindakan_model->get_tindakan_by_id($id);
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/tindakan/Edit', $data);
+        $this->load->view('master_data/tindakan/edit', $data);
         $this->load->view('templates/footer');
     }
 

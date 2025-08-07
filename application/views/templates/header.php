@@ -16,6 +16,7 @@
   <!-- Sweet Alert -->
   <link href="<?php echo base_url(); ?>assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
   <link href="<?php echo base_url(); ?>assets/libs/animate.css/animate.min.css" rel="stylesheet" type="text/css">
+  <link href="<?php echo base_url(); ?>assets/libs/vanillajs-datepicker/css/datepicker.min.css" rel="stylesheet" type="text/css" />
 
   <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 </head>
@@ -148,10 +149,10 @@
                     <a class="nav-link" href="<?php echo base_url('master_data/pasien') ?>">Pasien</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Booking</a>
+                    <a class="nav-link" href="<?php echo base_url('resepsionis/booking') ?>">Booking</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Pendaftaran</a>
+                    <a class="nav-link" href="<?php echo base_url('resepsionis/registrasi') ?>">Pendaftaran</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->
@@ -161,10 +162,10 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Panel Antrian</a>
+                    <a class="nav-link" href="<?php echo base_url('antrian/antrian/index') ?>">Panel Antrian</a>
                 </li><!--end nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Panel Dokter</a>
+                    <a class="nav-link" href="<?php echo base_url('antrian/antrian/index_dokter')?>">Panel Dokter</a>
                 </li><!--end nav-item-->
             </ul><!--end nav-->
         </div><!-- end -->

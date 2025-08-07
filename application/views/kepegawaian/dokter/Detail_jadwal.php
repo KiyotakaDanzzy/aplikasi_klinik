@@ -96,8 +96,8 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered mb-0 table-centered">
-                            <thead class="thead-light">
-                                <tr>
+                            <thead>
+                                <tr class="table-info">
                                     <th>Hari</th>
                                     <th>Jam Mulai</th>
                                     <th>Jam Selesai</th>

@@ -25,7 +25,7 @@
   function edit(e) {
     e.preventDefault()
     if (!validateForm('#form_edit')) {
-        return;
+      return;
     }
     $.ajax({
       url: '<?php echo base_url('master_data/diagnosa/edit_aksi') ?>',
@@ -85,13 +85,17 @@
               <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
               <div class="mb-3 row"><label for="nama_diagnosa" class="col-sm-2 col-form-label">Nama Diagnosa</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" value="<?php echo $row['nama_diagnosa']; ?>" required></div>
+                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" value="<?php echo $row['nama_diagnosa']; ?>" required>
+                </div>
               </div>
               <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
                 <div class="col-sm-10">
                   <select class="form-control" name="id_poli" id="id_poli" required>
                     <option value="">Pilih Poli</option>
-                    <?php foreach ($data_poli as $poli) {$selected = ($poli->id == $row['id_poli']) ? 'selected' : '';echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";                                                       } ?>
+                    <?php foreach ($data_poli as $poli) {
+                      $selected = ($poli->id == $row['id_poli']) ? 'selected' : '';
+                      echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";
+                    } ?>
                   </select>
                 </div>
               </div>

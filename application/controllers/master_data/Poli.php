@@ -14,7 +14,7 @@ class Poli extends CI_Controller {
     {
         $data['title'] = 'Poli';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/Poli', $data);
+        $this->load->view('master_data/poli', $data);
         $this->load->view('templates/footer');
     }
 
@@ -39,7 +39,7 @@ class Poli extends CI_Controller {
     {
         $data['title'] = 'Poli';
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Tambah', $data);
+        $this->load->view('master_data/poli/tambah', $data);
         $this->load->view('templates/footer');
     }
 
@@ -69,7 +69,7 @@ class Poli extends CI_Controller {
         $data['title'] = 'Poli';
         $data['row'] = $this->Poli_model->get_poli_by_id($id);
         $this->load->view('templates/header', $data);
-        $this->load->view('master_data/poli/Edit', $data);
+        $this->load->view('master_data/poli/edit', $data);
         $this->load->view('templates/footer');
     }
 

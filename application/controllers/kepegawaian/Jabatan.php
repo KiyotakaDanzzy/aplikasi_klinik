@@ -13,7 +13,7 @@ class Jabatan extends CI_Controller
     {
         $data['title'] = 'Jabatan';
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Jabatan', $data);
+        $this->load->view('kepegawaian/jabatan', $data);
         $this->load->view('templates/footer');
     }
 
@@ -38,7 +38,7 @@ class Jabatan extends CI_Controller
     {
         $data['title'] = 'Jabatan';
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/jabatan/Tambah', $data);
+        $this->load->view('kepegawaian/jabatan/tambah', $data);
         $this->load->view('templates/footer');
     }
 
@@ -65,7 +65,7 @@ class Jabatan extends CI_Controller
         $data['title'] = 'Jabatan';
         $data['row'] = $this->Jabatan_model->get_jabatan_by_id($id);
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/jabatan/Edit', $data);
+        $this->load->view('kepegawaian/jabatan/edit', $data);
         $this->load->view('templates/footer');
     }
 

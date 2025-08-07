@@ -146,7 +146,10 @@
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Jabatan">
+                                <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <input type="text" class="form-control" id="cari" placeholder="Cari Nama Jabatan">
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,18 @@
 <script type="text/javascript">
+  function hitungUmur() {
+    var tanggal_lahir = $('#tanggal_lahir').val();
+    if (tanggal_lahir) {
+      var today = new Date();
+      var birthDate = new Date(tanggal_lahir);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      $('#umur').val(age);
+    }
+  }
+
   function validateForm(formSelector) {
     let isValid = true;
     $(formSelector + ' [required]').removeClass('is-invalid');
@@ -22,10 +36,18 @@
     return isValid;
   }
 
+  $(document).ready(function() {
+        const tanggalInput = document.getElementById('tanggal_lahir');
+        const datepicker = new Datepicker(tanggalInput, {
+            format: 'dd-mm-yyyy',
+            autohide: true
+        });
+    });
+
   function edit(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (!validateForm('#form_edit')) {
-        return;
+      return;
     }
     $.ajax({
       url: '<?php echo base_url('master_data/pasien/edit_aksi') ?>',
@@ -33,27 +55,21 @@
       data: $('#form_edit').serialize(),
       dataType: 'json',
       success: function(res) {
-        if (res.status == true) {
+        if (res.status) {
           Swal.fire({
               title: 'Berhasil!',
               text: res.message,
-              icon: "success",
-              confirmButtonColor: "#35baf5",
-              confirmButtonText: "Oke"
+              icon: 'success'
             })
-            .then((result) => {
-              if (result.isConfirmed) {
-                window.location.href = '<?php echo base_url() ?>master_data/pasien'
-              }
-            })
+            .then(() => {
+              window.location.href = '<?php echo base_url('master_data/pasien'); ?>';
+            });
         } else {
           Swal.fire({
             title: 'Gagal!',
-            text: res.message,
-            icon: "error",
-            confirmButtonColor: "#35baf5",
-            confirmButtonText: "Oke"
-          })
+            html: res.message,
+            icon: 'error'
+          });
         }
       }
     });
@@ -76,30 +92,109 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
-        <div class="card-header pt-3 pb-3">
-          <h4 class="card-title">Edit <?php echo $title; ?></h4>
+        <div class="card-header">
+          <h4 class="card-title">Edit Data Pasien: <?php echo $pasien['nama_pasien']; ?> (<?php echo $pasien['no_rm']; ?>)</h4>
         </div>
         <div class="card-body">
-          <div class="general-label">
-            <form id="form_edit">
-              <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-              <div class="mb-3 row"><label for="nama_diagnosa" class="col-sm-2 col-form-label">Nama Diagnosa</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" value="<?php echo $row['nama_diagnosa']; ?>" required></div>
+          <form id="form_edit">
+            <input type="hidden" name="id" value="<?php echo $pasien['id']; ?>">
+            <div class="row mb-3">
+              <label for="nama_pasien" class="col-sm-2 col-form-label">Nama Lengkap</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="<?php echo $pasien['nama_pasien']; ?>" required>
               </div>
-              <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
-                <div class="col-sm-10">
-                  <select class="form-control" name="id_poli" id="id_poli" required>
-                    <option value="">Pilih Poli</option>
-                    <?php foreach ($data_poli as $poli) {$selected = ($poli->id == $row['id_poli']) ? 'selected' : '';echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";                                                       } ?>
-                  </select>
+            </div>
+            <div class="row mb-3">
+              <label for="nik" class="col-sm-2 col-form-label">NIK</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $pasien['nik']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="jenis_kelamin" name="jenis_kelamin" required>
+                  <option value="Laki-laki" <?php echo ($pasien['jenis_kelamin'] == 'Laki-laki') ? 'selected' : ''; ?>>Laki-laki</option>
+                  <option value="Perempuan" <?php echo ($pasien['jenis_kelamin'] == 'Perempuan') ? 'selected' : ''; ?>>Perempuan</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" onchange="hitungUmur()" value="<?php echo $pasien['tanggal_lahir']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="umur" name="umur" value="<?php echo $pasien['umur']; ?>" readonly>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+              <div class="col-sm-10">
+                <textarea class="form-control" id="alamat" name="alamat" required><?php echo $pasien['alamat']; ?></textarea>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" value="<?php echo $pasien['pekerjaan']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="no_telp" class="col-sm-2 col-form-label">No. Telepon</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $pasien['no_telp']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="status_perkawinan" class="col-sm-2 col-form-label">Status Perkawinan</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="status_perkawinan" name="status_perkawinan" required>
+                  <option value="Belum Kawin" <?php echo ($pasien['status_perkawinan'] == 'Belum Kawin') ? 'selected' : ''; ?>>Belum Kawin</option>
+                  <option value="Kawin" <?php echo ($pasien['status_perkawinan'] == 'Kawin') ? 'selected' : ''; ?>>Kawin</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="nama_wali" class="col-sm-2 col-form-label">Nama Wali</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="nama_wali" name="nama_wali" value="<?php echo $pasien['nama_wali']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="golongan_darah" class="col-sm-2 col-form-label">Golongan Darah</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="golongan_darah" name="golongan_darah">
+                  <option value="-" <?php echo ($pasien['golongan_darah'] == '-') ? 'selected' : ''; ?>>-</option>
+                  <option value="A" <?php echo ($pasien['golongan_darah'] == 'A') ? 'selected' : ''; ?>>A</option>
+                  <option value="B" <?php echo ($pasien['golongan_darah'] == 'B') ? 'selected' : ''; ?>>B</option>
+                  <option value="AB" <?php echo ($pasien['golongan_darah'] == 'AB') ? 'selected' : ''; ?>>AB</option>
+                  <option value="O" <?php echo ($pasien['golongan_darah'] == 'O') ? 'selected' : ''; ?>>O</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="alergi" class="col-sm-2 col-form-label">Riwayat Alergi</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="alergi" name="alergi" value="<?php echo $pasien['alergi']; ?>" required>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="status_operasi" class="col-sm-2 col-form-label">Riwayat Operasi</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="status_operasi" name="status_operasi" value="<?php echo $pasien['status_operasi']; ?>" required>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 ms-auto">
+                  <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
+                  <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>master_data/diagnosa"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

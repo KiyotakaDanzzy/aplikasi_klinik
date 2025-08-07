@@ -12,7 +12,7 @@ class Pegawai_model extends CI_Model {
             $params[] = "%$cari%";
             $params[] = "%$cari%";
         }
-        $sql .= " ORDER BY a.id ASC";
+        $sql .= " ORDER BY a.id DESC";
         $query = $this->db->query($sql, $params);
         return $query->result();
     }
@@ -40,8 +40,8 @@ class Pegawai_model extends CI_Model {
 
     public function insert_pegawai_dan_dokter()
     {
-        $this->load->model('Jabatan_model');
-        $this->load->model('Poli_model');
+        $this->load->model('kepegawaian/Jabatan_model');
+        $this->load->model('master_data/Poli_model');
 
         $id_jabatan = $this->input->post('id_jabatan');
         $jabatan = $this->Jabatan_model->get_jabatan_by_id($id_jabatan);
@@ -86,8 +86,8 @@ class Pegawai_model extends CI_Model {
 
     public function update_pegawai_dan_dokter()
     {
-        $this->load->model('Jabatan_model');
-        $this->load->model('Poli_model');
+        $this->load->model('kepegawaian/Jabatan_model');
+        $this->load->model('master_data/Poli_model');
 
         $id_pegawai = $this->input->post('id');
         $id_jabatan = $this->input->post('id_jabatan');

@@ -15,7 +15,7 @@ class Pegawai extends CI_Controller
     {
         $data['title'] = 'Pegawai';
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/Pegawai', $data);
+        $this->load->view('kepegawaian/pegawai', $data);
         $this->load->view('templates/footer');
     }
 
@@ -40,7 +40,7 @@ class Pegawai extends CI_Controller
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/pegawai/Tambah', $data);
+        $this->load->view('kepegawaian/pegawai/tambah', $data);
         $this->load->view('templates/footer');
     }
 
@@ -59,7 +59,7 @@ class Pegawai extends CI_Controller
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $data['dokter_info'] = $this->Pegawai_model->get_dokter_info_by_pegawai_id($id);
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/pegawai/Edit', $data);
+        $this->load->view('kepegawaian/pegawai/edit', $data);
         $this->load->view('templates/footer');
     }
 

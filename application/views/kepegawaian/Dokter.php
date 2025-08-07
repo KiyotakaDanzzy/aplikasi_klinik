@@ -104,8 +104,8 @@
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0 table-hover" id="table-data">
-                            <thead class="thead-light">
-                                <tr>
+                            <thead>
+                                <tr class="table-info">
                                     <th>#</th>
                                     <th>Nama Dokter</th>
                                     <th>Poli</th>

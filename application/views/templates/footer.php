@@ -25,6 +25,7 @@
 <!-- Custom -->
 <script src="<?php echo base_url() ?>/assets/js/pagination.js"></script>
 <script src="<?php echo base_url() ?>/assets/js/js-form.js"></script>
+<script src="<?php echo base_url() ?>assets/libs/vanillajs-datepicker/js/datepicker-full.min.js"></script>
 </body>
 <!--end body-->
 </html>

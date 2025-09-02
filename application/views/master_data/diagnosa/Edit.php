@@ -83,12 +83,14 @@
           <div class="general-label">
             <form id="form_edit">
               <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-              <div class="mb-3 row"><label for="nama_diagnosa" class="col-sm-2 col-form-label">Nama Diagnosa</label>
+              <div class="mb-3 row">
+                <label for="nama_diagnosa" class="col-sm-2 col-form-label">Nama Diagnosa</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" value="<?php echo $row['nama_diagnosa']; ?>" required>
+                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" value="<?php echo $row['nama_diagnosa']; ?>" required autocomplete="off">
                 </div>
               </div>
-              <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
+              <div class="mb-3 row">
+                <label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
                 <div class="col-sm-10">
                   <select class="form-control" name="id_poli" id="id_poli" required>
                     <option value="">Pilih Poli</option>
@@ -100,7 +102,16 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>master_data/diagnosa"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>
+                <div class="col-sm-10 ms-auto">
+                  <button type="button" onclick="edit(event);" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Simpan
+                  </button>
+                  <a href="<?php echo base_url(); ?>master_data/diagnosa">
+                    <button type="button" class="btn btn-warning">
+                      <i class="fas fa-reply me-2"></i>Kembali
+                    </button>
+                  </a>
+                </div>
               </div>
             </form>
           </div>

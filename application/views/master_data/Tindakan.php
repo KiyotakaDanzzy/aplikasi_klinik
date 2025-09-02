@@ -8,7 +8,7 @@
 
     function get_data() {
         let cari = $('#cari').val();
-        let count_header = $(`#table-data thead tr th`).length
+        let hitung_baris = $(`#table-data thead tr th`).length
         $.ajax({
             url: '<?php echo base_url(); ?>master_data/tindakan/result_data',
             data: {
@@ -17,7 +17,14 @@
             type: "POST",
             dataType: "json",
             beforeSend: () => {
-                let loading = `<tr id="tr-loading"><td colspan="${count_header}" class="text-center"><img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading"></td></tr>`;
+                let loading = `<tr id="tr-loading">
+                                  <td colspan="${hitung_baris}" class="text-center">
+                                      <div class="loader">
+                                          <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
+                                      </div>
+                                  </td>
+                              </tr>`;
+
                 $(`#table-data tbody`).html(loading);
             },
             success: function(res) {
@@ -29,7 +36,7 @@
                           <tr>
                               <td>${i}</td>
                               <td>${item.nama}</td>
-                              <td>Rp.${item.harga}</td>
+                              <td>Rp${item.harga}</td>
                               <td>${item.nama_poli}</td>
                               <td>
                                   <div class="text-center">
@@ -42,7 +49,7 @@
                         i++
                     }
                 } else {
-                    table += `<tr><td colspan="${count_header}" class="text-center">Data Kosong</td></tr>`;
+                    table += `<tr><td colspan="${hitung_baris}" class="text-center">Data Kosong</td></tr>`;
                 }
                 $('#table-data tbody').html(table);
                 paging();
@@ -142,20 +149,27 @@
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>master_data/tindakan/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <a href="<?php echo base_url(); ?>master_data/tindakan/view_tambah">
+                        <button type="button" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Tambah
+                        </button>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nama Tindakan/Poli">
+                                <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <input type="text" class="form-control" id="cari" placeholder="Cari Nama Tindakan/Poli">
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0 table-hover" id="table-data">
-                            <thead>
-                                <tr class="table-success">
+                            <thead class="thead-light">
+                                <tr>
                                     <th>#</th>
                                     <th>Nama Tindakan</th>
                                     <th>Harga</th>
@@ -172,13 +186,16 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
-                                <div class="col-md-6">&nbsp;</div><label class="col-md-3 control-label d-flex align-items-center justify-content-end">Jumlah Tampil</label>
-                                <div class="col-md-3 pull-right"><select class="form-control" id="jumlah_tampil">
+                                <div class="col-md-6">&nbsp;</div>
+                                <label class="col-md-3 control-label d-flex align-items-center justify-content-end">Jumlah Tampil</label>
+                                <div class="col-md-3 pull-right">
+                                    <select class="form-control" id="jumlah_tampil">
                                         <option value="10">10</option>
                                         <option value="20">20</option>
                                         <option value="50">50</option>
                                         <option value="100">100</option>
-                                    </select></div>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>

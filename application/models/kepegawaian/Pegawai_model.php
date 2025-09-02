@@ -103,7 +103,6 @@ class Pegawai_model extends CI_Model {
             'nama_jabatan' => $jabatan ? $jabatan['nama'] : ''
         ];
         $this->db->where('id', $id_pegawai)->update('kpg_pegawai', $data_pegawai);
-
         $this->db->where('id_pegawai', $id_pegawai)->delete('kpg_dokter');
 
         if ($jabatan && $jabatan['nama'] == 'Dokter') {
@@ -116,8 +115,17 @@ class Pegawai_model extends CI_Model {
                     'id_poli' => $id_poli,
                     'nama_poli' => $poli['nama']
                 ];
+
+                $data_jadwal = [
+                    'id_pegawai' => $id_pegawai,
+                    'nama_pegawai' => $this->input->post('nama'),
+                ];
                 $this->db->insert('kpg_dokter', $data_dokter);
+                $this->db->where('id_pegawai', $id_pegawai)->update('rsp_jadwal_dokter', $data_jadwal);
             }
+        }
+        else {
+            $this->db->where('id_pegawai', $id_pegawai)->delete('rsp_jadwal_dokter');
         }
 
         $this->db->trans_complete();
@@ -136,6 +144,7 @@ class Pegawai_model extends CI_Model {
         $this->db->trans_begin();
         $this->db->where('id', $id)->delete('kpg_pegawai');
         $this->db->where('id_pegawai', $id)->delete('kpg_dokter');
+        $this->db->where('id_pegawai', $id)->delete('rsp_jadwal_dokter');
         $this->db->trans_complete();
         return $this->db->trans_status();
     }

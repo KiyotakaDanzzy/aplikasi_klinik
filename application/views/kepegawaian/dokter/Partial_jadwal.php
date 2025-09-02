@@ -8,8 +8,8 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover" style="width:100%;">
                         <thead>
-                            <tr class="table-warning">
-                                <th style="width: 20%;">Dokter Spesialis</th>
+                            <tr class="table-info">
+                                <th style="width: 20%;">Dokter</th>
                                 <th>Senin</th>
                                 <th>Selasa</th>
                                 <th>Rabu</th>
@@ -41,7 +41,7 @@
 <?php } else { ?>
     <div class="card">
         <div class="card-body">
-            <p class="text-center text-muted mt-3">Tidak ada jadwal yang sesuai dengan filter yang dipilih.</p>
+            <p class="text-center text-muted mt-3">Tidak ada jadwal yang sesuai dengan filter.</p>
         </div>
     </div>
 <?php } ?>

@@ -1,15 +1,22 @@
 <script type="text/javascript">
   function hitungUmur() {
-    var tanggal_lahir = $('#tanggal_lahir').val();
-    if (tanggal_lahir) {
+    var tanggal_lahir_str = $('#tanggal_lahir').val();
+
+    if (tanggal_lahir_str) {
+      var parts = tanggal_lahir_str.split('-');
+      var formattedDate = parts[2] + '-' + parts[1] + '-' + parts[0];
+      var birthDate = new Date(formattedDate);
       var today = new Date();
-      var birthDate = new Date(tanggal_lahir);
       var age = today.getFullYear() - birthDate.getFullYear();
       var m = today.getMonth() - birthDate.getMonth();
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
-      $('#umur').val(age);
+      if (!isNaN(age)) {
+        $('#umur').val(age);
+      } else {
+        $('#umur').val('');
+      }
     }
   }
 
@@ -37,12 +44,13 @@
   }
 
   $(document).ready(function() {
-        const tanggalInput = document.getElementById('tanggal_lahir');
-        const datepicker = new Datepicker(tanggalInput, {
-            format: 'dd-mm-yyyy',
-            autohide: true
-        });
+    const tanggalInput = document.getElementById('tanggal_lahir');
+    const datepicker = new Datepicker(tanggalInput, {
+      format: 'dd-mm-yyyy',
+      autohide: true
     });
+    $('#tanggal_lahir').on('changeDate', hitungUmur);
+  });
 
   function edit(e) {
     e.preventDefault();
@@ -81,7 +89,9 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a></li>
+            <li class="breadcrumb-item">
+              <a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a>
+            </li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -93,7 +103,7 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Edit Data Pasien: <?php echo $pasien['nama_pasien']; ?> (<?php echo $pasien['no_rm']; ?>)</h4>
+          <h4 class="card-title">Edit Pasien: <?php echo $pasien['nama_pasien']; ?> (<?php echo $pasien['no_rm']; ?>)</h4>
         </div>
         <div class="card-body">
           <form id="form_edit">
@@ -101,13 +111,13 @@
             <div class="row mb-3">
               <label for="nama_pasien" class="col-sm-2 col-form-label">Nama Lengkap</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="<?php echo $pasien['nama_pasien']; ?>" required>
+                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="<?php echo $pasien['nama_pasien']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
               <label for="nik" class="col-sm-2 col-form-label">NIK</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $pasien['nik']; ?>" required>
+                <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $pasien['nik']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
@@ -122,7 +132,7 @@
             <div class="row mb-3">
               <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" onchange="hitungUmur()" value="<?php echo $pasien['tanggal_lahir']; ?>" required>
+                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" value="<?php echo $pasien['tanggal_lahir']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
@@ -134,19 +144,19 @@
             <div class="row mb-3">
               <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
               <div class="col-sm-10">
-                <textarea class="form-control" id="alamat" name="alamat" required><?php echo $pasien['alamat']; ?></textarea>
+                <textarea class="form-control" id="alamat" name="alamat" required autocomplete="off"><?php echo $pasien['alamat']; ?></textarea>
               </div>
             </div>
             <div class="row mb-3">
               <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" value="<?php echo $pasien['pekerjaan']; ?>" required>
+                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" value="<?php echo $pasien['pekerjaan']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
-              <label for="no_telp" class="col-sm-2 col-form-label">No. Telepon</label>
+              <label for="no_telp" class="col-sm-2 col-form-label">Nomor Telepon</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $pasien['no_telp']; ?>" required>
+                <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $pasien['no_telp']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
@@ -161,7 +171,7 @@
             <div class="row mb-3">
               <label for="nama_wali" class="col-sm-2 col-form-label">Nama Wali</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nama_wali" name="nama_wali" value="<?php echo $pasien['nama_wali']; ?>" required>
+                <input type="text" class="form-control" id="nama_wali" name="nama_wali" value="<?php echo $pasien['nama_wali']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
@@ -179,20 +189,24 @@
             <div class="row mb-3">
               <label for="alergi" class="col-sm-2 col-form-label">Riwayat Alergi</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="alergi" name="alergi" value="<?php echo $pasien['alergi']; ?>" required>
+                <input type="text" class="form-control" id="alergi" name="alergi" value="<?php echo $pasien['alergi']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row mb-3">
               <label for="status_operasi" class="col-sm-2 col-form-label">Riwayat Operasi</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="status_operasi" name="status_operasi" value="<?php echo $pasien['status_operasi']; ?>" required>
+                <input type="text" class="form-control" id="status_operasi" name="status_operasi" value="<?php echo $pasien['status_operasi']; ?>" required autocomplete="off">
               </div>
             </div>
             <div class="row">
-                <div class="col-sm-10 ms-auto">
-                  <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                  <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
-                </div>
+              <div class="col-sm-10 ms-auto">
+                <button type="button" onclick="edit(event);" class="btn btn-success">
+                  <i class="fas fa-save me-2"></i>Simpan
+                </button>
+                <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning">
+                  <i class="fas fa-reply me-2"></i>Kembali
+                </a>
+              </div>
             </div>
           </form>
         </div>

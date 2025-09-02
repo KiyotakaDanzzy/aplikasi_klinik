@@ -65,7 +65,9 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/tindakan">Tindakan</a></li>
+            <li class="breadcrumb-item">
+              <a href="<?php echo base_url(); ?>master_data/tindakan">Tindakan</a>
+            </li>
             <li class="breadcrumb-item active">Tambah</li>
           </ol>
         </div>
@@ -85,7 +87,7 @@
               <div class="mb-3 row">
                 <label for="nama" class="col-sm-2 col-form-label">Nama Tindakan</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Tindakan" required>
+                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Tindakan" required autocomplete="off">
                 </div>
               </div>
               <div class="mb-3 row">
@@ -93,7 +95,7 @@
                 <div class="col-sm-10">
                   <div class="input-group">
                     <div class="input-group-text">Rp</div>
-                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" placeholder="Biaya Tindakan" required>
+                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" placeholder="Biaya Tindakan" required autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -110,8 +112,14 @@
               </div>
               <div class="row">
                 <div class="col-sm-10 ms-auto">
-                  <button type="button" onclick="tambah(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                  <a href="<?php echo base_url(); ?>master_data/tindakan"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a>
+                  <button type="button" onclick="tambah(event);" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Simpan
+                  </button>
+                  <a href="<?php echo base_url(); ?>master_data/tindakan">
+                    <button type="button" class="btn btn-warning">
+                      <i class="fas fa-reply me-2"></i>Kembali
+                    </button>
+                  </a>
                 </div>
               </div>
             </form>

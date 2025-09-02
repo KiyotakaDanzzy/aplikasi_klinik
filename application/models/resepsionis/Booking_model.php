@@ -46,7 +46,8 @@ class Booking_model extends CI_Model
 
         $data['kode_booking'] = sprintf("KB%s-%03d", $today_format, $next_num);
         $data['status_booking'] = 'Pending';
-        $data['tanggal_booking'] = date('d-m-Y H:i:s');
+        $data['tanggal_booking'] = date('d-m-Y');
+        $data['waktu_booking'] = date('H:i:s');
 
         $this->db->insert('rsp_booking', $data);
         return $this->db->affected_rows() > 0;

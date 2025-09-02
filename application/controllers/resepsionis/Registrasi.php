@@ -97,7 +97,8 @@ class Registrasi extends CI_Controller
                 'id_poli' => $poli['id'],
                 'id_dokter' => $dokter['id'],
                 'id_pasien' => $id_pasien_final,
-                'tanggal' => date('Y-m-d'),
+                'tanggal' => date('d-m-Y'),
+                'waktu' => date('H:i:s'),
             ];
             $this->Antrian_model->insert_antrian($data_antrian);
         }

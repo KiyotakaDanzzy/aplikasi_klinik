@@ -8,7 +8,7 @@
 
     function get_data() {
         let cari = $('#cari').val();
-        let count_header = $('#table-data thead tr th').length;
+        let hitung_baris = $('#table-data thead tr th').length;
         $.ajax({
             url: '<?php echo base_url(); ?>master_data/pasien/result_data',
             data: {
@@ -17,8 +17,15 @@
             type: "POST",
             dataType: "json",
             beforeSend: () => {
-                let loading = `<tr id="tr-loading"><td colspan="${count_header}" class="text-center"><p>memuat data...</p></td></tr>`;
-                $('#table-data tbody').html(loading);
+                let loading = `<tr id="tr-loading">
+                                  <td colspan="${hitung_baris}" class="text-center">
+                                      <div class="loader">
+                                          <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
+                                      </div>
+                                  </td>
+                              </tr>`;
+
+                $(`#table-data tbody`).html(loading);
             },
             success: function(res) {
                 let table = "";
@@ -46,7 +53,7 @@
                         i++;
                     }
                 } else {
-                    table += `<tr><td colspan="${count_header}" class="text-center">Data Kosong</td></tr>`;
+                    table += `<tr><td colspan="${hitung_baris}" class="text-center">Data Kosong</td></tr>`;
                 }
                 $('#table-data tbody').html(table);
                 paging();
@@ -172,7 +179,7 @@
                         <div class="col-lg-6 mb-4">
                             <h5 class="mb-3">Informasi Utama</h5>
                             <dl class="row">
-                                <dt class="col-sm-5">No. Rekam Medis</dt>
+                                <dt class="col-sm-5">Nomor Rekam Medis</dt>
                                 <dd class="col-sm-7">: <span id="data_no_rm"></span></dd>
                                 <dt class="col-sm-5">Nama Pasien</dt>
                                 <dd class="col-sm-7">: <span id="data_nama_pasien"></span></dd>
@@ -197,7 +204,7 @@
                                 <dd class="col-sm-7">: <span id="data_alamat"></span></dd>
                                 <dt class="col-sm-5">Pekerjaan</dt>
                                 <dd class="col-sm-7">: <span id="data_pekerjaan"></span></dd>
-                                <dt class="col-sm-5">No. Telepon</dt>
+                                <dt class="col-sm-5">Nomor Telepon</dt>
                                 <dd class="col-sm-7">: <span id="data_no_telp"></span></dd>
                                 <dt class="col-sm-5">Status Perkawinan</dt>
                                 <dd class="col-sm-7">: <span id="data_status_perkawinan"></span></dd>
@@ -222,7 +229,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        <i class="far fa-window-close me-2"></i>Tutup
+                    </button>
                 </div>
             </div>
         </div>
@@ -245,13 +254,20 @@
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>master_data/pasien/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <a href="<?php echo base_url(); ?>master_data/pasien/view_tambah">
+                        <button type="button" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Tambah
+                        </button>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div><input type="text" class="form-control" id="cari" placeholder="Cari Nomor RM/Nama/NIK..">
+                                <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <input type="text" class="form-control" id="cari" placeholder="Cari No. RM/Nama/NIK..">
                             </div>
                         </div>
                     </div>
@@ -260,11 +276,11 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Nomor RM</th>
+                                    <th>No. RM</th>
                                     <th>Nama Pasien</th>
                                     <th>NIK</th>
                                     <th>Jenis Kelamin</th>
-                                    <th>No. Telp</th>
+                                    <th>Nomor Telepon</th>
                                     <th>Alamat</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>

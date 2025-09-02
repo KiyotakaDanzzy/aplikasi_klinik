@@ -58,6 +58,8 @@ class Pegawai extends CI_Controller
         $data['data_jabatan'] = $this->Jabatan_model->get_data_jabatan();
         $data['data_poli'] = $this->Poli_model->get_data_poli();
         $data['dokter_info'] = $this->Pegawai_model->get_dokter_info_by_pegawai_id($id);
+        // var_dump($data['row']);
+        // die;
         $this->load->view('templates/header', $data);
         $this->load->view('kepegawaian/pegawai/edit', $data);
         $this->load->view('templates/footer');

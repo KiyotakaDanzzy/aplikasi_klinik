@@ -47,19 +47,19 @@ class Booking extends CI_Controller
         echo json_encode($data_pasien);
     }
 
-    public function get_available_doctors()
+    public function get_dokter_ada()
     {
         $id_poli = $this->input->post('id_poli');
-        $tanggal_from_form = $this->input->post('tanggal');
+        $tanggal_dari_form = $this->input->post('tanggal');
         $waktu = $this->input->post('waktu');
 
         $tanggal_db = '';
         $hari = '';
 
-        if ($tanggal_from_form) {
-            $date_obj = DateTime::createFromFormat('d-m-Y', $tanggal_from_form);
-            if ($date_obj) {
-                $tanggal_db = $date_obj->format('Y-m-d');
+        if ($tanggal_dari_form) {
+            $tanggal_obj = DateTime::createFromFormat('d-m-Y', $tanggal_dari_form);
+            if ($tanggal_obj) {
+                $tanggal_db = $tanggal_obj->format('Y-m-d');
                 $day_map = [
                     'Sunday'    => 'Minggu',
                     'Monday' => 'Senin',
@@ -69,12 +69,12 @@ class Booking extends CI_Controller
                     'Friday' => 'Jumat',
                     'Saturday'  => 'Sabtu'
                 ];
-                $day_name_english = $date_obj->format('l');
-                $hari = $day_map[$day_name_english];
+                $nama_hari_eng = $tanggal_obj->format('l');
+                $hari = $day_map[$nama_hari_eng];
             }
         }
 
-        $data_dokter = $this->Dokter_model->get_available_doctors($id_poli, $tanggal_db, $waktu, $hari);
+        $data_dokter = $this->Dokter_model->get_dokter_ada($id_poli, $tanggal_db, $waktu, $hari);
         header('Content-Type: application/json');
         echo json_encode($data_dokter);
     }
@@ -111,7 +111,8 @@ class Booking extends CI_Controller
                 'nama_poli' => $poli['nama'],
                 'id_dokter' => $dokter['id'],
                 'nama_dokter' => $dokter['nama_pegawai'],
-                'tanggal_booking' => date('d-m-Y H:i:s'),
+                'tanggal_booking' => date('d-m-Y'),
+                'waktu_booking' => date('H:i:s'),
                 'tanggal' => $this->input->post('tanggal'),
                 'waktu' => $this->input->post('waktu')
             ];
@@ -196,7 +197,8 @@ class Booking extends CI_Controller
                 'id_poli' => $booking['id_poli'],
                 'id_dokter' => $booking['id_dokter'],
                 'id_pasien' => $booking['id_pasien'],
-                'tanggal' => date('d-m-Y')
+                'tanggal' => date('d-m-Y'),
+                'waktu' => date('H:i:s')
             ];
             $this->Antrian_model->insert_antrian($data_antrian);
             $this->Booking_model->update_booking($id_booking, ['status_booking' => 'Disetujui']);

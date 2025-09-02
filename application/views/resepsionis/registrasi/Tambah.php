@@ -1,5 +1,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#pagination').on('click', function(e) {
+            e.stopPropagation();
+        });
+        
         const tanggalInput = document.getElementById('tanggal_lahir_baru');
         const datepicker = new Datepicker(tanggalInput, {
             format: 'dd-mm-yyyy',
@@ -13,12 +17,12 @@
                 $('#form-pasien-baru').slideDown();
                 $('#display_nama_pasien').prop('required', false);
                 $('#id_pasien').prop('required', false);
-                $('#form-pasien-baru [required]').prop('required', true);
+                $('#form-pasien-baru').find('input, select, textarea').not('[readonly]').prop('required', true);
 
             } else {
                 $('#form-pasien-baru').hide();
                 $('#form-pasien-lama').slideDown();
-                $('#form-pasien-baru [required]').prop('required', false);
+                $('#form-pasien-baru').find('input, select, textarea').not('[readonly]').prop('required', false);
                 $('#display_nama_pasien').prop('required', true);
                 $('#id_pasien').prop('required', true);
             }
@@ -30,7 +34,7 @@
             dokterDropdown.html('<option value="">Memuat...</option>').prop('disabled', true);
             if (id_poli) {
                 $.ajax({
-                    url: '<?php echo base_url("resepsionis/booking/get_available_doctors"); ?>',
+                    url: '<?php echo base_url("resepsionis/booking/get_dokter_ada"); ?>',
                     type: 'POST',
                     data: {
                         id_poli: id_poli,
@@ -49,6 +53,8 @@
                         }
                     }
                 });
+                console.log('<?php echo date('d-m-Y'); ?>');
+                console.log('<?php echo date('H:i:s'); ?>');
             } else {
                 dokterDropdown.html('<option value="">Pilih Poli Dulu</option>');
             }
@@ -60,6 +66,15 @@
         });
         $('#search_pasien_keyword').keyup(function() {
             loadPasien($(this).val());
+        });
+
+        $('#pasienSearchModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        $('#jumlah_tampil').on('change', function() {
+            paging();
         });
     });
 
@@ -107,6 +122,10 @@
                     $rows.eq(i).show();
                 }
             }
+        });
+
+        $('#pagination').find('a').off('click').on('click', function(e) {
+            e.preventDefault();
         });
     }
 
@@ -205,7 +224,9 @@
             <div class="page-title-box">
                 <div class="float-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>resepsionis/registrasi">Registrasi</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url(); ?>resepsionis/registrasi">Registrasi</a>
+                        </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -239,7 +260,9 @@
                         <div class="col-sm-10">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="display_nama_pasien" placeholder="Klik tombol Cari..." readonly>
-                                <button class="btn btn-primary" type="button" id="btn-cari-pasien"><i class="fas fa-search"></i> Cari</button>
+                                <button class="btn btn-primary" type="button" id="btn-cari-pasien">
+                                    <i class="fas fa-search"></i> Cari
+                                </button>
                             </div>
                             <input type="hidden" name="id_pasien" id="id_pasien">
                         </div>
@@ -279,7 +302,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label class="col-sm-4 col-form-label">No. Telepon</label>
+                                <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" id="display_no_telp" readonly>
                                 </div>
@@ -301,13 +324,13 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nama Lengkap</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nama_pasien]" required>
+                                    <input type="text" class="form-control" name="pasien[nama_pasien]" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">NIK</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nik]" required>
+                                    <input type="text" class="form-control" name="pasien[nik]" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -323,7 +346,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="tanggal_lahir_baru" name="pasien[tanggal_lahir]" onchange="hitungUmurBaru()" required>
+                                    <input type="text" class="form-control" id="tanggal_lahir_baru" name="pasien[tanggal_lahir]" onchange="hitungUmurBaru()" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -335,21 +358,21 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Alamat</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="pasien[alamat]" required></textarea>
+                                    <textarea class="form-control" name="pasien[alamat]" required autocomplete="off"></textarea>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Pekerjaan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[pekerjaan]" required>
+                                    <input type="text" class="form-control" name="pasien[pekerjaan]" required autocomplete="off">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3 row">
-                                <label class="col-sm-4 col-form-label">No. Telepon</label>
+                                <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[no_telp]" required>
+                                    <input type="text" class="form-control" name="pasien[no_telp]" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -367,7 +390,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nama Wali</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nama_wali]" required>
+                                    <input type="text" class="form-control" name="pasien[nama_wali]" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -386,20 +409,18 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Riwayat Alergi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[alergi]" required>
+                                    <input type="text" class="form-control" name="pasien[alergi]" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Riwayat Operasi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[status_operasi]" required>
+                                    <input type="text" class="form-control" name="pasien[status_operasi]" required autocomplete="off">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <hr>
                 <h5 class="mb-3">Detail Kunjungan</h5>
                 <div class="mb-3 row">
@@ -423,8 +444,12 @@
                 </div>
                 <div class="mb-3 row">
                     <div class="col-sm-10 ms-auto">
-                        <button type="button" onclick="tambah(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                        <a href="<?php echo base_url(); ?>resepsionis/registrasi" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
+                        <button type="button" onclick="tambah(event);" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Simpan
+                        </button>
+                        <a href="<?php echo base_url(); ?>resepsionis/registrasi" class="btn btn-warning">
+                            <i class="fas fa-reply me-2"></i>Kembali
+                        </a>
                     </div>
                 </div>
             </form>
@@ -436,10 +461,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cari Data Pasien</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+                <h5 class="modal-title">Cari Data Pasien</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div> 
             <div class="modal-body">
-                <div class="mb-3"><input type="text" id="search_pasien_keyword" class="form-control" placeholder="Ketik No RM atau Nama Pasien untuk mencari..."></div>
+                <div class="mb-3">
+                    <input type="text" id="search_pasien_keyword" class="form-control" placeholder="Ketik No RM atau Nama Pasien untuk mencari...">
+                </div>
                 <div class="table-responsive">
                     <table class="table table-hover" id="table-data">
                         <thead class="thead-light">
@@ -458,8 +486,10 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-md-7">&nbsp;</div><label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
-                            <div class="col-md-3 pull-right"><select class="form-control" id="jumlah_tampil">
+                            <div class="col-md-7">&nbsp;</div>
+                            <label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
+                            <div class="col-md-3 pull-right">
+                                <select class="form-control" id="jumlah_tampil">
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="50">50</option>
@@ -470,6 +500,11 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="far fa-window-close"></i> Tutup
+                </button>
+            </div><!--end modal-footer-->
         </div>
     </div>
 </div>

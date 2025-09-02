@@ -38,7 +38,12 @@
                 }
             }
         });
+
+        $('#pagination').find('a').off('click').on('click', function(e) {
+            e.preventDefault();
+        });
     }
+
 
     function loadPasien(cari = '') {
         $.ajax({
@@ -87,6 +92,10 @@
     }
 
     $(document).ready(function() {
+        $('#pagination').on('click', function(e) {
+            e.stopPropagation();
+        });
+
         const tanggalInput = document.getElementById('tanggal');
         const datepicker = new Datepicker(tanggalInput, {
             format: 'dd-mm-yyyy',
@@ -103,6 +112,37 @@
             loadPasien($(this).val());
         });
 
+        $('#pasienSearchModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        $('#jumlah_tampil').on('change', function() {
+            paging();
+        });
+
+
+        var timeInput = document.getElementById('waktu');
+        var timeMask = IMask(timeInput, {
+            mask: 'HH:MM',
+            blocks: {
+                HH: {
+                    mask: IMask.MaskedRange,
+                    from: 0,
+                    to: 23,
+                    maxLength: 2
+                },
+                MM: {
+                    mask: IMask.MaskedRange,
+                    from: 0,
+                    to: 59,
+                    maxLength: 2
+                }
+            },
+            lazy: false,
+            placeholderChar: '_'
+        });
+
         function getDokterTersedia() {
             let id_poli = $('#id_poli').val();
             let tanggal = $('#tanggal').val();
@@ -112,7 +152,7 @@
             dokterDropdown.html('<option value="">Memuat...</option>').prop('disabled', true);
             if (id_poli && tanggal && waktu) {
                 $.ajax({
-                    url: '<?php echo base_url("resepsionis/booking/get_available_doctors"); ?>',
+                    url: '<?php echo base_url("resepsionis/booking/get_dokter_ada"); ?>',
                     type: 'POST',
                     data: {
                         id_poli: id_poli,
@@ -191,14 +231,15 @@
         return isValid;
     }
 </script>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>resepsionis/booking">Booking</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url(); ?>resepsionis/booking">Booking</a>
+                        </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -217,7 +258,9 @@
                     <div class="col-sm-10">
                         <div class="input-group">
                             <input type="text" class="form-control" id="display_nama_pasien" placeholder="Klik tombol Cari..." readonly required>
-                            <button class="btn btn-primary" type="button" id="btn-cari-pasien"><i class="fas fa-search"></i> Cari</button>
+                            <button class="btn btn-primary" type="button" id="btn-cari-pasien">
+                                <i class="fas fa-search"></i> Cari
+                            </button>
                         </div>
                         <input type="hidden" name="id_pasien" id="id_pasien">
                     </div>
@@ -269,7 +312,7 @@
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label class="col-sm-4 col-form-label">No. Telepon</label>
+                            <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="display_no_telp" readonly>
                             </div>
@@ -312,13 +355,13 @@
                 <div class="mb-3 row">
                     <label class="col-sm-2 col-form-label">Tanggal Kunjungan</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="tanggal" id="tanggal" required>
+                        <input type="text" class="form-control" name="tanggal" id="tanggal" required autocomplete="off">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-2 col-form-label">Waktu Kunjungan</label>
+                    <label for="waktu" class="col-sm-2 col-form-label">Waktu Kunjungan</label>
                     <div class="col-sm-10">
-                        <input type="time" class="form-control" name="waktu" id="waktu" required>
+                        <input type="text" class="form-control" name="waktu" id="waktu" required autocomplete="off">
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -331,7 +374,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="mb-3 row"><label class="col-sm-2 col-form-label">Dokter Tersedia</label>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-label">Dokter Tersedia</label>
                     <div class="col-sm-10">
                         <select class="form-control" name="id_dokter" id="id_dokter" required disabled>
                             <option value="">Pilih Poli, Tanggal, & Waktu Dulu</option>
@@ -341,9 +385,13 @@
 
                 <div class="mt-3 row">
                     <div class="col-sm-10 ms-auto">
-                        <button type="button" onclick="tambah(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                        <a href="<?php echo base_url(); ?>resepsionis/booking"><button type="button" class="btn btn-warning">
-                                <i class="fas fa-reply me-2"></i>Kembali</button>
+                        <button type="button" onclick="tambah(event);" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Simpan
+                        </button>
+                        <a href="<?php echo base_url(); ?>resepsionis/booking">
+                            <button type="button" class="btn btn-warning">
+                                <i class="fas fa-reply me-2"></i>Kembali
+                            </button>
                         </a>
                     </div>
                 </div>
@@ -381,8 +429,10 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-md-7">&nbsp;</div><label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
-                            <div class="col-md-3 pull-right"><select class="form-control" id="jumlah_tampil">
+                            <div class="col-md-7">&nbsp;</div>
+                            <label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
+                            <div class="col-md-3 pull-right">
+                                <select class="form-control" id="jumlah_tampil">
                                     <option value="10">10</option>
                                     <option value="20">20</option>
                                     <option value="50">50</option>
@@ -393,6 +443,9 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="far fa-window-close"></i> Tutup</button>
+            </div><!--end modal-footer-->
         </div>
     </div>
 </div>

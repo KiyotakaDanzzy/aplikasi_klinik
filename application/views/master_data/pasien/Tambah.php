@@ -90,7 +90,9 @@
             <div class="page-title-box">
                 <div class="float-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url(); ?>master_data/pasien">Pasien</a>
+                        </li>
                         <li class="breadcrumb-item active">Tambah</li>
                     </ol>
                 </div>
@@ -102,20 +104,20 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Tambah Data Pasien</h4>
+                    <h4 class="card-title">Tambah Pasien</h4>
                 </div>
                 <div class="card-body">
                     <form id="form_tambah">
                         <div class="mb-3 row">
                             <label for="nama_pasien" class="col-sm-2 col-form-label">Nama Lengkap</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" placeholder="Nama Lengkap Pasien" required>
+                                <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" placeholder="Nama Lengkap Pasien" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="nik" class="col-sm-2 col-form-label">NIK</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nik" name="nik" placeholder="Nomor Induk Kependudukan" required>
+                                <input type="text" class="form-control" id="nik" name="nik" placeholder="Nomor Induk Kependudukan" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -131,7 +133,7 @@
                         <div class="row mb-3">
                             <label for="tanggal_lahir" class="col-sm-2 col-form-label">Tanggal Lahir</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir Pasien" required>
+                                <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" placeholder="Tanggal Lahir Pasien" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -143,19 +145,19 @@
                         <div class="row mb-3">
                             <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="alamat" name="alamat" placeholder="Alamat Pasien" required></textarea>
+                                <textarea class="form-control" id="alamat" name="alamat" placeholder="Alamat Pasien" required autocomplete="off"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="pekerjaan" class="col-sm-2 col-form-label">Pekerjaan</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan Pasien" required>
+                                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan" placeholder="Pekerjaan Pasien" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="no_telp" class="col-sm-2 col-form-label">No. Telepon</label>
+                            <label for="no_telp" class="col-sm-2 col-form-label">Nomor Telepon</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Nomor Telepon" required>
+                                <input type="text" class="form-control" id="no_telp" name="no_telp" placeholder="Nomor Telepon" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -172,7 +174,7 @@
                         <div class="row mb-3">
                             <label for="nama_wali" class="col-sm-2 col-form-label">Nama Wali</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nama_wali" name="nama_wali" placeholder="Nama Wali Pasien" required>
+                                <input type="text" class="form-control" id="nama_wali" name="nama_wali" placeholder="Nama Wali Pasien" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -190,19 +192,23 @@
                         <div class="row mb-3">
                             <label for="alergi" class="col-sm-2 col-form-label">Riwayat Alergi</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="alergi" name="alergi" placeholder="Riwayat Alergi" required>
+                                <input type="text" class="form-control" id="alergi" name="alergi" placeholder="Riwayat Alergi" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="status_operasi" class="col-sm-2 col-form-label">Riwayat Operasi</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="status_operasi" name="status_operasi" placeholder="Riwayat Operasi" required>
+                                <input type="text" class="form-control" id="status_operasi" name="status_operasi" placeholder="Riwayat Operasi" required autocomplete="off">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-10 ms-auto">
-                                <button type="button" class="btn btn-success" onclick="tambah(event)"><i class="fas fa-save me-2"></i>Simpan</button>
-                                <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</a>
+                                <button type="button" class="btn btn-success" onclick="tambah(event)">
+                                    <i class="fas fa-save me-2"></i>Simpan
+                                </button>
+                                <a href="<?php echo base_url('master_data/pasien'); ?>" class="btn btn-warning">
+                                    <i class="fas fa-reply me-2"></i>Kembali
+                                </a>
                             </div>
                         </div>
                     </form>

@@ -1,28 +1,34 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Tindakan_model extends CI_Model {
+class Tindakan_model extends CI_Model
+{
 
     public function get_data_tindakan($cari = null)
     {
-        $sql = "SELECT a.*, FORMAT(a.harga, 0) AS harga FROM mst_tindakan a WHERE 1=1";
-        $params = [];
-
-        if ($cari) {
-            $sql .= " AND (a.nama LIKE ? OR a.nama_poli LIKE ?)";
-            $params[] = "%$cari%";
-            $params[] = "%$cari%";
-        }
+        $this->db->select("a.id, a.nama, FORMAT(a.harga, 0, 'en_US') as harga, b.nama as nama_poli");
+        $this->db->from('mst_tindakan a');
+        $this->db->join('mst_poli b', 'a.id_poli = b.id', 'left');
         
-        $sql .= " ORDER BY a.id DESC";
-        $query = $this->db->query($sql, $params);
+        if ($cari) {
+            $this->db->group_start();
+            $this->db->like('a.nama', $cari);
+            $this->db->or_like('b.nama', $cari);
+            $this->db->group_end();
+        }
+
+        $this->db->order_by('a.id', 'DESC');
+        $query = $this->db->get();
         return $query->result();
     }
 
     public function get_tindakan_by_id($id)
     {
-        $sql = "SELECT a.* FROM mst_tindakan a WHERE a.id = ?";
-        $query = $this->db->query($sql, array($id));
+        $this->db->select('a.*, b.nama as nama_poli');
+        $this->db->from('mst_tindakan a');
+        $this->db->join('mst_poli b', 'a.id_poli = b.id', 'left');
+        $this->db->where('a.id', $id);
+        $query = $this->db->get();
         return $query->row_array();
     }
 
@@ -44,5 +50,11 @@ class Tindakan_model extends CI_Model {
         $this->db->where('id', $id);
         $this->db->delete('mst_tindakan');
         return $this->db->affected_rows() > 0;
+    }
+
+    public function insert_master_data($data)
+    {
+        $this->db->insert('mst_tindakan', $data);
+        return $this->db->insert_id();
     }
 }

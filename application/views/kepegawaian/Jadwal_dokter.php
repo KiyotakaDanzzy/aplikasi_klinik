@@ -81,7 +81,9 @@
                             </select>
                         </div>
                         <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-warning w-100" onclick="$('#filter_poli').val(''); filterJadwal();"><i class="fas fa-search"></i>  Reset Filter</button>
+                            <button type="button" class="btn btn-warning w-100" onclick="$('#filter_poli').val(''); filterJadwal();">
+                                <i class="fas fa-search me-2"></i>Reset Filter
+                            </button>
                         </div>
                     </div>
                 </div>

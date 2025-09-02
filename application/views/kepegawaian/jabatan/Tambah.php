@@ -26,7 +26,7 @@
     e.preventDefault()
 
     if (!validateForm('#form_tambah')) {
-        return;
+      return;
     }
 
     $.ajax({
@@ -84,17 +84,22 @@
         <div class="card-body">
           <div class="general-label">
             <form id="form_tambah">
-              <div class="mb-3 row"><label for="nama" class="col-sm-2 col-form-label">Nama Jabatan</label>
+              <div class="mb-3 row">
+                <label for="nama" class="col-sm-2 col-form-label">Nama Jabatan</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Jabatan" required>
+                  <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Jabatan" required autocomplete="off">
                 </div>
               </div>
               <div class="row">
                 <div class="col-sm-10 ms-auto">
-                  <button type="button" onclick="tambah(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                  <a href="<?php echo base_url(); ?>kepegawaian/jabatan"><button type="button" class="btn btn-warning">
-                    <i class="fas fa-reply me-2"></i>Kembali</button></a>
-                  </div>
+                  <button type="button" onclick="tambah(event);" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Simpan</button>
+                  <a href="<?php echo base_url(); ?>kepegawaian/jabatan">
+                    <button type="button" class="btn btn-warning">
+                      <i class="fas fa-reply me-2"></i>Kembali
+                    </button>
+                  </a>
+                </div>
               </div>
             </form>
           </div>

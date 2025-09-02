@@ -272,7 +272,7 @@
                   </div>
                 </div>
               </div>
-            </di>
+            </div>
 
           </div><!--end card-body-->
       </div><!--end card-->

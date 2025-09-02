@@ -7,7 +7,7 @@
             dokterDropdown.html('<option value="">Memuat...</option>').prop('disabled', true);
             if (id_poli) {
                 $.ajax({
-                    url: '<?php echo base_url("resepsionis/booking/get_available_doctors"); ?>',
+                    url: '<?php echo base_url("resepsionis/booking/get_dokter_ada"); ?>',
                     type: 'POST',
                     data: {
                         id_poli: id_poli,
@@ -88,7 +88,9 @@
             <div class="page-title-box">
                 <div class="float-end">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>resepsionis/booking">Registrasi</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="<?php echo base_url(); ?>resepsionis/booking">Registrasi</a>
+                        </li>
                         <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </div>
@@ -103,34 +105,49 @@
         <div class="card-body">
             <form id="form_edit">
                 <input type="hidden" name="id" value="<?php echo $registrasi['id']; ?>">
-                <div class="mb-3 row"><label class="col-sm-3 col-form-label">Kode Invoice</label>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Kode Invoice</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext"><?php echo $registrasi['kode_invoice']; ?></p>
                     </div>
                 </div>
-                <div class="mb-3 row"><label class="col-sm-3 col-form-label">Pasien</label>
+                <div class="mb-3 row">
+                    <label class="col-sm-3 col-form-label">Pasien</label>
                     <div class="col-sm-9">
                         <p class="form-control-plaintext"><?php echo $registrasi['nama_pasien']; ?></p>
                     </div>
                 </div>
                 <hr>
-                <div class="mb-3 row"><label for="id_poli" class="col-sm-3 col-form-label">Poli Tujuan</label>
-                    <div class="col-sm-9"><select class="form-control" name="id_poli" id="id_poli" required>
+                <div class="mb-3 row">
+                    <label for="id_poli" class="col-sm-3 col-form-label">Poli Tujuan</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="id_poli" id="id_poli" required>
                             <option value="">Pilih Poli...</option>
-                            <?php foreach ($data_poli as $poli) {$selected = ($poli->id == $registrasi['id_poli']) ? 'selected' : '';echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";} ?>
+                            <?php foreach ($data_poli as $poli) {
+                                $selected = ($poli->id == $registrasi['id_poli']) ? 'selected' : '';
+                                echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";
+                            } ?>
                         </select>
                     </div>
                 </div>
-                <div class="mb-3 row"><label for="id_dokter" class="col-sm-3 col-form-label">Dokter Tujuan</label>
-                    <div class="col-sm-9"><select class="form-control" name="id_dokter" id="id_dokter" required>
+                <div class="mb-3 row">
+                    <label for="id_dokter" class="col-sm-3 col-form-label">Dokter Tujuan</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="id_dokter" id="id_dokter" required>
                             <option value="">Pilih Poli Dulu</option>
                         </select>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <div class="col-sm-9 ms-auto">
-                        <button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button>
-                        <a href="<?php echo base_url(); ?>resepsionis/registrasi"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a>
+                        <button type="button" onclick="edit(event);" class="btn btn-success">
+                            <i class="fas fa-save me-2"></i>Simpan
+                        </button>
+                        <a href="<?php echo base_url(); ?>resepsionis/registrasi">
+                            <button type="button" class="btn btn-warning">
+                                <i class="fas fa-reply me-2"></i>Kembali
+                            </button>
+                        </a>
                     </div>
                 </div>
             </form>

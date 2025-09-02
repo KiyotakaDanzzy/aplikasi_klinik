@@ -1,14 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Diagnosa_model extends CI_Model {
+class Diagnosa_model extends CI_Model
+{
 
-    public function get_data_diagnosa($cari = null)
+    public function get_data_diagnosa($cari = null, $id_poli = null)
     {
-        $sql = "SELECT a.id, a.nama_diagnosa, b.nama as nama_poli 
-                FROM mst_diagnosa a 
-                LEFT JOIN mst_poli b ON a.id_poli = b.id 
-                WHERE 1=1";
+        $sql = "SELECT a.*, b.nama as nama_poli 
+            FROM mst_diagnosa a 
+            LEFT JOIN mst_poli b ON a.id_poli = b.id 
+            WHERE 1=1";
         $params = [];
 
         if ($cari) {
@@ -17,10 +18,17 @@ class Diagnosa_model extends CI_Model {
             $params[] = "%$cari%";
         }
 
+        if ($id_poli) {
+            $sql .= " AND a.id_poli = ?";
+            $params[] = $id_poli;
+        }
+
         $sql .= " ORDER BY a.id DESC";
+
         $query = $this->db->query($sql, $params);
         return $query->result();
     }
+
 
     public function get_diagnosa_by_id($id)
     {
@@ -47,5 +55,11 @@ class Diagnosa_model extends CI_Model {
         $this->db->where('id', $id);
         $this->db->delete('mst_diagnosa');
         return $this->db->affected_rows() > 0;
+    }
+
+    public function insert_master_data($data)
+    {
+        $this->db->insert('mst_diagnosa', $data);
+        return $this->db->insert_id();
     }
 }

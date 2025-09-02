@@ -25,10 +25,10 @@
   function tambah(e) {
     e.preventDefault()
     if (!validateForm('#form_tambah')) {
-        return;
+      return;
     }
     $.ajax({
-      url: '<?php echo base_url('master_data/diagnosa/diagnosa/tambah_aksi') ?>',
+      url: '<?php echo base_url('master_data/diagnosa/tambah_aksi') ?>',
       method: 'POST',
       data: $('#form_tambah').serialize(),
       dataType: 'json',
@@ -43,7 +43,7 @@
             })
             .then((result) => {
               if (result.isConfirmed) {
-                window.location.href = '<?php echo base_url() ?>master_data/diagnosa/diagnosa'
+                window.location.href = '<?php echo base_url() ?>master_data/diagnosa'
               }
             })
         } else {
@@ -65,7 +65,9 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/diagnosa/diagnosa">Diagnosa</a></li>
+            <li class="breadcrumb-item">
+              <a href="<?php echo base_url(); ?>master_data/diagnosa">Diagnosa</a>
+            </li>
             <li class="breadcrumb-item active">Tambah</li>
           </ol>
         </div>
@@ -85,7 +87,7 @@
               <div class="mb-3 row">
                 <label for="nama_diagnosa" class="col-sm-2 col-form-label">Nama Diagnosa</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" placeholder="Input Nama Diagnosa" required>
+                  <input type="text" class="form-control" name="nama_diagnosa" id="nama_diagnosa" placeholder="Input Nama Diagnosa" required autocomplete="off">
                 </div>
               </div>
               <div class="mb-3 row">
@@ -102,10 +104,12 @@
               <div class="row">
                 <div class="col-sm-10 ms-auto">
                   <button type="button" onclick="tambah(event);" class="btn btn-success">
-                    <i class="fas fa-save me-2"></i>Simpan</button>
+                    <i class="fas fa-save me-2"></i>Simpan
+                  </button>
                   <a href="<?php echo base_url(); ?>master_data/diagnosa">
-                    <button type="button" class="btn btn-warning">
-                      <i class="fas fa-reply me-2"></i>Kembali</button>
+                      <button type="button" class="btn btn-warning">
+                        <i class="fas fa-reply me-2"></i>Kembali
+                      </button>
                   </a>
                 </div>
               </div>

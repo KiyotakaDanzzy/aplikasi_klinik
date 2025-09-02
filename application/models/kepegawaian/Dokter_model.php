@@ -34,19 +34,15 @@ class Dokter_model extends CI_Model
         return $query->result();
     }
 
-    public function get_available_doctors($id_poli, $tanggal_db, $waktu, $hari)
+    public function get_dokter_ada($id_poli, $tanggal_db, $waktu, $hari)
     {
         if (empty($id_poli) || empty($tanggal_db) || empty($waktu) || empty($hari)) return [];
-
         $this->db->select('d.id, d.nama_pegawai, j.jam_mulai, j.jam_selesai');
         $this->db->from('kpg_dokter d');
         $this->db->join('rsp_jadwal_dokter j', 'd.id_pegawai = j.id_pegawai');
         $this->db->where('d.id_poli', $id_poli);
-
         $this->db->where('j.hari', $hari);
-
         $this->db->where($this->db->escape($waktu) . ' BETWEEN j.jam_mulai AND j.jam_selesai');
-
         return $this->db->get()->result();
     }
 

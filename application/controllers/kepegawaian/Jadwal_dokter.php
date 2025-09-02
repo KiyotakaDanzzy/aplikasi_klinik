@@ -105,16 +105,6 @@ class Jadwal_dokter extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function view_tambah()
-    {
-        $data['title'] = 'Jadwal Dokter';
-        $data['data_dokter'] = $this->Dokter_model->get_data_dokter();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/tambah_jadwal', $data);
-        $this->load->view('templates/footer');
-    }
-
     public function tambah_aksi()
     {
         $id_dokter = $this->input->post('id_dokter');
@@ -128,7 +118,7 @@ class Jadwal_dokter extends CI_Controller
         echo json_encode(['status' => $simpan, 'message' => $simpan ? 'Jadwal berhasil disimpan' : 'Gagal menyimpan jadwal']);
     }
 
-    public function view_edit($id_dokter)
+    public function view_tambah($id_dokter)
     {
         $data['title'] = 'Jadwal Dokter';
         $data['dokter'] = $this->Dokter_model->get_dokter_by_id($id_dokter);
@@ -140,7 +130,7 @@ class Jadwal_dokter extends CI_Controller
         $data['hari_tersedia'] = $hari_tersedia;
 
         $this->load->view('templates/header', $data);
-        $this->load->view('kepegawaian/dokter/edit_jadwal', $data);
+        $this->load->view('kepegawaian/dokter/tambah_jadwal', $data);
         $this->load->view('templates/footer');
     }
 

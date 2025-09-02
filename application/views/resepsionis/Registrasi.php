@@ -8,7 +8,7 @@
 
     function get_data() {
         let cari = $('#cari').val();
-        let count_header = $('#table-data thead tr th').length;
+        let hitung_baris = $('#table-data thead tr th').length;
         $.ajax({
             url: '<?php echo base_url("resepsionis/registrasi/result_data"); ?>',
             type: "POST",
@@ -17,7 +17,14 @@
             },
             dataType: "json",
             beforeSend: () => {
-                $('#table-data tbody').html(`<tr id="tr-loading"><td colspan="${count_header}" class="text-center">Memuat data...</td></tr>`);
+                let loading = `<tr id="tr-loading">
+                                  <td colspan="${hitung_baris}" class="text-center">
+                                      <div class="loader">
+                                          <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
+                                      </div>
+                                  </td>
+                              </tr>`;
+                $(`#table-data tbody`).html(loading);
             },
             success: function(res) {
                 let table = "";
@@ -34,7 +41,9 @@
                                 <td>${item.nama_dokter}</td>
                                 <td>${item.tanggal}</td>
                                 <td>${item.waktu}</td>
-                                <td><span class="badge bg-success">${item.status_registrasi}</span></td>
+                                <td>
+                                    <span class="badge bg-success">${item.status_registrasi}</span>
+                                </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-sm btn-warning" title="Detail" onclick="showDetail(${item.id})"><i class="fas fa-eye"></i></button>
                                     <a href="<?php echo base_url('resepsionis/registrasi/view_edit/'); ?>${item.id}" class="btn btn-sm btn-info" title="Edit"><i class="fas fa-pencil-alt"></i></a>
@@ -44,7 +53,7 @@
                         `;
                     }
                 } else {
-                    table += `<tr><td colspan="${count_header}" class="text-center">Data Kosong</td></tr>`;
+                    table += `<tr><td colspan="${hitung_baris}" class="text-center">Data Kosong</td></tr>`;
                 }
                 $('#table-data tbody').html(table);
                 paging();
@@ -146,7 +155,11 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h4 class="card-title">Data <?php echo $title; ?></h4>
-            <a href="<?php echo base_url(); ?>resepsionis/registrasi/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+            <a href="<?php echo base_url(); ?>resepsionis/registrasi/view_tambah">
+                <button type="button" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>Tambah
+                </button>
+            </a>
         </div>
         <div class="card-body">
             <div class="row mb-3">
@@ -165,7 +178,7 @@
                         <tr>
                             <th>#</th>
                             <th>Invoice</th>
-                            <th>No. Antrian</th>
+                            <th>Nomor Antrian</th>
                             <th>Pasien</th>
                             <th>Poli</th>
                             <th>Dokter</th>
@@ -184,8 +197,10 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="row">
-                        <div class="col-md-7">&nbsp;</div><label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
-                        <div class="col-md-3 pull-right"><select class="form-control" id="jumlah_tampil">
+                        <div class="col-md-7">&nbsp;</div>
+                        <label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
+                        <div class="col-md-3 pull-right">
+                            <select class="form-control" id="jumlah_tampil">
                                 <option value="10">10</option>
                                 <option value="20">20</option>
                                 <option value="50">50</option>
@@ -203,7 +218,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Registrasi</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">Detail Registrasi</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <dl class="row">
@@ -211,13 +227,13 @@
                     <dd class="col-sm-8" id="detail_kode_invoice"></dd>
                     <dt class="col-sm-4">Kode Booking</dt>
                     <dd class="col-sm-8" id="detail_kode_booking"></dd>
-                    <dt class="col-sm-4">No. Antrian</dt>
+                    <dt class="col-sm-4">Nomor Antrian</dt>
                     <dd class="col-sm-8" id="detail_no_antrian"></dd>
                     <dt class="col-sm-4">Nama Pasien</dt>
                     <dd class="col-sm-8" id="detail_nama_pasien"></dd>
                     <dt class="col-sm-4">NIK</dt>
                     <dd class="col-sm-8" id="detail_nik"></dd>
-                    <dt class="col-sm-4">No. Telepon</dt>
+                    <dt class="col-sm-4">Nomor Telepon</dt>
                     <dd class="col-sm-8" id="detail_no_telp"></dd>
                     <dt class="col-sm-4">Alamat</dt>
                     <dd class="col-sm-8" id="detail_alamat"></dd>
@@ -231,7 +247,11 @@
                     <dd class="col-sm-8" id="detail_status_registrasi"></dd>
                 </dl>
             </div>
-            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="far fa-window-close me-2"></i>Tutup
+                </button>
+            </div>
         </div>
     </div>
 </div>

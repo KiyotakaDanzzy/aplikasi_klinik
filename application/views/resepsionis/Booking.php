@@ -12,7 +12,7 @@
     function get_data() {
         let cari = $('#cari').val();
         let status_booking = $('#filter_status').val();
-        let count_header = $('#table-data thead tr th').length;
+        let hitung_baris = $('#table-data thead tr th').length;
         $.ajax({
             url: '<?php echo base_url("resepsionis/booking/result_data"); ?>',
             type: "POST",
@@ -21,9 +21,20 @@
                 status_booking: status_booking
             },
             dataType: "json",
-            beforeSend: () => {
-                $('#table-data tbody').html(`<tr id="tr-loading"><td colspan="${count_header}" class="text-center">Memuat data...</td></tr>`);
-            },
+            // beforeSend: () => {
+            //     $('#table-data tbody').html(`<tr id="tr-loading"><td colspan="${hitung_baris}" class="text-center">Memuat data...</td></tr>`);
+            // },
+            beforeSend : () => {
+              let loading = `<tr id="tr-loading">
+                                  <td colspan="${hitung_baris}" class="text-center">
+                                      <div class="loader">
+                                          <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
+                                      </div>
+                                  </td>
+                              </tr>`;
+
+              $(`#table-data tbody`).html(loading);
+          },
             success: function(res) {
                 let table = "";
                 if (res.result) {
@@ -62,7 +73,7 @@
                         `;
                     }
                 } else {
-                    table += `<tr><td colspan="${count_header+1}" class="text-center">Data Kosong</td></tr>`;
+                    table += `<tr><td colspan="${hitung_baris+1}" class="text-center">Data Kosong</td></tr>`;
                 }
                 $('#table-data tbody').html(table);
                 paging();
@@ -180,7 +191,16 @@
                     $('#detail_dokter').text(response.data.nama_dokter || '-');
                     $('#detail_tanggal').text((response.data.tanggal || '') + ' ' + (response.data.waktu || ''));
                     $('#detail_dibuat').text(response.data.tanggal_booking || '-');
-                    $('#detail_status').text(response.data.status_booking || '-');
+                    let badge = '';
+                    if (response.data.status_booking === 'Pending') {
+                        badge = '<span class="badge bg-warning">Pending</span>';
+                    } else if (response.data.status_booking === 'Disetujui') {
+                        badge = '<span class="badge bg-success">Disetujui</span>';
+                    } else {
+                        badge = `<span class="badge bg-secondary">${response.data.status_booking || '-'}</span>`;
+                    }
+
+                    $('#detail_status').html(badge);
                     $('#detailBookingModal').modal('show');
                 } else {
                     Swal.fire('Gagal!', response.message, 'error');
@@ -190,10 +210,26 @@
     }
 </script>
 <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><?php echo $title; ?></li>
+                    </ol>
+                </div>
+                <h4 class="page-title"><?php echo $title; ?></h4>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
             <h4 class="card-title">Data <?php echo $title; ?></h4>
-            <a href="<?php echo base_url(); ?>resepsionis/booking/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+            <a href="<?php echo base_url(); ?>resepsionis/booking/view_tambah">
+                <button type="button" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>Tambah
+                </button>
+            </a>
         </div>
         <div class="card-body">
             <div class="row mb-3">
@@ -205,11 +241,15 @@
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                        <button type="button" class="btn btn-warning w-100" onclick="$('#filter_status').val(''); get_data();"><i class="fas fa-search"></i>  Reset Filter</button>
+                    <button type="button" class="btn btn-warning w-100" onclick="$('#filter_status').val(''); get_data();">
+                        <i class="fas fa-search me-2"></i>Reset Filter
+                    </button>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-4 ms-auto">
                     <div class="input-group">
-                        <div class="input-group-text"><i class="fas fa-search"></i></div>
+                        <div class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </div>
                         <input type="text" class="form-control" id="cari" placeholder="Cari Pasien/Kode/Poli/Dokter...">
                     </div>
                 </div>
@@ -223,7 +263,7 @@
                             <th>Pasien</th>
                             <th>Poli</th>
                             <th>Dokter</th>
-                            <th>Tgl Kunjungan</th>
+                            <th>Tanggal Kunjungan</th>
                             <th>Waktu</th>
                             <th>Status</th>
                             <th class="text-center">Aksi</th>
@@ -239,7 +279,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="row">
-                        <div class="col-md-7">&nbsp;</div><label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
+                        <div class="col-md-7">&nbsp;</div>
+                        <label class="col-md-2 control-label d-flex align-items-center justify-content-end">Tampil</label>
                         <div class="col-md-3 pull-right">
                             <select class="form-control" id="jumlah_tampil">
                                 <option value="10">10</option>
@@ -259,7 +300,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Booking</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">Detail Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <dl class="row">
@@ -281,7 +323,11 @@
                     <dd class="col-sm-8" id="detail_status"></dd>
                 </dl>
             </div>
-            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="far fa-window-close me-2"></i>Tutup
+                </button>
+            </div>
         </div>
     </div>
 </div>

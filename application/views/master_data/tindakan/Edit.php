@@ -1,4 +1,13 @@
 <script type="text/javascript">
+  function FormatCurrency(input) {
+        let value = input.value.replace(/[^0-9]/g, '');
+        if (value) {
+            input.value = new Intl.NumberFormat('id_ID').format(value);
+        } else {
+            input.value = '';
+        }
+    }
+
   function validateForm(formSelector) {
     let isValid = true;
     $(formSelector + ' [required]').removeClass('is-invalid');
@@ -25,7 +34,7 @@
   function edit(e) {
     e.preventDefault()
     if (!validateForm('#form_edit')) {
-        return;
+      return;
     }
     $.ajax({
       url: '<?php echo base_url('master_data/tindakan/edit_aksi') ?>',
@@ -58,6 +67,12 @@
       }
     });
   }
+  $(document).ready(function() {
+        let nominalInput = document.getElementById('harga');
+        if (nominalInput.value) {
+            FormatCurrency(nominalInput);
+        }
+    });
 </script>
 <div class="container-fluid">
   <div class="row">
@@ -65,7 +80,9 @@
       <div class="page-title-box">
         <div class="float-end">
           <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?php echo base_url(); ?>master_data/tindakan">Tindakan</a></li>
+            <li class="breadcrumb-item">
+              <a href="<?php echo base_url(); ?>master_data/tindakan">Tindakan</a>
+            </li>
             <li class="breadcrumb-item active">Edit</li>
           </ol>
         </div>
@@ -83,27 +100,43 @@
           <div class="general-label">
             <form id="form_edit">
               <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-              <div class="mb-3 row"><label for="nama" class="col-sm-2 col-form-label">Nama Tindakan</label>
-                <div class="col-sm-10"><input type="text" class="form-control" name="nama" id="nama" value="<?php echo $row['nama']; ?>" required></div>
+              <div class="mb-3 row">
+                <label for="nama" class="col-sm-2 col-form-label">Nama Tindakan</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="nama" id="nama" value="<?php echo $row['nama']; ?>" required autocomplete="off">
+                </div>
               </div>
-              <div class="mb-3 row"><label for="harga" class="col-sm-2 col-form-label">Harga</label>
+              <div class="mb-3 row">
+                <label for="harga" class="col-sm-2 col-form-label">Harga</label>
                 <div class="col-sm-10">
                   <div class="input-group">
                     <div class="input-group-text">Rp</div>
-                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" placeholder="Biaya Tindakan" required>
+                    <input type="text" class="form-control" name="harga" id="harga" onkeyup="FormatCurrency(this);" required autocomplete="off" value="<?php echo $row['harga']; ?>">
                   </div>
                 </div>
               </div>
-              <div class="mb-3 row"><label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
-                <div class="col-sm-10"><select class="form-control" name="id_poli" id="id_poli" required>
+              <div class="mb-3 row">
+                <label for="id_poli" class="col-sm-2 col-form-label">Poli</label>
+                <div class="col-sm-10">
+                  <select class="form-control" name="id_poli" id="id_poli" required>
                     <option value="">Pilih Poli</option><?php foreach ($data_poli as $poli) {
                                                           $selected = ($poli->id == $row['id_poli']) ? 'selected' : '';
                                                           echo "<option value='{$poli->id}' {$selected}>{$poli->nama}</option>";
                                                         } ?>
-                  </select></div>
+                  </select>
+                </div>
               </div>
               <div class="row">
-                <div class="col-sm-10 ms-auto"><button type="button" onclick="edit(event);" class="btn btn-success"><i class="fas fa-save me-2"></i>Simpan</button><a href="<?php echo base_url(); ?>master_data/tindakan"><button type="button" class="btn btn-warning"><i class="fas fa-reply me-2"></i>Kembali</button></a></div>
+                <div class="col-sm-10 ms-auto">
+                  <button type="button" onclick="edit(event);" class="btn btn-success">
+                    <i class="fas fa-save me-2"></i>Simpan
+                  </button>
+                  <a href="<?php echo base_url(); ?>master_data/tindakan">
+                    <button type="button" class="btn btn-warning">
+                      <i class="fas fa-reply me-2"></i>Kembali
+                    </button>
+                  </a>
+                </div>
               </div>
             </form>
           </div>

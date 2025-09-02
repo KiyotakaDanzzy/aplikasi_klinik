@@ -9,7 +9,7 @@
 
     function get_data() {
         let cari = $('#cari').val();
-        let count_header = $(`#table-data thead tr th`).length
+        let hitung_baris = $(`#table-data thead tr th`).length
 
         $.ajax({
             url: '<?php echo base_url(); ?>master_data/poli/result_data',
@@ -20,7 +20,7 @@
             dataType: "json",
             beforeSend: () => {
                 let loading = `<tr id="tr-loading">
-                                  <td colspan="${count_header}" class="text-center">
+                                  <td colspan="${hitung_baris}" class="text-center">
                                       <div class="loader">
                                           <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
                                       </div>
@@ -52,7 +52,7 @@
                 } else {
                     table += `
                       <tr>
-                          <td colspan="${count_header}" class="text-center">Data Kosong</td>
+                          <td colspan="${hitung_baris}" class="text-center">Data Kosong</td>
                       </tr>
                   `;
                 }
@@ -171,21 +171,27 @@
             <div class="card">
                 <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center pt-3 pb-3">
                     <h4 class="card-title">Data <?php echo $title; ?></h4>
-                    <a href="<?php echo base_url(); ?>master_data/poli/view_tambah"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</button></a>
+                    <a href="<?php echo base_url(); ?>master_data/poli/view_tambah">
+                        <button type="button" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Tambah
+                        </button>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <div class="input-group-text"><i class="fas fa-search"></i></div>
+                                <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                </div>
                                 <input type="text" class="form-control" id="cari" placeholder="Cari Kode atau Nama">
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table mb-0 table-hover" id="table-data">
-                            <thead>
-                                <tr class="table-success">
+                            <thead class="thead-light">
+                                <tr>
                                     <th>#</th>
                                     <th>Kode</th>
                                     <th>Nama Poli</th>
@@ -216,7 +222,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

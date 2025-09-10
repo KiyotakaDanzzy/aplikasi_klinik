@@ -93,7 +93,7 @@
                         <form id="form_edit">
                             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                             <div class="mb-3 row">
-                                <label for="nama" class="col-sm-2 col-form-label">Nama Jenis Biaya</label>
+                                <label for="nama" class="col-sm-2 col-form-label">Jenis Biaya</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" name="nama" value="<?php echo $row['nama']; ?>" id="nama" placeholder="Input Jenis Biaya" required autocomplete="off">
                                 </div>

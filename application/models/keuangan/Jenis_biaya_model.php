@@ -9,8 +9,7 @@ class Jenis_biaya_model extends CI_Model {
         $params = [];
 
         if ($cari) {
-            $sql .= " AND (a.kode LIKE ? OR a.nama LIKE ?)";
-            $params[] = "%$cari%";
+            $sql .= " AND (a.nama LIKE ?)";
             $params[] = "%$cari%";
         }
 

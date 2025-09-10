@@ -90,6 +90,7 @@
                                         <?php foreach ($data_jenis as $jenis_biaya) {
                                             echo "<option value='{$jenis_biaya->id}'>{$jenis_biaya->nama}</option>";
                                         } ?>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                             </div>

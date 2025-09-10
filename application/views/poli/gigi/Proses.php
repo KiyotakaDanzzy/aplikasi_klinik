@@ -541,7 +541,9 @@
                         <li class="breadcrumb-item active">Proses</li>
                     </ol>
                 </div>
-                <h4 class="page-title"><?php echo $title; ?></h4>
+                <h4 class="page-title">
+                    <?php echo $title; ?>
+                </h4>
             </div>
         </div>
     </div>

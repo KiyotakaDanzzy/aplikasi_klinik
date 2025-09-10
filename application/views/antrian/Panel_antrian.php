@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="utf-8" />
   <title>Aplikasi Klinik</title>
@@ -20,7 +19,6 @@
     body {
       background-color: #f5f7f9;
     }
-
     #back-button {
       position: fixed;
       top: 20px;
@@ -39,16 +37,13 @@
       transition: opacity 0.3s ease-in-out;
       z-index: 1000;
     }
-
     #back-button:hover {
       opacity: 1;
     }
-
     .info-card .display-4 {
       font-weight: 600;
       color: #333;
     }
-
     .table-antrian tbody tr td {
       padding-top: 1rem;
       padding-bottom: 1rem;
@@ -57,11 +52,10 @@
     }
   </style>
 </head>
-
 <body>
   <script>
     function updateMonitor() {
-      $.ajax({
+      $.ajax({ 
         url: '<?php echo base_url("antrian/panel_antrian/get_update"); ?>',
         type: 'GET',
         dataType: 'json',
@@ -75,11 +69,9 @@
             $('#poli_panggil').text('Belum ada panggilan');
             $('#dokter_panggil').text('-');
           }
-
           if (response.stats) {
             $('#total_antrian').text(response.stats.total_antrian);
           }
-
           let tableRows = '';
           if (response.selanjutnya && response.selanjutnya.length > 0) {
             response.selanjutnya.forEach(item => {
@@ -98,17 +90,14 @@
         }
       });
     }
-
     $(document).ready(function() {
       updateMonitor();
       setInterval(updateMonitor, 5000);
     });
   </script>
-
   <a href="javascript:history.back()" id="back-button" title="Kembali">
     <i class="fas fa-arrow-left"></i>
   </a>
-
   <div class="container-fluid">
     <div class="row mt-5">
       <div class="col-12 col-md-4">
@@ -184,7 +173,6 @@
       </div>
     </div>
   </div>
-
   <script src="<?php echo base_url(); ?>assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/libs/simplebar/simplebar.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/libs/feather-icons/feather.min.js"></script>
@@ -195,5 +183,4 @@
   <script src="<?php echo base_url() ?>/assets/js/js-form.js"></script>
   <script src="<?php echo base_url() ?>assets/libs/vanillajs-datepicker/js/datepicker-full.min.js"></script>
 </body>
-
 </html>

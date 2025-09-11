@@ -3,7 +3,7 @@
         $('#pagination').on('click', function(e) {
             e.stopPropagation();
         });
-        
+
         const tanggalInput = document.getElementById('tanggal_lahir_baru');
         const datepicker = new Datepicker(tanggalInput, {
             format: 'dd-mm-yyyy',
@@ -410,12 +410,18 @@
                                 <label class="col-sm-4 col-form-label">Riwayat Alergi</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="pasien[alergi]" required autocomplete="off">
+                                    <div class="form-text text-danger">
+                                        <strong>Perhatian:</strong> Jika pasien tidak ada alergi, isi dengan " - "
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Riwayat Operasi</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="pasien[status_operasi]" required autocomplete="off">
+                                    <div class="form-text text-danger">
+                                        <strong>Perhatian:</strong> Jika pasien tidak ada riwayat operasi, isi dengan " - "
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -463,7 +469,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Cari Data Pasien</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div> 
+            </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <input type="text" id="search_pasien_keyword" class="form-control" placeholder="Ketik No RM atau Nama Pasien untuk mencari...">

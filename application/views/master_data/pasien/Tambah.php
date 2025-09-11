@@ -193,12 +193,18 @@
                             <label for="alergi" class="col-sm-2 col-form-label">Riwayat Alergi</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="alergi" name="alergi" placeholder="Riwayat Alergi" required autocomplete="off">
+                                <div class="form-text text-danger">
+                                    <strong>Perhatian:</strong> Jika pasien tidak ada alergi, isi dengan " - "
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="status_operasi" class="col-sm-2 col-form-label">Riwayat Operasi</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="status_operasi" name="status_operasi" placeholder="Riwayat Operasi" required autocomplete="off">
+                                <div class="form-text text-danger">
+                                    <strong>Perhatian:</strong> Jika pasien tidak ada riwayat operasi, isi dengan " - "
+                                </div>
                             </div>
                         </div>
                         <div class="row">

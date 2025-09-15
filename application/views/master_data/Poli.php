@@ -184,7 +184,7 @@
                                 <div class="input-group-text">
                                     <i class="fas fa-search"></i>
                                 </div>
-                                <input type="text" class="form-control" id="cari" placeholder="Cari Kode atau Nama">
+                                <input type="text" class="form-control" id="cari" placeholder="Cari Kode/Nama">
                             </div>
                         </div>
                     </div>

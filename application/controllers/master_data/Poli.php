@@ -57,7 +57,7 @@ class Poli extends CI_Controller {
             $response['message'] = 'Data berhasil disimpan';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan dat.';
+            $response['message'] = 'Gagal menyimpan data.';
         }
 
         header('Content-Type: application/json');
@@ -80,6 +80,7 @@ class Poli extends CI_Controller {
             'kode' => $this->input->post('kode'),
             'nama' => $this->input->post('nama')
         ];
+
         $update = $this->Poli_model->update_poli($id, $data);
 
         $response = [];

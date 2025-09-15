@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Jenis_biaya_model extends CI_Model {
+class Jenis_biaya_model extends CI_Model
+{
 
     public function get_data_jenis($cari = null)
     {
@@ -33,9 +34,20 @@ class Jenis_biaya_model extends CI_Model {
 
     public function update_jenis($id, $data)
     {
+        $this->db->trans_start();
         $this->db->where('id', $id);
         $this->db->update('rsp_jenis_biaya', $data);
-        return $this->db->affected_rows() > 0;
+        $data_update = [
+            'nama_jenis_biaya' => $data['nama']
+        ];
+        $this->db->where('id_jenis_biaya', $id)->update('rsp_pemasukan', $data_update);
+        $this->db->where('id_jenis_biaya', $id)->update('rsp_pengeluaran', $data_update);
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function delete_jenis($id)

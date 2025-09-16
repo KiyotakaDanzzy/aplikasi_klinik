@@ -6,13 +6,12 @@ class Pemasukan_model extends CI_Model
 
     public function get_data_pemasukan($cari = null)
     {
-        $this->db->select("a.id, a.keterangan, FORMAT(a.nominal, 0, 'en_US') as nominal, b.nama as nama_jenis_biaya");
+        $this->db->select("a.id, a.keterangan, FORMAT(a.nominal, 0, 'en_US') as nominal, a.nama_jenis_biaya");
         $this->db->from('rsp_pemasukan a');
-        $this->db->join('rsp_jenis_biaya b', 'a.id_jenis_biaya = b.id', 'left');
 
         if ($cari) {
             $this->db->group_start();
-            $this->db->like('b.nama', $cari);
+            $this->db->like('a.nama_jenis_biaya', $cari);
             $this->db->or_like('a.keterangan', $cari);
             $this->db->group_end();
         }
@@ -24,9 +23,8 @@ class Pemasukan_model extends CI_Model
 
     public function get_pemasukan_by_id($id)
     {
-        $this->db->select('a.*, b.nama as nama_jenis_biaya');
+        $this->db->select('a.*');
         $this->db->from('rsp_pemasukan a');
-        $this->db->join('rsp_jenis_biaya b', 'a.id_jenis_biaya = b.id', 'left');
         $this->db->where('a.id', $id);
         $query = $this->db->get();
         return $query->row_array();

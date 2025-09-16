@@ -4,28 +4,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Diagnosa_model extends CI_Model
 {
 
-    public function get_data_diagnosa($cari = null, $id_poli = null)
+    public function get_data_diagnosa($cari = null)
     {
-        $sql = "SELECT a.*, b.nama as nama_poli 
-            FROM mst_diagnosa a 
-            LEFT JOIN mst_poli b ON a.id_poli = b.id 
-            WHERE 1=1";
-        $params = [];
-
+        $this->db->select("a.id, a.nama_diagnosa, a.nama_poli");
+        $this->db->from('mst_diagnosa a');
+        
         if ($cari) {
-            $sql .= " AND (a.nama_diagnosa LIKE ? OR b.nama LIKE ?)";
-            $params[] = "%$cari%";
-            $params[] = "%$cari%";
+            $this->db->group_start();
+            $this->db->like('a.nama_diagnosa', $cari);
+            $this->db->or_like('a.nama_poli', $cari);
+            $this->db->group_end();
         }
 
-        if ($id_poli) {
-            $sql .= " AND a.id_poli = ?";
-            $params[] = $id_poli;
-        }
-
-        $sql .= " ORDER BY a.id DESC";
-
-        $query = $this->db->query($sql, $params);
+        $this->db->order_by('a.id', 'DESC');
+        $query = $this->db->get();
         return $query->result();
     }
 

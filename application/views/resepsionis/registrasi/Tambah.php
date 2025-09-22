@@ -318,19 +318,18 @@
                 </div>
 
                 <div id="form-pasien-baru" style="display:none;">
-                    <hr>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nama Lengkap</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nama_pasien]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[nama_pasien]" placeholder="Masukkan Nama Pasien" autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">NIK</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nik]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[nik]" placeholder="Masukkan NIK" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -346,7 +345,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="tanggal_lahir_baru" name="pasien[tanggal_lahir]" onchange="hitungUmurBaru()" required autocomplete="off">
+                                    <input type="text" class="form-control" id="tanggal_lahir_baru" name="pasien[tanggal_lahir]" onchange="hitungUmurBaru()" placeholder="Masukkan Tgl Lahir Pasien" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -358,13 +357,13 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Alamat</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" name="pasien[alamat]" required autocomplete="off"></textarea>
+                                    <textarea class="form-control" name="pasien[alamat]" placeholder="Masukkan Alamat Pasien" required autocomplete="off"></textarea>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Pekerjaan</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[pekerjaan]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[pekerjaan]" placeholder="Masukkan Pekerjaan Pasien" required autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -372,7 +371,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[no_telp]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[no_telp]" placeholder="Masukkan No. Telepon" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -390,7 +389,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nama Wali</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nama_wali]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[nama_wali]" placeholder="Masukkan Nama Wali" required autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -409,7 +408,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Riwayat Alergi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[alergi]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[alergi]" placeholder="Masukkan Riwayat Alergi" required autocomplete="off">
                                     <div class="form-text text-danger">
                                         <strong>Perhatian:</strong> Jika pasien tidak ada alergi, isi dengan " - "
                                     </div>
@@ -418,7 +417,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Riwayat Operasi</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[status_operasi]" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[status_operasi]" placeholder="Masukkan Riwayat Operasi" required autocomplete="off">
                                     <div class="form-text text-danger">
                                         <strong>Perhatian:</strong> Jika pasien tidak ada riwayat operasi, isi dengan " - "
                                     </div>

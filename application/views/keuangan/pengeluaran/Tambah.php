@@ -1,4 +1,8 @@
 <script type="text/javascript">
+    $(document).ready(function() {
+        new Selectr('#id_jenis_biaya');
+    });
+
     function validateForm(formSelector) {
         let isValid = true;
         $(formSelector + ' [required]').removeClass('is-invalid');

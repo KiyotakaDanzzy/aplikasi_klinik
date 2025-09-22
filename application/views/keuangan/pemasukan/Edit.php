@@ -1,4 +1,8 @@
 <script type="text/javascript">
+    $(document).ready(function() {
+        new Selectr('#id_jenis_biaya');
+    });
+
     function FormatCurrency(input) {
         let value = input.value.replace(/[^0-9]/g, '');
         if (value) {

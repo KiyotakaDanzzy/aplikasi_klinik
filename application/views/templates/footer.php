@@ -19,6 +19,7 @@
 <!-- Sweet-Alert  -->
 <script src="<?php echo base_url(); ?>assets/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/pages/sweet-alert.init.js"></script>
+<script src="<?php echo base_url(); ?>assets/libs/mobius1-selectr/selectr.min.js"></script>
 <!-- App js -->
 <script src="<?php echo base_url(); ?>assets/js/app.js"></script>
 <!-- Custom -->
@@ -27,4 +28,5 @@
 <script src="<?php echo base_url() ?>assets/libs/vanillajs-datepicker/js/datepicker-full.min.js"></script>
 </body>
 <!--end body-->
+
 </html>

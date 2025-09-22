@@ -2,7 +2,7 @@
     $(document).ready(function() {
         new Selectr('#id_jenis_biaya');
     });
-    
+
     function FormatCurrency(input) {
         let value = input.value.replace(/[^0-9]/g, '');
         if (value) {
@@ -111,6 +111,7 @@
                                             $selected = ($jenis->id == $row['id_jenis_biaya']) ? 'selected' : '';
                                             echo "<option value='{$jenis->id}' {$selected}>{$jenis->nama}</option>";
                                         } ?>
+                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                             </div>

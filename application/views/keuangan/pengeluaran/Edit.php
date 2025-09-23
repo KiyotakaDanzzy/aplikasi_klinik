@@ -111,7 +111,6 @@
                                             $selected = ($jenis->id == $row['id_jenis_biaya']) ? 'selected' : '';
                                             echo "<option value='{$jenis->id}' {$selected}>{$jenis->nama}</option>";
                                         } ?>
-                                        <option value="Lainnya">Lainnya</option>
                                     </select>
                                 </div>
                             </div>

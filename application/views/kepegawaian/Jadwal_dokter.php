@@ -20,34 +20,6 @@
         });
     }
 
-    function hapusJadwalDokter(id_dokter, nama_dokter) {
-        Swal.fire({
-            title: "Anda Yakin?",
-            text: "Menghapus seluruh jadwal milik " + nama_dokter,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Ya, Hapus Semua!",
-            cancelButtonText: "Batal"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '<?php echo base_url("kepegawaian/jadwal_dokter/hapus_by_dokter/"); ?>' + id_dokter,
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status) {
-                            Swal.fire('Terhapus!', response.message, 'success');
-                            filterJadwal();
-                        } else {
-                            Swal.fire('Gagal!', response.message, 'error');
-                        }
-                    }
-                });
-            }
-        });
-    }
 </script>
 
 <div class="container-fluid">

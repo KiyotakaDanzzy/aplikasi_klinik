@@ -65,7 +65,6 @@ class Antrian_model extends CI_Model
         $today = date('d-m-Y');
         $stats = [];        
 
-        // $stats['total_pasien_hari_ini'] = $this->db->where('tanggal', $today)->count_all_results('rsp_registrasi');
         $stats['antrian_konfir'] = $this->db->where('tanggal', $today)->where('status_antrian', 'Dikonfirmasi')->count_all_results('rsp_antrian');
         $stats['antrian_menunggu'] = $this->db->where('tanggal', $today)->where('status_antrian', 'Menunggu')->count_all_results('rsp_antrian');
         $stats['total_antrian'] = $this->db->where('tanggal', $today)->count_all_results('rsp_antrian');

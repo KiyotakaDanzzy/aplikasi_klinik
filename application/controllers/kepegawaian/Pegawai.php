@@ -6,6 +6,9 @@ class Pegawai extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         $this->load->model('kepegawaian/Pegawai_model');
         $this->load->model('kepegawaian/Jabatan_model');
         $this->load->model('master_data/Poli_model');

@@ -165,12 +165,38 @@
     }
 
     function addDiagnosa(id, nama) {
+        let isDouble = false;
+        $('#table_diagnosa input[name="id_diagnosa[]"]').each(function() {
+            if ($(this).val() == id) {
+                isDouble = true;
+                return false;
+            }
+        });
+
+        if (isDouble) {
+            Swal.fire('Gagal', 'Data diagnosa sudah dipilih.', 'warning');
+            return;
+        }
+
         let row = `<tr><td><input type="hidden" name="id_diagnosa[]" value="${id}"><input type="text" name="diagnosa[]" class="form-control" value="${nama}" readonly></td><td class="text-center"><button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.parentElement.remove()"><i class="far fa-trash-alt"></i></button></td></tr>`;
         $('#table_diagnosa tbody').append(row);
         $('#modalDiagnosa').modal('hide');
     }
 
     function addTindakan(id, nama, harga) {
+        let isDouble = false;
+        $('#table_tindakan input[name="id_tindakan[]"]').each(function() {
+            if ($(this).val() == id) {
+                isDouble = true;
+                return false;
+            }
+        });
+
+        if (isDouble) {
+            Swal.fire('Gagal', 'Data tindakan sudah dipilih.', 'warning');
+            return;
+        }
+
         let hargaFormatted = formatRupiah(harga, 'Rp');
         let row = `<tr><td><input type="hidden" name="id_tindakan[]" value="${id}"><input type="text" name="tindakan[]" class="form-control" value="${nama}" readonly></td><td><input type="text" name="harga_tindakan[]" class="form-control input-harga-tindakan" value="${hargaFormatted}" readonly></td><td class="text-center"><button type="button" class="btn btn-sm btn-danger" onclick="removeTindakanRow(this)"><i class="far fa-trash-alt"></i></button></td></tr>`;
         $('#table_tindakan tbody').append(row);
@@ -252,10 +278,10 @@
                             let target = $('#modalObat').attr('data-racikan-target');
                             aksiKlik = `pilihBahanRacikan(${i}, '${target}')`;
                         }
-                        rows += `<tr style="cursor:pointer;" onclick="${aksiKlik}"><td>${i+1}</td><td>${item.nama_barang}</td><td>${item.satuan_barang}</td><td>${formatRupiah(item.harga_awal, 'Rp')}</td></tr>`;
+                        rows += `<tr style="cursor:pointer;" onclick="${aksiKlik}"><td>${i+1}</td><td>${item.nama_barang}</td></tr>`;
                     });
                 } else {
-                    rows = '<tr><td colspan="4" class="text-center">Obat tidak ditemukan.</td></tr>';
+                    rows = '<tr><td colspan="2" class="text-center">Obat tidak ditemukan.</td></tr>';
                 }
                 $('#obatList').html(rows);
                 paging('#table-data-obat', '#pagination-obat', '#jumlah_tampil_obat');
@@ -274,24 +300,71 @@
     }
 
     function addObat(item, jumlah = 1) {
-        if (typeof item.harga_jual === 'undefined' && typeof item.harga_awal !== 'undefined' && typeof item.laba !== 'undefined') {
-            item.harga_jual = parseFloat(item.harga_awal) + parseFloat(item.laba);
+        let units = [];
+        if (item.units) {
+            units = typeof item.units === 'string' ? JSON.parse(item.units) : item.units;
+            units.sort((a, b) => a.urutan_satuan - b.urutan_satuan);
+            let selectedUnit = units[0];
+
+            item.id = selectedUnit.id;
+            item.id_satuan_barang = selectedUnit.id_satuan_barang;
+            item.satuan_barang = selectedUnit.satuan_barang;
+            item.urutan_satuan = selectedUnit.urutan_satuan;
+            item.harga_awal = selectedUnit.harga_awal;
+            item.laba = selectedUnit.laba;
+            item.harga_jual = selectedUnit.harga_jual;
+        } else {
+            units.push({
+                id: item.id,
+                id_satuan_barang: item.id_satuan_barang,
+                satuan_barang: item.satuan_barang,
+                urutan_satuan: item.urutan_satuan,
+                harga_awal: item.harga_awal,
+                laba: item.laba,
+                harga_jual: item.harga_jual || (parseFloat(item.harga_awal) + parseFloat(item.laba))
+            });
         }
+
+        let isDouble = false;
+        $('#table_resep tbody input[name$="[id_barang]"]').each(function() {
+            if ($(this).val() == item.id_barang) {
+                isDouble = true;
+                return false;
+            }
+        });
+
+        if (isDouble) {
+            Swal.fire('Gagal', 'Data obat sudah dipilih.', 'warning');
+            return;
+        }
+
         let obatCount = $('#table_resep tbody tr').length;
+
+        let selectOptions = '';
+        units.forEach(u => {
+            let isSelected = u.id == item.id ? 'selected' : '';
+            selectOptions += `<option value="${u.id}" data-idsatuan="${u.id_satuan_barang}" data-nama="${u.satuan_barang}" data-harga="${u.harga_awal}" data-laba="${u.laba}" data-hargajual="${u.harga_jual}" data-urutan="${u.urutan_satuan}" ${isSelected}>${u.satuan_barang}</option>`;
+        });
+
         let row = `<tr>
         <td>
-            <input type="hidden" name="resep_obat[${obatCount}][id_barang_detail]" value="${item.id}">
+            <input type="hidden" name="resep_obat[${obatCount}][id_barang_detail]" class="input-id-detail" value="${item.id}">
             <input type="hidden" name="resep_obat[${obatCount}][id_barang]" value="${item.id_barang}">
-            <input type="hidden" name="resep_obat[${obatCount}][id_satuan_barang]" value="${item.id_satuan_barang}">
-            <input type="hidden" name="resep_obat[${obatCount}][urutan_satuan]" value="${item.urutan_satuan}">
-            <input type="hidden" name="resep_obat[${obatCount}][laba]" value="${item.laba}">
+            
+            <input type="hidden" name="resep_obat[${obatCount}][id_satuan_barang]" class="input-id-satuan" value="${item.id_satuan_barang || 0}">
+            <input type="hidden" name="resep_obat[${obatCount}][satuan_barang]" class="input-nama-satuan" value="${item.satuan_barang}">
+            
+            <input type="hidden" name="resep_obat[${obatCount}][urutan_satuan]" class="input-urutan" value="${item.urutan_satuan}">
+            <input type="hidden" name="resep_obat[${obatCount}][laba]" class="input-laba" value="${item.laba}">
             <input type="text" name="resep_obat[${obatCount}][nama_barang]" class="form-control" value="${item.nama_barang}" readonly>
         </td>
         <td>
-            <input type="text" name="resep_obat[${obatCount}][satuan_barang]" class="form-control" value="${item.satuan_barang}" readonly>
+            <select class="form-select status-change" onchange="ubahObat(this)">
+                ${selectOptions}
+            </select>
         </td>
         <td>
-            <input type="number" name="resep_obat[${obatCount}][jumlah]" class="form-control input-jumlah" value="${jumlah}" min="1">
+            <input type="text" name="resep_obat[${obatCount}][jumlah]" class="form-control input-jumlah" value="${jumlah}" min="1">
         </td>
         <td>
             <input type="text" name="resep_obat[${obatCount}][aturan_pakai]" class="form-control" placeholder="Contoh: 3x1 sehari">
@@ -300,7 +373,7 @@
             <input type="text" name="resep_obat[${obatCount}][harga]" class="form-control input-harga" value="${formatRupiah(item.harga_awal, 'Rp')}" readonly>
         </td>
         <td>
-            <input type="text" class="form-control" value="${formatRupiah(item.laba, 'Rp')}" readonly>
+            <input type="text" class="form-control input-laba-display" value="${formatRupiah(item.laba, 'Rp')}" readonly>
         </td>
         <td>
             <input type="text" class="form-control input-subtotal" value="${formatRupiah(item.harga_jual * jumlah, 'Rp')}" readonly>
@@ -337,13 +410,13 @@
                 <div class="mb-2 row">
                         <label class="col-sm-3 col-form-label">Jumlah</label>
                     <div class="col-sm-9">
-                        <input type="number" name="racikan[${racikanCounter}][jumlah]" class="form-control" autocomplete="off" placeholder="Jumlah" value="${jumlah}" required>
+                        <input type="text" name="racikan[${racikanCounter}][jumlah]" class="form-control" autocomplete="off" placeholder="Jumlah" value="${jumlah}" required>
                     </div>
                 </div>
                 <div class="mb-2 row">
                         <label class="col-sm-3 col-form-label">Aturan Pakai</label>
                     <div class="col-sm-9">
-                        <textarea type="text" name="racikan[${racikanCounter}][aturan_pakai]" class="form-control" autocomplete="off" placeholder="Aturan Pakai" value="${aturan}"></textarea>
+                        <textarea type="text" name="racikan[${racikanCounter}][aturan_pakai]" class="form-control" autocomplete="off" placeholder="Aturan Pakai" value="${aturan} required"></textarea>
                     </div>
                 </div>
                 <div class="mb-2 row">
@@ -366,7 +439,7 @@
                             <tr>
                                 <th>Nama Bahan</th>
                                 <th width="12%">Satuan</th>
-                                <th width="15%">Jumlah</th>
+                                <th width="15%">Qty</th>
                                 <th>Harga</th>
                                 <th>Laba</th>
                                 <th>Subtotal</th>
@@ -398,30 +471,100 @@
     }
 
     function addBahanRacikan(item, targetTable, jumlah = 1) {
-        if (typeof item.harga_jual === 'undefined' && typeof item.harga_awal !== 'undefined' && typeof item.laba !== 'undefined') {
-            item.harga_jual = parseFloat(item.harga_awal) + parseFloat(item.laba);
+        let units = [];
+        if (item.units) {
+            units = typeof item.units === 'string' ? JSON.parse(item.units) : item.units;
+            units.sort((a, b) => a.urutan_satuan - b.urutan_satuan);
+            let selectedUnit = units[0];
+            item.id = selectedUnit.id;
+            item.id_satuan_barang = selectedUnit.id_satuan_barang;
+            item.satuan_barang = selectedUnit.satuan_barang;
+            item.urutan_satuan = selectedUnit.urutan_satuan;
+            item.harga_awal = selectedUnit.harga_awal;
+            item.laba = selectedUnit.laba;
+            item.harga_jual = selectedUnit.harga_jual;
+        } else {
+            units.push({
+                id: item.id,
+                id_satuan_barang: item.id_satuan_barang,
+                satuan_barang: item.satuan_barang,
+                urutan_satuan: item.urutan_satuan,
+                harga_awal: item.harga_awal,
+                laba: item.laba,
+                harga_jual: item.harga_jual || (parseFloat(item.harga_awal) + parseFloat(item.laba))
+            });
         }
+
+        let isDouble = false;
+        $(targetTable).find('input[name$="[id_barang]"]').each(function() {
+            if ($(this).val() == item.id_barang) {
+                isDouble = true;
+                return false;
+            }
+        });
+
+        if (isDouble) {
+            Swal.fire('Gagal', 'Bahan racikan ini sudah dipilih.', 'warning');
+            return;
+        }
+
         let racikanIndex = $(targetTable).closest('.racikan-card').attr('id').split('_').pop();
         let bahanCount = $(targetTable).find('tr').length;
+
+        let selectOptions = '';
+        units.forEach(u => {
+            let isSelected = u.id == item.id ? 'selected' : '';
+            selectOptions += `<option value="${u.id}" data-idsatuan="${u.id_satuan_barang}" data-nama="${u.satuan_barang}" data-harga="${u.harga_awal}" data-laba="${u.laba}" data-hargajual="${u.harga_jual}" data-urutan="${u.urutan_satuan}" ${isSelected}>${u.satuan_barang}</option>`;
+        });
+
         let row = `<tr>
         <td>
-            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][id_barang_detail]" value="${item.id}">
+            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][id_barang_detail]" class="input-id-detail" value="${item.id}">
             <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][id_barang]" value="${item.id_barang}">
-            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][id_satuan_barang]" value="${item.id_satuan_barang}">
-            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][urutan_satuan]" value="${item.urutan_satuan}">
-            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][laba]" value="${item.laba}">
+            
+            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][id_satuan_barang]" class="input-id-satuan" value="${item.id_satuan_barang || 0}">
+            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][satuan_barang]" class="input-nama-satuan" value="${item.satuan_barang}">
+            
+            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][urutan_satuan]" class="input-urutan" value="${item.urutan_satuan}">
+            <input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][laba]" class="input-laba" value="${item.laba}">
             <input type="text" name="racikan[${racikanIndex}][bahan][${bahanCount}][nama_barang]" class="form-control" value="${item.nama_barang}" readonly>
         </td>
-        <td><input type="text" name="racikan[${racikanIndex}][bahan][${bahanCount}][satuan_barang]" class="form-control" value="${item.satuan_barang}" readonly></td>
-        <td><input type="number" name="racikan[${racikanIndex}][bahan][${bahanCount}][jumlah]" class="form-control input-jumlah" value="${jumlah}" min="0.1" step="any"></td>
+        <td>
+             <select class="form-select status-change" onchange="ubahObat(this)">
+                ${selectOptions}
+            </select>
+        </td>
+        <td><input type="text" name="racikan[${racikanIndex}][bahan][${bahanCount}][jumlah]" class="form-control input-jumlah" value="${jumlah}" min="0.1" step="any" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')"></td>
         <td><input type="text" name="racikan[${racikanIndex}][bahan][${bahanCount}][harga]" class="form-control input-harga" value="${formatRupiah(item.harga_awal, 'Rp')}" readonly></td>
-        <td><input type="text" class="form-control" value="${formatRupiah(item.laba, 'Rp')}" readonly></td>
+        <td><input type="text" class="form-control input-laba-display" value="${formatRupiah(item.laba, 'Rp')}" readonly></td>
         <td><input type="text" class="form-control input-subtotal" value="${formatRupiah(item.harga_jual * jumlah, 'Rp')}" readonly></td>
         <td class="text-center"><button type="button" class="btn btn-sm btn-danger" onclick="hapusRow(this)"><i class="far fa-trash-alt"></i></button><input type="hidden" name="racikan[${racikanIndex}][bahan][${bahanCount}][harga_jual]" class="form-control input-harga-jual" value="${formatRupiah(item.harga_jual, 'Rp')}" readonly></td>
                     </tr>`;
         $(targetTable).append(row);
         $('#modalObat').modal('hide');
         hitungTotalObat();
+    }
+
+    function ubahObat(select) {
+        let row = $(select).closest('tr');
+        let selectedOption = $(select).find(':selected');
+        let idDetail = $(select).val();
+        let harga = parseFloat(selectedOption.data('harga'));
+        let laba = parseFloat(selectedOption.data('laba'));
+        let hargaJual = parseFloat(selectedOption.data('hargajual'));
+        let urutan = selectedOption.data('urutan');
+        let namaSatuan = selectedOption.data('nama');
+        let idSatuan = selectedOption.data('idsatuan');
+
+        row.find('.input-id-detail').val(idDetail);
+        row.find('.input-urutan').val(urutan);
+        row.find('.input-nama-satuan').val(namaSatuan);
+        row.find('.input-id-satuan').val(idSatuan);
+        row.find('.input-laba').val(laba);
+        row.find('.input-harga').val(formatRupiah(harga, 'Rp'));
+        row.find('.input-laba-display').val(formatRupiah(laba, 'Rp'));
+        row.find('.input-harga-jual').val(formatRupiah(hargaJual, 'Rp'));
+        row.find('.input-jumlah').trigger('change');
     }
 
     function openModalObat(target) {
@@ -501,14 +644,27 @@
 
     function proses(e) {
         e.preventDefault();
+        let btn = $(e.target).closest('button');
         if (!validateForm('#form_proses')) {
             return;
         }
+        btn.prop('disabled', true).text('Memproses...');
         $.ajax({
             url: '<?php echo base_url('poli/gigi/proses_aksi') ?>',
             method: 'POST',
             data: $('#form_proses').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     Swal.fire({
@@ -524,7 +680,12 @@
                         html: res.message,
                         icon: 'error'
                     });
+                    btn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan');
                 }
+            },
+            error: function() {
+                Swal.fire('Error', 'Terjadi kesalahan koneksi', 'error');
+                btn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan');
             }
         });
     }
@@ -715,7 +876,7 @@
                                     <tr>
                                         <th>Nama Obat</th>
                                         <th width="12%">Satuan</th>
-                                        <th width="10%">Jumlah</th>
+                                        <th width="10%">Qty</th>
                                         <th>Aturan Pakai</th>
                                         <th>Harga</th>
                                         <th>Laba</th>
@@ -872,7 +1033,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <input type="text" id="search_obat_keyword" class="form-control" placeholder="Ketik untuk mencari nama atau kode obat...">
+                    <input type="text" id="search_obat_keyword" class="form-control" placeholder="Ketik untuk mencari nama obat atau satuan obat...">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover" id="table-data-obat">
@@ -880,8 +1041,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Nama Obat</th>
-                                <th>Satuan</th>
-                                <th>Harga</th>
                             </tr>
                         </thead>
                         <tbody id="obatList"></tbody>

@@ -6,6 +6,9 @@ class Booking extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('resepsionis/Booking_model');
         $this->load->model('master_data/Pasien_model');
@@ -134,30 +137,33 @@ class Booking extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function edit_aksi()
-    {
-        $id = $this->input->post('id');
-        $pasien = $this->Pasien_model->get_pasien_by_id($this->input->post('id_pasien'));
-        $poli = $this->Poli_model->get_poli_by_id($this->input->post('id_poli'));
-        $dokter = $this->Dokter_model->get_dokter_by_id($this->input->post('id_dokter'));
+public function edit_aksi()
+{
+    $poli = $this->Poli_model->get_poli_by_id($this->input->post('id_poli'));
+    $dokter = $this->Dokter_model->get_dokter_by_id($this->input->post('id_dokter'));
 
-        $data = [
-            'id_pasien' => $pasien['id'],
-            'nik' => $pasien['nik'],
-            'nama_pasien' => $pasien['nama_pasien'],
-            'id_poli' => $poli['id'],
-            'nama_poli' => $poli['nama'],
-            'id_dokter' => $dokter['id'],
-            'nama_dokter' => $dokter['nama_pegawai'],
-            'tanggal' => $this->input->post('tanggal'),
-            'waktu' => $this->input->post('waktu')
-        ];
+    $data = [
+        'id_pasien'   => $this->input->post('id_pasien'), 
+        'nik'         => $this->input->post('nik'),
+        'nama_pasien' => $this->input->post('nama_pasien'),       
+        'id_poli'     => $poli['id'],
+        'nama_poli'   => $poli['nama'],
+        'id_dokter'   => $dokter['id'],
+        'nama_dokter' => $dokter['nama_pegawai'],
+        'tanggal'     => $this->input->post('tanggal'),
+        'waktu'       => $this->input->post('waktu')
+    ];
 
-        $update = $this->Booking_model->update_booking($id, $data);
-        $response = ['status' => $update, 'message' => $update ? 'Booking berhasil diperbarui.' : 'Gagal memperbarui booking.'];
-        header('Content-Type: application/json');
-        echo json_encode($response);
-    }
+    $update = $this->Booking_model->update_booking($this->input->post('id'), $data);
+
+    $response = [
+        'status' => $update, 
+        'message' => $update ? 'Booking berhasil diperbarui.' : 'Gagal memperbarui booking.'
+    ];
+    
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
 
     public function konfirmasi_booking()
     {

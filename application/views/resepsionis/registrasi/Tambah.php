@@ -158,6 +158,17 @@
             method: 'POST',
             data: $('#form_tambah').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     Swal.fire({
@@ -193,6 +204,7 @@
                 text: 'Harap isi semua kolom yang wajib diisi.',
                 icon: 'error'
             });
+            q
         }
         return isValid;
     }
@@ -329,7 +341,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">NIK</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[nik]" placeholder="Masukkan NIK" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[nik]" placeholder="Masukkan NIK" required autocomplete="off" maxlength="16" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -371,7 +383,7 @@
                             <div class="mb-3 row">
                                 <label class="col-sm-4 col-form-label">Nomor Telepon</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="pasien[no_telp]" placeholder="Masukkan No. Telepon" required autocomplete="off">
+                                    <input type="text" class="form-control" name="pasien[no_telp]" placeholder="Masukkan No. Telepon" required autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                 </div>
                             </div>
                             <div class="mb-3 row">

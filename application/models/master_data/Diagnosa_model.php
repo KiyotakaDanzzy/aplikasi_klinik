@@ -8,7 +8,7 @@ class Diagnosa_model extends CI_Model
     {
         $this->db->select("a.id, a.nama_diagnosa, a.nama_poli");
         $this->db->from('mst_diagnosa a');
-        
+
         if ($cari) {
             $this->db->group_start();
             $this->db->like('a.nama_diagnosa', $cari);
@@ -29,10 +29,25 @@ class Diagnosa_model extends CI_Model
         return $query->row_array();
     }
 
+    public function cek_duplikat($nama_diag)
+    {
+        $this->db->where('nama_diagnosa', $nama_diag);
+        $query = $this->db->get('mst_diagnosa');
+        if ($query->num_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     public function insert_diagnosa($data)
     {
-        $this->db->insert('mst_diagnosa', $data);
-        return $this->db->affected_rows() > 0;
+        $nama_diag = $data['nama_diagnosa'];
+        if ($this->cek_duplikat($nama_diag)) {
+            return false;
+        } else {
+            $this->db->insert('mst_diagnosa', $data);
+            return $this->db->affected_rows() > 0;
+        };
     }
 
     public function update_diagnosa($id, $data)
@@ -51,7 +66,12 @@ class Diagnosa_model extends CI_Model
 
     public function insert_master_data($data)
     {
-        $this->db->insert('mst_diagnosa', $data);
+        $nama_diag = $data['nama_diagnosa'];
+        if ($this->cek_duplikat($nama_diag)) {
+            return false;
+        } else {
+            $this->db->insert('mst_diagnosa', $data);
+        };
         return $this->db->insert_id();
     }
 }

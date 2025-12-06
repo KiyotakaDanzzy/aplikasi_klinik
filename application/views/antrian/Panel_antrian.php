@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="utf-8" />
   <title>Aplikasi Klinik</title>
@@ -19,6 +20,7 @@
     body {
       background-color: #f5f7f9;
     }
+
     #back-button {
       position: fixed;
       top: 20px;
@@ -37,13 +39,16 @@
       transition: opacity 0.3s ease-in-out;
       z-index: 1000;
     }
+
     #back-button:hover {
       opacity: 1;
     }
+
     .info-card .display-4 {
       font-weight: 600;
       color: #333;
     }
+
     .table-antrian tbody tr td {
       padding-top: 1rem;
       padding-bottom: 1rem;
@@ -52,23 +57,20 @@
     }
   </style>
 </head>
+
 <body>
   <script>
+    let listDipanggil = [];
+    let idxGanti = 0;
+
     function updateMonitor() {
-      $.ajax({ 
+      $.ajax({
         url: '<?php echo base_url("antrian/panel_antrian/get_update"); ?>',
         type: 'GET',
         dataType: 'json',
         success: function(response) {
-          if (response.dipanggil) {
-            $('#nomor_panggil').text(response.dipanggil.no_antrian);
-            $('#poli_panggil').text(response.dipanggil.nama_poli);
-            $('#dokter_panggil').text(response.dipanggil.nama_dokter);
-          } else {
-            $('#nomor_panggil').text('-');
-            $('#poli_panggil').text('Belum ada panggilan');
-            $('#dokter_panggil').text('-');
-          }
+          listDipanggil = response.dipanggil;
+
           if (response.stats) {
             $('#total_antrian').text(response.stats.total_antrian);
           }
@@ -90,9 +92,31 @@
         }
       });
     }
+
+    function gantiTampilan() {
+      if (listDipanggil && listDipanggil.length > 0) {
+        if (idxGanti >= listDipanggil.length) {
+          idxGanti = 0;
+        }
+
+        let data = listDipanggil[idxGanti];
+
+        $('#nomor_panggil').text(data.no_antrian);
+        $('#poli_panggil').text(data.nama_poli);
+        $('#dokter_panggil').text(data.nama_dokter);
+
+        idxGanti++;
+      } else {
+        $('#nomor_panggil').text('-');
+        $('#poli_panggil').text('Belum ada panggilan');
+        $('#dokter_panggil').text('-');
+      }
+    }
+
     $(document).ready(function() {
       updateMonitor();
       setInterval(updateMonitor, 5000);
+      setInterval(gantiTampilan, 3000);
     });
   </script>
   <a href="javascript:history.back()" id="back-button" title="Kembali">
@@ -183,4 +207,5 @@
   <script src="<?php echo base_url() ?>/assets/js/js-form.js"></script>
   <script src="<?php echo base_url() ?>assets/libs/vanillajs-datepicker/js/datepicker-full.min.js"></script>
 </body>
+
 </html>

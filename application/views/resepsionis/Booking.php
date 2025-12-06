@@ -24,8 +24,8 @@
             // beforeSend: () => {
             //     $('#table-data tbody').html(`<tr id="tr-loading"><td colspan="${hitung_baris}" class="text-center">Memuat data...</td></tr>`);
             // },
-            beforeSend : () => {
-              let loading = `<tr id="tr-loading">
+            beforeSend: () => {
+                let loading = `<tr id="tr-loading">
                                   <td colspan="${hitung_baris}" class="text-center">
                                       <div class="loader">
                                           <img src="<?php echo base_url(); ?>assets/loading-table.gif" width="60" alt="loading">
@@ -33,8 +33,8 @@
                                   </td>
                               </tr>`;
 
-              $(`#table-data tbody`).html(loading);
-          },
+                $(`#table-data tbody`).html(loading);
+            },
             success: function(res) {
                 let table = "";
                 if (res.result) {
@@ -199,7 +199,6 @@
                     } else {
                         badge = `<span class="badge bg-secondary">${response.data.status_booking || '-'}</span>`;
                     }
-
                     $('#detail_status').html(badge);
                     $('#detailBookingModal').modal('show');
                 } else {

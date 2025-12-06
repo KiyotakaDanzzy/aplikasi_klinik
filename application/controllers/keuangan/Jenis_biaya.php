@@ -56,7 +56,7 @@ class Jenis_biaya extends CI_Controller {
             $response['message'] = 'Data berhasil disimpan';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan dat.';
+            $response['message'] = 'Gagal menyimpan data atau data sudah ada.';
         }
 
         header('Content-Type: application/json');

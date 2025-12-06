@@ -23,15 +23,28 @@
     }
 
     function tambah(e) {
-        e.preventDefault()
+        e.preventDefault();
+        let btn = $(e.target).closest('button');
         if (!validateForm('#form_tambah')) {
             return;
         }
+        btn.prop('disabled', true).text('Memproses...');
         $.ajax({
             url: '<?php echo base_url('keuangan/jenis_biaya/tambah_aksi') ?>',
             method: 'POST',
             data: $('#form_tambah').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status == true) {
                     Swal.fire({
@@ -60,8 +73,13 @@
                         confirmButtonText: "Oke",
                         closeOnConfirm: false,
                         allowOutsideClick: false
-                    })
+                    });
+                    btn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan');
                 }
+            },
+            error: function() {
+                Swal.fire('Error', 'Terjadi kesalahan koneksi', 'error');
+                btn.prop('disabled', false).html('<i class="fas fa-save me-2"></i>Simpan');
             }
         });
     }

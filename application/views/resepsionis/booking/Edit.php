@@ -41,6 +41,17 @@
             method: 'POST',
             data: $('#form_edit').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     Swal.fire({
@@ -183,7 +194,7 @@
                     <label class="col-sm-2 col-form-label">Pasien</label>
                     <div class="col-sm-10">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="nama_pasien_display" value="<?php echo $booking['nama_pasien'] ?>" readonly required>
+                            <input type="text" class="form-control" name="nama_pasien" id="nama_pasien_display" value="<?php echo $booking['nama_pasien'] ?>" required>
                             <!-- <button class="btn btn-primary" type="button" id="btn-cari-pasien"><i class="fas fa-search"></i> Ganti</button> -->
                         </div>
                         <input type="hidden" name="id_pasien" id="id_pasien" value="<?php echo $booking['id_pasien']; ?>">
@@ -193,11 +204,10 @@
                     <label class="col-sm-2 col-form-label">NIK</label>
                     <div class="col-sm-10">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="nik_pasien_display" value="<?php echo $booking['nik'] ?>" readonly required>
+                            <input type="text" class="form-control" name="nik" id="nik_pasien_display" value="<?php echo $booking['nik'] ?>" required maxlength="16" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                     </div>
                 </div>
-                <hr>
                 <input type="hidden" name="id" value="<?php echo $booking['id']; ?>">
                 <div class="mb-3 row">
                     <label for="tanggal" class="col-sm-2 col-form-label">Tanggal Kunjungan</label>
@@ -244,34 +254,6 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="pasienSearchModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cari Data Pasien</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <input type="text" id="search_pasien_keyword" class="form-control" placeholder="Ketik No RM atau Nama Pasien untuk mencari...">
-                </div>
-                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                    <table class="table table-sm table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>No. RM</th>
-                                <th>Nama</th>
-                                <th>NIK</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pasienList"></tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 </div>

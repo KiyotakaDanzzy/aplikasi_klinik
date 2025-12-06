@@ -8,7 +8,7 @@ class Tindakan_model extends CI_Model
     {
         $this->db->select("a.id, a.nama, FORMAT(a.harga, 0, 'en_US') as harga, a.nama_poli");
         $this->db->from('mst_tindakan a');
-        
+
         if ($cari) {
             $this->db->group_start();
             $this->db->like('a.nama', $cari);
@@ -30,10 +30,25 @@ class Tindakan_model extends CI_Model
         return $query->row_array();
     }
 
+    public function cek_duplikat($nama_tindakan)
+    {
+        $this->db->where('nama', $nama_tindakan);
+        $query = $this->db->get('mst_tindakan');
+        if ($query->num_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     public function insert_tindakan($data)
     {
-        $this->db->insert('mst_tindakan', $data);
-        return $this->db->affected_rows() > 0;
+        $nama_tindakan = $data['nama'];
+        if ($this->cek_duplikat($nama_tindakan)) {
+            return false;
+        } else {
+            $this->db->insert('mst_tindakan', $data);
+            return $this->db->affected_rows() > 0;
+        }
     }
 
     public function update_tindakan($id, $data)
@@ -52,7 +67,12 @@ class Tindakan_model extends CI_Model
 
     public function insert_master_data($data)
     {
-        $this->db->insert('mst_tindakan', $data);
+        $nama_tindakan = $data['nama'];
+        if ($this->cek_duplikat($nama_tindakan)) {
+            return false;
+        } else {
+            $this->db->insert('mst_tindakan', $data);
+        }
         return $this->db->insert_id();
     }
 }

@@ -1,11 +1,15 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Poli extends CI_Controller {
+class Poli extends CI_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         $this->load->model('master_data/Poli_model');
         $this->load->helper('url');
     }
@@ -22,7 +26,7 @@ class Poli extends CI_Controller {
     {
         $cari = $this->input->post('cari');
         $data_poli = $this->Poli_model->get_data_poli($cari);
-        
+
         $response = [];
         if ($data_poli) {
             $response['result'] = true;
@@ -50,14 +54,14 @@ class Poli extends CI_Controller {
             'nama' => $this->input->post('nama')
         ];
         $simpan = $this->Poli_model->insert_poli($data);
-        
+
         $response = [];
         if ($simpan) {
             $response['status'] = true;
             $response['message'] = 'Data berhasil disimpan';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan data.';
+            $response['message'] = 'Gagal menyimpan data atau data sudah ada.';
         }
 
         header('Content-Type: application/json');
@@ -76,6 +80,12 @@ class Poli extends CI_Controller {
     public function edit_aksi()
     {
         $id = $this->input->post('id');
+
+        if (empty($id)) {
+            echo json_encode(['status' => false, 'message' => 'Id tidak ditemukan']);
+            return;
+        };
+
         $data = [
             'kode' => $this->input->post('kode'),
             'nama' => $this->input->post('nama')
@@ -84,7 +94,10 @@ class Poli extends CI_Controller {
         $update = $this->Poli_model->update_poli($id, $data);
 
         $response = [];
-        if ($update) {
+        if ($update === "DUPLIKAT") {
+            $response['status'] = false;
+            $response['message'] = 'Gagal, nama poli sudah ada.';
+        } elseif ($update === true) {
             $response['status'] = true;
             $response['message'] = 'Data berhasil diperbarui';
         } else {

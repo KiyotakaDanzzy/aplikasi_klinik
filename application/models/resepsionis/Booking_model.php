@@ -22,7 +22,7 @@ class Booking_model extends CI_Model
         if ($status) {
             $this->db->where('b.status_booking', $status);
         }
-        
+
         $this->db->order_by('b.id', 'DESC');
         return $this->db->get()->result();
     }
@@ -55,9 +55,19 @@ class Booking_model extends CI_Model
 
     public function update_booking($id, $data)
     {
+        $this->db->trans_start();
         $this->db->where('id', $id);
         $this->db->update('rsp_booking', $data);
-        return $this->db->affected_rows() > 0;
+        if (isset($data['id_pasien']) && isset($data['nama_pasien'])) {
+            $update_pasien = [
+                'nama_pasien' => $data['nama_pasien'],
+                'nik'         => $data['nik']
+            ];
+            $this->db->where('id', $data['id_pasien']);
+            $this->db->update('mst_pasien', $update_pasien);
+        }
+        $this->db->trans_complete();
+        return $this->db->trans_status();
     }
 
     public function delete_booking($id)

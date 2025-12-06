@@ -29,14 +29,29 @@
 
                         if (item.status_antrian === 'Menunggu') {
                             statusBadge = '<span class="badge bg-warning">Menunggu</span>';
-                            aksi = `<button class="btn btn-sm btn-success" onclick="panggilPasien(${item.id})"><i class="fas fa-volume-up me-2"></i>Panggil</button>`;
+                            if (index === 0) {
+                                aksi = `<button class="btn btn-sm btn-success" onclick="panggilPasien(${item.id})"><i class="fas fa-volume-up me-2"></i>Panggil</button>`;
+                            } else {
+                                aksi = `<button class="btn btn-sm btn-secondary" disabled><i class="fas fa-volume-up me-2"></i>Panggil</button>`;
+                            }
                         } else if (item.status_antrian === 'Dipanggil') {
                             statusBadge = '<span class="badge bg-info">Dipanggil</span>';
                             aksi = `<button class="btn btn-sm btn-info" onclick="panggilPasien(${item.id})"><i class="fas fa-redo-alt me-2"></i>Panggil Ulang</button>
                                     <button class="btn btn-sm btn-primary" onclick="konfirmasiPasien(${item.id}, ${item.id_poli}, '${item.kode_invoice}')"><i class="fas fa-check-circle me-2"></i>Konfirmasi</button>`;
                         } else {
                             statusBadge = `<span class="badge bg-success">Konfirmasi</span>`;
-                            aksi = `<span class="text-muted">Kedatangan Dikonfirmasi</span>`;
+                            let totalDiagnosa = parseInt(item.cek_diagnosa);
+                            let totalTindakan = parseInt(item.cek_tindakan);
+
+                            if (totalDiagnosa === 0 && totalTindakan === 0) {
+                                if (id_poli == 4) {
+                                    aksi = `<a href="<?php echo base_url('poli/gigi/proses/'); ?>${item.kode_invoice}" class="btn btn-sm btn-warning"><i class="fas fa-briefcase-medical"></i></a>`;
+                                } else {
+                                    aksi = `<button class="btn btn-sm btn-secondary" disabled><i class="fas fa-briefcase-medical"></i></button>`;
+                                }
+                            } else {
+                                aksi = `<button class="btn btn-sm btn-secondary" disabled><i class="fas fa-check"></i></button>`;
+                            }
                         }
 
                         rows += `
@@ -76,6 +91,17 @@
             url: `<?php echo base_url('antrian/panel_dokter/konfirmasi/'); ?>${id_antrian}`,
             type: 'POST',
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     Swal.fire({
@@ -117,7 +143,6 @@
 
     $(document).ready(function() {
         $('#select_poli').change(loadUrutanAntri);
-
         $('.card-body .nav-link').click(function(e) {
             e.preventDefault();
             $('.card-body .nav-link').removeClass('active');

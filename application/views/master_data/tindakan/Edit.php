@@ -1,12 +1,12 @@
 <script type="text/javascript">
   function FormatCurrency(input) {
-        let value = input.value.replace(/[^0-9]/g, '');
-        if (value) {
-            input.value = new Intl.NumberFormat('id_ID').format(value);
-        } else {
-            input.value = '';
-        }
+    let value = input.value.replace(/[^0-9]/g, '');
+    if (value) {
+      input.value = new Intl.NumberFormat('id_ID').format(value);
+    } else {
+      input.value = '';
     }
+  }
 
   function validateForm(formSelector) {
     let isValid = true;
@@ -41,6 +41,17 @@
       method: 'POST',
       data: $('#form_edit').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status == true) {
           Swal.fire({
@@ -68,11 +79,11 @@
     });
   }
   $(document).ready(function() {
-        let nominalInput = document.getElementById('harga');
-        if (nominalInput.value) {
-            FormatCurrency(nominalInput);
-        }
-    });
+    let nominalInput = document.getElementById('harga');
+    if (nominalInput.value) {
+      FormatCurrency(nominalInput);
+    }
+  });
 </script>
 <div class="container-fluid">
   <div class="row">

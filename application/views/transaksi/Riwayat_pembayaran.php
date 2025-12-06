@@ -11,12 +11,14 @@
 
     function get_data() {
         let cari = $('#cari').val();
+        let tanggal = $('#filter_tanggal').val();
         let hitung_baris = $('#table-data thead tr th').length;
         $.ajax({
             url: '<?php echo base_url("transaksi/riwayat_pembayaran/result_data"); ?>',
             type: 'POST',
             data: {
-                cari: cari
+                cari: cari,
+                tanggal: tanggal
             },
             dataType: 'json',
             beforeSend: () => {
@@ -148,6 +150,21 @@
         rupiah = split[1] !== undefined ? rupiah + '.' + split[1] : rupiah;
         return prefix === undefined ? rupiah : (rupiah ? 'Rp' + rupiah : '');
     }
+
+    $(document).ready(function() {
+        const tanggalInput = document.getElementById('filter_tanggal');
+        const datepicker = new Datepicker(tanggalInput, {
+            format: 'dd-mm-yyyy',
+            autohide: true
+        });
+        tanggalInput.addEventListener('changeDate', function() {
+            filterTanggal();
+        });
+    });
+
+    function filterTanggal() {
+        get_data();
+    }
 </script>
 
 <div class="container-fluid">
@@ -180,6 +197,14 @@
                                 </div>
                                 <input type="text" class="form-control" id="cari" placeholder="Cari Invoice/Pasien/NIK...">
                             </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="filter_tanggal" name="filter_tanggal" placeholder="Cari riwayat tanggal..." autocomplete="off" onchange="filterTanggal()">
+                        </div>
+                        <div class="col-sm-3 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning w-100" onclick="$('#filter_tanggal').val(''); filterTanggal();">
+                                <i class="fas fa-search me-2"></i>Reset Filter
+                            </button>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -260,7 +285,7 @@
                             <dt class="col-sm-4 text-muted">Kembali</dt>
                             <dd class="col-sm-8" id="detail_kembali"></dd>
                             <hr class="my-2">
-                            <dt class="col-sm-4 text-muted">Total Tagihan</dt>
+                            <dt class="col-sm-4 text-muted">Total Tagihan (Hanya Tindakan)</dt>
                             <dd class="col-sm-8">
                                 <span class="fs-5 fw-bold text-success" id="detail_total_invoice"></span>
                             </dd>

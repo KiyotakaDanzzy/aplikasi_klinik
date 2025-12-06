@@ -32,6 +32,17 @@
       method: 'POST',
       data: $('#form_tambah').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status == true) {
           Swal.fire({
@@ -107,9 +118,9 @@
                     <i class="fas fa-save me-2"></i>Simpan
                   </button>
                   <a href="<?php echo base_url(); ?>master_data/diagnosa">
-                      <button type="button" class="btn btn-warning">
-                        <i class="fas fa-reply me-2"></i>Kembali
-                      </button>
+                    <button type="button" class="btn btn-warning">
+                      <i class="fas fa-reply me-2"></i>Kembali
+                    </button>
                   </a>
                 </div>
               </div>

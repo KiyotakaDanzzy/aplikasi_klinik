@@ -162,13 +162,51 @@
         });
     }
 
+    function bukaLink(kode_inv) {
+        window.open(`<?php echo base_url('transaksi/pembayaran/cetak_struk/'); ?>${kode_inv}`, '_blank');
+        window.open(`<?php echo base_url('transaksi/pembayaran/cetak_kwitansi/'); ?>${kode_inv}`, '_blank');
+    }
+
     function simpanPembayaran(e) {
         e.preventDefault();
+        let metode = $('#metode_pembayaran').val();
+        let bayar_isi = $('#bayar').val();
+        let total_isi = $('#total_invoice').val();
+        let bank = $('#bank').val();
+        if (metode === '') {
+            Swal.fire('Peringatan', 'Mohon pilih metode pembayaran terlebih dahulu.', 'warning');
+            return;
+        }
+        if (metode === 'Transfer Bank' && bank === '') {
+            Swal.fire('Peringatan', 'Mohon pilih Bank tujuan.', 'warning');
+            return;
+        }
+        if (bayar_isi === '') {
+            Swal.fire('Peringatan', 'Mohon isi jumlah uang pembayaran.', 'warning');
+            return;
+        }
+        let total_num = parseInt(total_isi.replace(/[^0-9]/g, '')) || 0;
+        let bayar_num = parseInt(bayar_isi.replace(/[^0-9]/g, '')) || 0;
+        if (bayar_num < total_num) {
+            Swal.fire('Peringatan', 'Uang pembayaran kurang dari total tagihan!', 'warning');
+            return;
+        }
         $.ajax({
             url: '<?php echo base_url("transaksi/pembayaran/bayar_aksi"); ?>',
             type: 'POST',
             data: $('#form_bayar').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     $('#pembayaranModal').modal('hide');
@@ -177,34 +215,13 @@
                         title: 'Berhasil!',
                         text: res.message,
                         icon: 'success',
-                        html: `
-                            <div class="text-start mt-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="cetak_struk_check" checked>
-                                    <label class="form-check-label" for="cetak_struk_check">
-                                        Cetak Struk
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="cetak_kwitansi_check" checked>
-                                    <label class="form-check-label" for="cetak_kwitansi_check">
-                                        Cetak Kwitansi
-                                    </label>
-                                </div>
-                            </div>
-                        `,
-                        confirmButtonText: '<i class="fas fa-print"></i> Cetak',
-                        showDenyButton: true,
-                        denyButtonText: 'Tutup',
+                        allowEscapeKey: false,
+                    allowOutsideClick: false,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Cetak'
                     }).then((result) => {
-                        if (result.isConfirmed) {
-                            if ($('#cetak_struk_check').is(':checked')) {
-                                window.open(`<?php echo base_url('transaksi/pembayaran/cetak_struk/'); ?>${res.kode_invoice}`, '_blank');
-                            }
-                            if ($('#cetak_kwitansi_check').is(':checked')) {
-                                window.open(`<?php echo base_url('transaksi/pembayaran/cetak_kwitansi/'); ?>${res.kode_invoice}`, '_blank');
-                            }
-                        }
+                        let kode_inv = res.kode_invoice;
+                        bukaLink(kode_inv);
                     });
                 } else {
                     Swal.fire('Gagal!', res.message, 'error');

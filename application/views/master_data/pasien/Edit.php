@@ -62,6 +62,17 @@
       method: 'POST',
       data: $('#form_edit').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status) {
           Swal.fire({
@@ -117,7 +128,7 @@
             <div class="row mb-3">
               <label for="nik" class="col-sm-2 col-form-label">NIK</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $pasien['nik']; ?>" required autocomplete="off">
+                <input type="text" class="form-control" id="nik" name="nik" value="<?php echo $pasien['nik']; ?>" required autocomplete="off" maxlength="16" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
               </div>
             </div>
             <div class="row mb-3">
@@ -156,7 +167,7 @@
             <div class="row mb-3">
               <label for="no_telp" class="col-sm-2 col-form-label">Nomor Telepon</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $pasien['no_telp']; ?>" required autocomplete="off">
+                <input type="text" class="form-control" id="no_telp" name="no_telp" value="<?php echo $pasien['no_telp']; ?>" required autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
               </div>
             </div>
             <div class="row mb-3">

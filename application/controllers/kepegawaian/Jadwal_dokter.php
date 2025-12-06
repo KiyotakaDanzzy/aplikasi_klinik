@@ -6,6 +6,9 @@ class Jadwal_dokter extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('kepegawaian/Jadwal_dokter_model');
         $this->load->model('kepegawaian/Dokter_model');

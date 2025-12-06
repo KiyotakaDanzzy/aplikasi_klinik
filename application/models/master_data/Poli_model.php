@@ -27,14 +27,41 @@ class Poli_model extends CI_Model
         return $query->row_array();
     }
 
+    public function cek_duplikat($nama_poli)
+    {
+        $this->db->where('nama', $nama_poli);
+        $query = $this->db->get('mst_poli');
+        if ($query->num_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function cek_duplikat_update($nama_poli, $id_kecuali)
+    {
+        $this->db->where('nama', $nama_poli);
+        $this->db->where('id !=', $id_kecuali);
+        $query = $this->db->get('mst_poli');
+        return $query->num_rows() > 0;
+    }
+
     public function insert_poli($data)
     {
-        $this->db->insert('mst_poli', $data);
-        return $this->db->affected_rows() > 0;
+        $nama_poli = $data['nama'];
+        if ($this->cek_duplikat($nama_poli)) {
+            return false;
+        } else {
+            $this->db->insert('mst_poli', $data);
+            return $this->db->affected_rows() > 0;
+        }
     }
 
     public function update_poli($id, $data)
     {
+        if ($this->cek_duplikat_update($data['nama'], $id)) {
+            return "DUPLIKAT";
+        };
+
         $this->db->trans_start();
         $this->db->where('id', $id);
         $this->db->update('mst_poli', $data);
@@ -42,11 +69,11 @@ class Poli_model extends CI_Model
         $data_update = [
             'nama_poli' => $data['nama']
         ];
-        $this->db->where('id_poli', $id)->update('mst_diagnosa', $data_update);
-        $this->db->where('id_poli', $id)->update('mst_tindakan', $data_update);
-        $this->db->where('id_poli', $id)->update('kpg_dokter', $data_update);
-        $this->db->where('id_poli', $id)->update('rsp_booking', $data_update);
-        $this->db->where('id_poli', $id)->update('rsp_registrasi', $data_update);
+
+        $tabel_relasi = ['mst_diagnosa', 'mst_tindakan', 'kpg_dokter', 'rsp_booking', 'rsp_registrasi'];
+        foreach($tabel_relasi as $tabel) {
+            $this->db->where('id_poli', $id)->update($tabel, $data_update);
+        }
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE) {
             return false;

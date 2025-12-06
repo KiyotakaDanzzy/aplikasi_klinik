@@ -22,6 +22,17 @@
       method: 'POST',
       data: $('#form_tambah').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status == true) {
           Swal.fire({
@@ -89,19 +100,19 @@
             <div class="mb-3 row">
               <label for="nama" class="col-sm-2 col-form-label">Nama Pegawai</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="nama" id="nama" required autocomplete="off">
+                <input type="text" class="form-control" name="nama" id="nama" placeholder="Input Nama Pegawai" required autocomplete="off">
               </div>
             </div>
             <div class="mb-3 row">
               <label for="no_telp" class="col-sm-2 col-form-label">Nomor Telepon</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" name="no_telp" id="no_telp" required autocomplete="off">
+                <input type="text" class="form-control" name="no_telp" id="no_telp" placeholder="Input Nomor Telepon" required autocomplete="off">
               </div>
             </div>
             <div class="mb-3 row">
               <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
               <div class="col-sm-10">
-                <textarea class="form-control" name="alamat" id="alamat" required autocomplete="off"></textarea>
+                <textarea class="form-control" name="alamat" id="alamat" placeholder="Input Alamat Pegawai" required autocomplete="off"></textarea>
               </div>
             </div>
             <div class="mb-3 row">

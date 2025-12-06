@@ -25,13 +25,24 @@
   function edit(e) {
     e.preventDefault()
     if (!validateForm('#form_edit')) {
-        return;
+      return;
     }
     $.ajax({
       url: '<?php echo base_url('master_data/poli/edit_aksi') ?>',
       method: 'POST',
       data: $('#form_edit').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status == true) {
           Swal.fire({

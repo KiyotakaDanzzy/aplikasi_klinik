@@ -5,17 +5,19 @@ class Gigi_model extends CI_Model
 {
     public function get_data_barang($cari = null)
     {
-        $this->db->select('
-            d.id, 
+        $this->db->select("
             d.id_barang,
-            d.id_satuan_barang,
-            d.nama_barang, 
-            d.satuan_barang, 
-            d.urutan_satuan,
-            MAX(st.harga_awal) as harga_awal, 
-            MAX(st.laba) as laba,
-            MAX(st.harga_jual) as harga_jual
-        ');
+            d.nama_barang,
+            JSON_ARRAYAGG(JSON_OBJECT(
+                'id', d.id,
+                'id_satuan_barang', d.id_satuan_barang, 
+                'satuan_barang', d.satuan_barang,
+                'urutan_satuan', d.urutan_satuan,
+                'harga_awal', st.harga_awal,
+                'laba', st.laba,
+                'harga_jual', st.harga_jual
+            )) as units
+        ");
 
         $this->db->from('apt_barang_detail d');
         $this->db->join('apt_stok st', 'd.id = st.id_barang_detail');
@@ -28,7 +30,7 @@ class Gigi_model extends CI_Model
             $this->db->group_end();
         }
 
-        $this->db->group_by('d.id, d.nama_barang, d.satuan_barang, d.id_barang, d.id_satuan_barang, d.urutan_satuan');
+        $this->db->group_by('d.id_barang, d.nama_barang');
         return $this->db->get()->result();
     }
 

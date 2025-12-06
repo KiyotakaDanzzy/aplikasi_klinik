@@ -51,11 +51,31 @@ class Registrasi_model extends CI_Model
         ];
     }
 
-    public function update_registrasi($id, $data)
+    public function update_registrasi($id_registrasi, $data)
     {
-        $this->db->where('id', $id);
+        $this->db->trans_start();
+        $data_ada = $this->db->get_where('rsp_registrasi', ['id' => $id_registrasi])->row();
+
+        if (!$data_ada) {
+            $this->db->trans_complete();
+            return false;
+        }
+
+        $id_pasien_input = $data_ada->id_pasien;
+        $this->db->where('id', $id_registrasi);
         $this->db->update('rsp_registrasi', $data);
-        return $this->db->affected_rows() > 0;
+
+        if (isset($data['nama_pasien']) && !empty($id_pasien_input)) {
+            $data_pasien = [
+                'nama_pasien' => $data['nama_pasien']
+            ];
+
+            $this->db->where('id', $id_pasien_input);
+            $this->db->update('mst_pasien', $data_pasien);
+        }
+
+        $this->db->trans_complete();
+        return $this->db->trans_status();
     }
 
     public function delete_registrasi($id)

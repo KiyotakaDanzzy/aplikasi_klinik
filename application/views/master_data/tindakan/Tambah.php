@@ -25,13 +25,24 @@
   function tambah(e) {
     e.preventDefault()
     if (!validateForm('#form_tambah')) {
-        return;
+      return;
     }
     $.ajax({
       url: '<?php echo base_url('master_data/tindakan/tambah_aksi') ?>',
       method: 'POST',
       data: $('#form_tambah').serialize(),
       dataType: 'json',
+      beforeSend: function() {
+        Swal.fire({
+          title: 'Mengupload...',
+          html: 'Mohon Ditunggu...',
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
       success: function(res) {
         if (res.status == true) {
           Swal.fire({

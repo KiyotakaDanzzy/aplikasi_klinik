@@ -26,10 +26,25 @@ class Jenis_biaya_model extends CI_Model
         return $query->row_array();
     }
 
+    public function cek_duplikat($nama_jenis)
+    {
+        $this->db->where('nama', $nama_jenis);
+        $query = $this->db->get('rsp_jenis_biaya');
+        if ($query->num_rows() > 0) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     public function insert_jenis($data)
     {
-        $this->db->insert('rsp_jenis_biaya', $data);
-        return $this->db->affected_rows() > 0;
+        $nama_jenis = $data['nama'];
+        if ($this->cek_duplikat($nama_jenis)) {
+            return false;
+        } else {
+            $this->db->insert('rsp_jenis_biaya', $data);
+            return $this->db->affected_rows() > 0;
+        }
     }
 
     public function update_jenis($id, $data)

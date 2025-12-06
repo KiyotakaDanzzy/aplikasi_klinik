@@ -6,6 +6,9 @@ class Jabatan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         $this->load->model('kepegawaian/Jabatan_model');
     }
 
@@ -50,10 +53,10 @@ class Jabatan extends CI_Controller
         $response = [];
         if ($simpan) {
             $response['status'] = true;
-            $response['message'] = 'Data berhasil disimpan';
+            $response['message'] = 'Data berhasil disimpan.';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan data';
+            $response['message'] = 'Gagal menyimpan data atau data sudah ada.';
         }
 
         header('Content-Type: application/json');

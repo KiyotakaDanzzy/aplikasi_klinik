@@ -7,6 +7,9 @@ class Tindakan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         $this->load->model('master_data/Tindakan_model');
         $this->load->model('master_data/Poli_model');
         $this->load->helper('url');
@@ -66,7 +69,7 @@ class Tindakan extends CI_Controller
             $response['message'] = 'Data berhasil disimpan.';
         } else {
             $response['status'] = false;
-            $response['message'] = 'Gagal menyimpan data.';
+            $response['message'] = 'Gagal menyimpan data atau data sudah ada.';
         }
 
         header('Content-Type: application/json');

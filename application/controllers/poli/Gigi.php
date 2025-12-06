@@ -6,6 +6,9 @@ class Gigi extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('poli/Gigi_model');
         $this->load->model('master_data/Diagnosa_model');
@@ -103,9 +106,21 @@ class Gigi extends CI_Controller
             'id_poli' => 4,
             'nama_poli' => 'Poli Gigi'
         ];
-        $new_id = $this->Diagnosa_model->insert_master_data($data);
-        $new_data = $this->Diagnosa_model->get_diagnosa_by_id($new_id);
-        echo json_encode(['status' => true, 'data' => $new_data]);
+
+        $insert_result = $this->Diagnosa_model->insert_master_data($data);
+        if ($insert_result === false) {
+            echo json_encode([
+                'status' => false,
+                'message' => 'Diagnosa "' . $nama_diagnosa . '" sudah ada.'
+            ]);
+            return;
+        }
+        $new_data = $this->Diagnosa_model->get_diagnosa_by_id($insert_result);
+        if ($new_data) {
+            echo json_encode(['status' => true, 'data' => $new_data]);
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Data tersimpan tapi gagal diambil kembali.']);
+        }
     }
 
     public function tambah_tindakan_ajax()
@@ -122,8 +137,19 @@ class Gigi extends CI_Controller
             'id_poli' => 4,
             'nama_poli' => 'Poli Gigi'
         ];
-        $new_id = $this->Tindakan_model->insert_master_data($data);
-        $new_data = $this->Tindakan_model->get_tindakan_by_id($new_id);
-        echo json_encode(['status' => true, 'data' => $new_data]);
+        $tindakan_insert = $this->Tindakan_model->insert_master_data($data);
+        if ($tindakan_insert === false) {
+            echo json_encode([
+                'status' => false,
+                'message' => 'Tindakan "' . $nama_tindakan . '" sudah ada.'
+            ]);
+            return;
+        }
+        $new_data = $this->Tindakan_model->get_tindakan_by_id($tindakan_insert);
+        if ($new_data) {
+            echo json_encode(['status' => true, 'data' => $new_data]);
+        } else {
+            echo json_encode(['status' => false, 'message' => 'Data tersimpan tapi gagal diambil kembali.']);
+        }
     }
 }

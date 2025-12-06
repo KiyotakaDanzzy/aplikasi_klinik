@@ -6,6 +6,9 @@ class Riwayat_pembayaran extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        if ($this->session->userdata('logged_in') !== TRUE) {
+            redirect('login/login');
+        }
         $this->load->model('transaksi/Pembayaran_model');
     }
 
@@ -20,7 +23,8 @@ class Riwayat_pembayaran extends CI_Controller
     public function result_data()
     {
         $cari = $this->input->post('cari');
-        $data_riwayat = $this->Pembayaran_model->get_riwayat_pembayaran($cari);
+        $tanggal = $this->input->post('tanggal');
+        $data_riwayat = $this->Pembayaran_model->get_riwayat_pembayaran($cari, $tanggal);
         header('Content-Type: application/json');
         echo json_encode(['result' => !empty($data_riwayat), 'data' => $data_riwayat]);
     }

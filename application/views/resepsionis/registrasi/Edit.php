@@ -42,6 +42,17 @@
             method: 'POST',
             data: $('#form_edit').serialize(),
             dataType: 'json',
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Mengupload...',
+                    html: 'Mohon Ditunggu...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
             success: function(res) {
                 if (res.status) {
                     Swal.fire({
@@ -108,16 +119,15 @@
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Kode Invoice</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext"><?php echo $registrasi['kode_invoice']; ?></p>
+                        <input type="text" class="form-control" value="<?php echo $registrasi['kode_invoice']; ?>" readonly></input>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label class="col-sm-3 col-form-label">Pasien</label>
                     <div class="col-sm-9">
-                        <p class="form-control-plaintext"><?php echo $registrasi['nama_pasien']; ?></p>
+                        <input type="text" class="form-control" id="nama_pasien" name="nama_pasien" value="<?php echo $registrasi['nama_pasien']; ?>"></input>
                     </div>
                 </div>
-                <hr>
                 <div class="mb-3 row">
                     <label for="id_poli" class="col-sm-3 col-form-label">Poli Tujuan</label>
                     <div class="col-sm-9">

@@ -41,12 +41,14 @@ class Antrian_model extends CI_Model
     {
         $today = date('d-m-Y');
         $this->db->select('a.id, a.id_registrasi, a.id_poli, a.no_antrian, a.status_antrian, p.nama_pasien, r.kode_invoice');
+        $this->db->select('(SELECT COUNT(*) FROM pol_gigi_diagnosa pgd JOIN pol_gigi pg ON pgd.id_pol_gigi = pg.id WHERE pg.kode_invoice = r.kode_invoice) as cek_diagnosa');
+        $this->db->select('(SELECT COUNT(*) FROM pol_gigi_tindakan pgt JOIN pol_gigi pg ON pgt.id_pol_gigi = pg.id WHERE pg.kode_invoice = r.kode_invoice) as cek_tindakan');
         $this->db->from('rsp_antrian a');
         $this->db->join('mst_pasien p', 'a.id_pasien = p.id', 'left');
         $this->db->join('rsp_registrasi r', 'a.id_registrasi = r.id', 'left');
         $this->db->where('a.id_poli', $id_poli);
         $this->db->where('a.tanggal', $today);
-        
+
         if ($status == 'Menunggu') {
             $this->db->group_start();
             $this->db->where('a.status_antrian', 'Menunggu');
@@ -59,16 +61,16 @@ class Antrian_model extends CI_Model
         $this->db->order_by('a.id', 'ASC');
         return $this->db->get()->result();
     }
-
+    
     public function get_ringkasan()
     {
         $today = date('d-m-Y');
-        $stats = [];        
+        $stats = [];
 
         $stats['antrian_konfir'] = $this->db->where('tanggal', $today)->where('status_antrian', 'Dikonfirmasi')->count_all_results('rsp_antrian');
         $stats['antrian_menunggu'] = $this->db->where('tanggal', $today)->where('status_antrian', 'Menunggu')->count_all_results('rsp_antrian');
         $stats['total_antrian'] = $this->db->where('tanggal', $today)->count_all_results('rsp_antrian');
-        
+
         return $stats;
     }
 
@@ -81,8 +83,8 @@ class Antrian_model extends CI_Model
         $this->db->where('a.status_antrian', 'Dipanggil');
         $this->db->where('a.tanggal', $today);
         $this->db->order_by('a.waktu_dipanggil', 'DESC');
-        $this->db->limit(1);
-        return $this->db->get()->row();
+        $this->db->limit(5);
+        return $this->db->get()->result();
     }
 
     public function get_lanjut()
@@ -105,7 +107,7 @@ class Antrian_model extends CI_Model
 
         $waktu_antri_dt = new DateTime($antrian['tanggal_antri'] . ' ' . $antrian['waktu_antri']);
         $waktu_panggil_dt = new DateTime();
-        
+
         $diff = $waktu_panggil_dt->diff($waktu_antri_dt);
         $lama_menunggu = $diff->format('%H:%I:%S');
 

@@ -364,7 +364,7 @@
             </select>
         </td>
         <td>
-            <input type="text" name="resep_obat[${obatCount}][jumlah]" class="form-control input-jumlah" value="${jumlah}" min="1">
+            <input type="text" name="resep_obat[${obatCount}][jumlah]" class="form-control input-jumlah" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="${jumlah}" min="1">
         </td>
         <td>
             <input type="text" name="resep_obat[${obatCount}][aturan_pakai]" class="form-control" placeholder="Contoh: 3x1 sehari">
@@ -410,7 +410,7 @@
                 <div class="mb-2 row">
                         <label class="col-sm-3 col-form-label">Jumlah</label>
                     <div class="col-sm-9">
-                        <input type="text" name="racikan[${racikanCounter}][jumlah]" class="form-control" autocomplete="off" placeholder="Jumlah" value="${jumlah}" required>
+                        <input type="text" name="racikan[${racikanCounter}][jumlah]" class="form-control" autocomplete="off" placeholder="Jumlah" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" value="${jumlah}" required>
                     </div>
                 </div>
                 <div class="mb-2 row">
